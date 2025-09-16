@@ -1,26 +1,83 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Phillip Geo - Portfolio</title>
-  <script type="module" src="main.js"></script>
+  <title>Phillip Geo / BareetDesign</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Phillip Geo - Portfolio</h1>
-    <nav>
-      <a href="index.html">Projekter</a>
-      <a href="about.html">Om mig</a>
-      <a href="contact.html">Kontakt</a>
-      <a href="admin.html">Admin</a>
-    </nav>
-  </header>
+<header>
+  <div class="logo"><a href="index.html" style="text-decoration:none;color:inherit;" id="site-title">Phillip Geo / BareetDesign</a></div>
+  <nav>
+    <a href="index.html" class="active">Projects</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="admin.html" class="admin-link">Admin</a>
+  </nav>
+</header>
 
-  <main id="projects"></main>
+<main>
+  <section id="projects-grid" class="grid">
+    <p>Loading projects...</p>
+  </section>
+</main>
 
-  <footer>
-    <p>© Phillip Geo / BareetDesign</p>
-  </footer>
+<footer id="site-footer">
+  <div id="footer-left"></div>
+  <div id="footer-middle">
+    <a id="footer-mail" href="#">Send a message</a><br>
+    <a id="footer-phone" href="#">Give me a call</a>
+  </div>
+  <div id="footer-right">
+    <a id="footer-linkedin" href="#">LinkedIn</a><br>
+    <a id="footer-instagram" href="#">Instagram</a>
+  </div>
+</footer>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+
+const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co"
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU"
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+async function loadSiteData(){
+  const { data: siteData } = await supabase.from('site_content').select('*').single()
+  if(siteData){
+    document.getElementById('site-title').textContent = siteData.siteTitle || 'Phillip Geo / BareetDesign'
+    document.getElementById('footer-left').innerText = siteData.footerLeft || ''
+    document.getElementById('footer-mail').href = 'mailto:' + (siteData.contactMail || '#')
+    document.getElementById('footer-phone').href = 'tel:' + (siteData.contactPhone || '#')
+    document.getElementById('footer-linkedin').href = siteData.contactLinkedin || '#'
+    document.getElementById('footer-instagram').href = siteData.contactInstagram || '#'
+  }
+}
+
+async function loadProjects(){
+  const { data: projects } = await supabase.from('projects').select('*').order('created_at', { ascending: false })
+  const grid = document.getElementById('projects-grid')
+  grid.innerHTML = ''
+  if(projects && projects.length > 0){
+    projects.forEach(p=>{
+      const a = document.createElement('a')
+      a.href = p.link || '#'
+      a.className = 'project'
+      const img = document.createElement('img')
+      img.src = p.image_url || 'images/placeholder.png'
+      img.alt = p.title
+      const h3 = document.createElement('h3')
+      h3.textContent = p.title
+      a.appendChild(img)
+      a.appendChild(h3)
+      grid.appendChild(a)
+    })
+  } else {
+    grid.innerHTML = '<p>No projects found.</p>'
+  }
+}
+
+loadSiteData()
+loadProjects()
+</script>
 </body>
 </html>
