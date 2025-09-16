@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - Portfolio</title>
+  <script type="module" src="admin.js"></script>
+</head>
+<body>
+  <h1>Admin Login</h1>
+  <form id="login-form">
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button type="submit">Log ind</button>
+  </form>
+
+  <div id="admin-panel" style="display:none;">
+    <h2>Tilføj projekt</h2>
+    <form id="project-form">
+      <input type="text" id="title" placeholder="Titel" required>
+      <textarea id="description" placeholder="Beskrivelse"></textarea>
+      <input type="text" id="image_url" placeholder="Billede URL">
+      <button type="submit">Gem</button>
+    </form>
+    <div id="project-list"></div>
+  </div>
+</body>
+</html>
