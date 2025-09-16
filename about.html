@@ -7,7 +7,7 @@
 </head>
 <body>
 <header>
-  <div class="logo"><a href="index.html" style="text-decoration:none;color:inherit;" id="site-title">Phillip Geo / BareetDesign</a></div>
+  <div class="logo"><a href="index.html" id="site-title" style="text-decoration:none;color:inherit;">Phillip Geo / BareetDesign</a></div>
   <nav>
     <a href="index.html">Projects</a>
     <a href="about.html" class="active">About</a>
@@ -17,9 +17,9 @@
 </header>
 
 <main>
-  <section class="content">
-    <div id="about-text">
-      <p>Loading about info...</p>
+  <section class="grid">
+    <div id="about-text" style="padding:24px; font-size:16px;">
+      <p>Loading...</p>
     </div>
   </section>
 </main>
@@ -44,15 +44,20 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
 async function loadSiteData(){
-  const { data: siteData } = await supabase.from('site_content').select('*').single()
-  if(siteData){
-    document.getElementById('site-title').textContent = siteData.siteTitle || 'Phillip Geo / BareetDesign'
-    document.getElementById('about-text').innerHTML = `<p>${siteData.about || ''}</p>`
-    document.getElementById('footer-left').innerText = siteData.footerLeft || ''
-    document.getElementById('footer-mail').href = 'mailto:' + (siteData.contactMail || '#')
-    document.getElementById('footer-phone').href = 'tel:' + (siteData.contactPhone || '#')
-    document.getElementById('footer-linkedin').href = siteData.contactLinkedin || '#'
-    document.getElementById('footer-instagram').href = siteData.contactInstagram || '#'
+  try {
+    const { data: siteData, error } = await supabase.from('site_content').select('*').eq('id',1).single()
+    if(error) throw error
+    if(siteData){
+      document.getElementById('site-title').textContent = siteData.siteTitle
+      document.getElementById('footer-left').innerText = siteData.footerLeft
+      document.getElementById('footer-mail').href = 'mailto:' + siteData.contactMail
+      document.getElementById('footer-phone').href = 'tel:' + siteData.contactPhone
+      document.getElementById('footer-linkedin').href = siteData.contactLinkedin
+      document.getElementById('footer-instagram').href = siteData.contactInstagram
+      document.getElementById('about-text').innerHTML = `<p>${siteData.about}</p>`
+    }
+  } catch(e){
+    console.error('Error loading site content:', e)
   }
 }
 
