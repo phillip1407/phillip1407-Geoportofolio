@@ -1,27 +1,189 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Admin - Portfolio</title>
-  <script type="module" src="admin.js"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Admin Login</h1>
-  <form id="login-form">
-    <input type="email" id="email" placeholder="Email" required>
-    <input type="password" id="password" placeholder="Password" required>
-    <button type="submit">Log ind</button>
-  </form>
+<header>
+  <div class="logo"><a href="index.html" style="text-decoration:none;color:inherit;">Admin / BareetDesign</a></div>
+  <nav>
+    <a href="index.html">View Site</a>
+  </nav>
+</header>
 
-  <div id="admin-panel" style="display:none;">
-    <h2>Tilføj projekt</h2>
-    <form id="project-form">
-      <input type="text" id="title" placeholder="Titel" required>
-      <textarea id="description" placeholder="Beskrivelse"></textarea>
-      <input type="text" id="image_url" placeholder="Billede URL">
-      <button type="submit">Gem</button>
-    </form>
-    <div id="project-list"></div>
-  </div>
+<main>
+  <section class="admin-area">
+    <div id="login-box" class="card">
+      <h2>Login</h2>
+      <label>Username<input id="username" type="text"></label>
+      <label>Password<input id="password" type="password"></label>
+      <button id="login-btn">Log ind</button>
+      <p class="hint">Klient-side login (demo/lokal brug)</p>
+    </div>
+
+    <div id="editor" class="card" style="display:none;">
+      <h2>Site Editor</h2>
+      <label>Site title<input id="input-siteTitle" type="text"></label>
+      <label>About text<textarea id="input-about" rows="4"></textarea></label>
+
+      <h3>Projects</h3>
+      <div id="projects-editor"></div>
+      <button id="add-project">+ Add project</button>
+
+      <h3>Contact</h3>
+      <label>Mail<input id="input-mail" type="text"></label>
+      <label>Phone<input id="input-phone" type="text"></label>
+      <label>Address<input id="input-address" type="text"></label>
+      <label>LinkedIn<input id="input-linkedin" type="text"></label>
+      <label>Instagram<input id="input-instagram" type="text"></label>
+
+      <h3>Footer</h3>
+      <label>Footer left<input id="input-footerLeft" type="text"></label>
+
+      <div class="editor-actions">
+        <button id="save-btn">Save changes</button>
+        <button id="reset-btn">Reset to defaults</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div>Admin area</div>
+</footer>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+
+const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co"
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU"
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+// ========== credentials ==========
+const ADMIN_USER = "Bareetdesign";
+const ADMIN_PASS = "jyy24jad";
+
+// ========== login ==========
+document.getElementById('login-btn').addEventListener('click', async ()=>{
+  const u = document.getElementById('username').value.trim()
+  const p = document.getElementById('password').value
+  if(u === ADMIN_USER && p === ADMIN_PASS){
+    document.getElementById('login-box').style.display = 'none'
+    document.getElementById('editor').style.display = 'block'
+    await loadSiteData()
+    await loadProjects()
+  } else {
+    alert('Forkert brugernavn eller password')
+  }
+})
+
+// ========== site editor ==========
+async function loadSiteData(){
+  const { data, error } = await supabase.from('site_content').select('*').single()
+  if(error){
+    console.error(error)
+    return
+  }
+  document.getElementById('input-siteTitle').value = data.siteTitle || ''
+  document.getElementById('input-about').value = data.about || ''
+  document.getElementById('input-footerLeft').value = data.footerLeft || ''
+  document.getElementById('input-mail').value = data.contactMail || ''
+  document.getElementById('input-phone').value = data.contactPhone || ''
+  document.getElementById('input-address').value = data.contactAddress || ''
+  document.getElementById('input-linkedin').value = data.contactLinkedin || ''
+  document.getElementById('input-instagram').value = data.contactInstagram || ''
+}
+
+document.getElementById('save-btn').addEventListener('click', async ()=>{
+  const updates = {
+    siteTitle: document.getElementById('input-siteTitle').value,
+    about: document.getElementById('input-about').value,
+    footerLeft: document.getElementById('input-footerLeft').value,
+    contactMail: document.getElementById('input-mail').value,
+    contactPhone: document.getElementById('input-phone').value,
+    contactAddress: document.getElementById('input-address').value,
+    contactLinkedin: document.getElementById('input-linkedin').value,
+    contactInstagram: document.getElementById('input-instagram').value
+  }
+  const { error } = await supabase.from('site_content').update(updates).eq('id', 1)
+  if(error){
+    alert('Fejl ved gem: ' + error.message)
+  } else {
+    alert('Changes saved!')
+  }
+})
+
+// ========== projects editor ==========
+async function loadProjects(){
+  const { data: projects, error } = await supabase.from('projects').select('*').order('created_at', { ascending:false })
+  if(error){
+    console.error(error)
+    return
+  }
+  const container = document.getElementById('projects-editor')
+  container.innerHTML = ''
+  projects.forEach(p=>{
+    const wrap = document.createElement('div')
+    wrap.className = 'project-edit'
+    wrap.innerHTML = `
+      <label>Title <input value="${p.title}" data-id="${p.id}" data-field="title"></label>
+      <label>Image URL <input value="${p.image_url}" data-id="${p.id}" data-field="image_url"></label>
+      <label>Link <input value="${p.link}" data-id="${p.id}" data-field="link"></label>
+      <div class="row">
+        <button data-action="update" data-id="${p.id}">Save</button>
+        <button data-action="remove" data-id="${p.id}">Remove</button>
+      </div>
+      <hr>
+    `
+    container.appendChild(wrap)
+  })
+
+  container.querySelectorAll('button[data-action]').forEach(btn=>{
+    btn.addEventListener('click', async (e)=>{
+      const action = e.target.dataset.action
+      const id = e.target.dataset.id
+      if(action === 'remove'){
+        const { error } = await supabase.from('projects').delete().eq('id', id)
+        if(error) alert('Error: ' + error.message)
+        else loadProjects()
+      } else if(action === 'update'){
+        const inputs = container.querySelectorAll(`input[data-id='${id}']`)
+        const updateObj = {}
+        inputs.forEach(i=> updateObj[i.dataset.field] = i.value)
+        const { error } = await supabase.from('projects').update(updateObj).eq('id', id)
+        if(error) alert('Error: ' + error.message)
+        else alert('Project updated!')
+      }
+    })
+  })
+}
+
+document.getElementById('add-project').addEventListener('click', async ()=>{
+  const { data, error } = await supabase.from('projects').insert([{ title:'New Project', image_url:'images/placeholder.png', link:'#' }])
+  if(error) alert('Error: ' + error.message)
+  else loadProjects()
+})
+
+// Reset site content
+document.getElementById('reset-btn').addEventListener('click', async ()=>{
+  if(confirm('Reset all site content to defaults?')){
+    const { error } = await supabase.from('site_content').update({
+      siteTitle:'Phillip Geo / BareetDesign',
+      about:'I am currently working on creative projects but open to taking on smaller side projects. Feel free to reach out.',
+      footerLeft:'Phillip Geo\\nCopyright © 2024',
+      contactMail:'example@mail.com',
+      contactPhone:'+45 12 34 56 78',
+      contactAddress:'Copenhagen, Denmark',
+      contactLinkedin:'#',
+      contactInstagram:'#'
+    }).eq('id', 1)
+    if(error) alert('Error: '+error.message)
+    else { alert('Site content reset!'); loadSiteData() }
+  }
+})
+</script>
 </body>
 </html>
