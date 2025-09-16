@@ -5,22 +5,53 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
-async function loadProjects() {
-  let { data, error } = await supabase.from("projects").select("*").order("created_at", { ascending: false })
-
-  if (error) {
-    console.error(error)
-    return
+async function loadSiteData() {
+  // hent site info (about, footer, contact)
+  const { data: siteData, error: siteError } = await supabase
+    .from('site_content')
+    .select('*')
+    .single()
+  
+  if(siteError){
+    console.error(siteError)
   }
 
-  const container = document.getElementById("projects")
-  container.innerHTML = data.map(p => `
-    <div class="project">
-      <img src="${p.image_url}" alt="${p.title}">
-      <h2>${p.title}</h2>
-      <p>${p.description}</p>
-    </div>
-  `).join("")
+  // hent projekter
+  const { data: projects, error: projectsError } = await supabase
+    .from('projects')
+    .select('*')
+    .order('created_at', { ascending: false })
+
+  if(projectsError){
+    console.error(projectsError)
+  }
+
+  return { siteData, projects }
 }
 
-loadProjects()
+async function render(){
+  const { siteData, projects } = await loadSiteData()
+
+  // site title
+  document.getElementById('site-title').textContent = siteData?.siteTitle || "Phillip Geo / BareetDesign"
+
+  // footer
+  document.getElementById('footer-left').innerText = siteData?.footerLeft || "Phillip Geo\nCopyright © 2024"
+  document.getElementById('footer-mail').href = 'mailto:' + (siteData?.contactMail || 'example@mail.com')
+  document.getElementById('footer-phone').href = 'tel:' + (siteData?.contactPhone || '+45 12 34 56 78')
+  document.getElementById('footer-linkedin').href = siteData?.contactLinkedin || '#'
+  document.getElementById('footer-instagram').href = siteData?.contactInstagram || '#'
+
+  // projects grid
+  const grid = document.getElementById('projects-grid')
+  grid.innerHTML = ''
+  (projects || []).forEach(p => {
+    const a = document.createElement('a')
+    a.href = p.link || '#'
+    a.className = 'project'
+    a.innerHTML = `<img src="${p.image_url}" alt="${p.title}"><h3>${p.title}</h3>`
+    grid.appendChild(a)
+  })
+}
+
+render()
