@@ -8,9 +8,7 @@
 </head>
 <body>
 <header>
-  <div class="logo">
-    <a href="index.html" style="text-decoration:none;color:inherit;">Phillip Geo / BareetDesign</a>
-  </div>
+  <div class="logo"><a href="index.html" style="text-decoration:none;color:inherit;">Phillip Geo / BareetDesign</a></div>
   <nav>
     <a href="index.html">Projekter</a>
     <a href="about.html">Omkring Mig</a>
@@ -19,71 +17,75 @@
   </nav>
 </header>
 
-<main>
+<main class="admin-area">
   <h1>Admin Panel</h1>
 
+  <div class="alert-box">
+    ⚠️ Advarsel: Hvis du ikke er admin, skal du ikke ændre noget her!
+  </div>
+
   <!-- LOGIN -->
-  <section id="login-section">
+  <section id="login-section" class="card">
     <h2>Login</h2>
-    <input type="email" id="email" placeholder="Email"><br>
-    <input type="password" id="password" placeholder="Password"><br>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
     <button id="login-btn">Login</button>
     <button id="signup-btn">Opret konto</button>
     <p id="login-message"></p>
   </section>
 
   <!-- DASHBOARD -->
-  <section id="admin-section" style="display:none;">
+  <section id="admin-section" class="card" style="display:none;">
     <button id="logout-btn">Logout</button>
 
     <h2>Rediger siteindhold</h2>
     <form id="site-form">
-      <label>Site Title:</label><br>
-      <input type="text" id="siteTitle"><br><br>
+      <label>Site Title:</label>
+      <input type="text" id="siteTitle">
 
-      <label>Footer Left:</label><br>
-      <input type="text" id="footerLeft"><br><br>
+      <label>Footer Left:</label>
+      <input type="text" id="footerLeft">
 
-      <label>Mail:</label><br>
-      <input type="email" id="contactMail"><br><br>
-      <label>Mail Icon URL:</label><br>
-      <input type="text" id="footerMailIcon"><br><br>
+      <label>Mail:</label>
+      <input type="email" id="contactMail">
+      <label>Mail Icon URL:</label>
+      <input type="text" id="footerMailIcon">
 
-      <label>Phone:</label><br>
-      <input type="text" id="contactPhone"><br><br>
-      <label>Phone Icon URL:</label><br>
-      <input type="text" id="footerPhoneIcon"><br><br>
+      <label>Phone:</label>
+      <input type="text" id="contactPhone">
+      <label>Phone Icon URL:</label>
+      <input type="text" id="footerPhoneIcon">
 
-      <label>LinkedIn:</label><br>
-      <input type="text" id="contactLinkedin"><br><br>
-      <label>LinkedIn Icon URL:</label><br>
-      <input type="text" id="footerLinkedinIcon"><br><br>
+      <label>LinkedIn:</label>
+      <input type="text" id="contactLinkedin">
+      <label>LinkedIn Icon URL:</label>
+      <input type="text" id="footerLinkedinIcon">
 
-      <label>Instagram:</label><br>
-      <input type="text" id="contactInstagram"><br><br>
-      <label>Instagram Icon URL:</label><br>
-      <input type="text" id="footerInstagramIcon"><br><br>
+      <label>Instagram:</label>
+      <input type="text" id="contactInstagram">
+      <label>Instagram Icon URL:</label>
+      <input type="text" id="footerInstagramIcon">
 
       <button type="submit">Gem</button>
     </form>
 
     <h2>Tilføj projekt</h2>
     <form id="project-form">
-      <label>Title:</label><br>
-      <input type="text" id="projectTitle"><br><br>
+      <label>Title:</label>
+      <input type="text" id="projectTitle">
 
-      <label>Link:</label><br>
-      <input type="text" id="projectLink"><br><br>
+      <label>Link:</label>
+      <input type="text" id="projectLink">
 
-      <label>Billede (URL):</label><br>
-      <input type="text" id="projectImage"><br><br>
+      <label>Billede (URL):</label>
+      <input type="text" id="projectImage">
 
       <button type="submit">Tilføj</button>
     </form>
   </section>
 </main>
 
-<footer id="site-footer">
+<footer>
   <div id="footer-left"></div>
   <div id="footer-middle">
     <a id="footer-mail" href="#"><img src="icons/mail.png" class="social-icon" alt="Mail"></a>
@@ -113,7 +115,7 @@ const logoutBtn = document.getElementById("logout-btn");
 loginBtn.addEventListener("click", async () => {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
-  
+
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) {
     loginMessage.textContent = "Login fejlede: " + error.message;
@@ -125,11 +127,11 @@ loginBtn.addEventListener("click", async () => {
   }
 });
 
-// SIGNUP (valgfri)
+// SIGNUP
 signupBtn.addEventListener("click", async () => {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
-  
+
   const { data, error } = await supabase.auth.signUp({ email, password });
   if (error) {
     loginMessage.textContent = "Oprettelse fejlede: " + error.message;
@@ -145,7 +147,7 @@ logoutBtn.addEventListener("click", async () => {
   adminSection.style.display = "none";
 });
 
-// LOAD site content inkl. footer ikoner
+// LOAD site content
 async function loadSiteContent() {
   const { data, error } = await supabase.from("site_content").select("*").eq("id",1).single();
   if(error) return console.error(error);
