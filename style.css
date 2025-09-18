@@ -105,6 +105,19 @@ footer {
 footer a { color:var(--text); text-decoration:none; }
 footer a:hover { text-decoration:underline; }
 
+/* social media icons */
+.social-icon {
+  width: 24px;           /* ikonstørrelse */
+  height: 24px;
+  margin-right: 8px;     /* afstand mellem ikoner */
+  vertical-align: middle;
+  transition: transform 0.3s ease;
+}
+
+.social-icon:hover {
+  transform: scale(1.2); /* lille zoom ved hover */
+}
+
 /* admin styles */
 .admin-area { max-width:920px; margin:auto; display:grid; gap:18px; }
 .card { background:#fafafa; padding:16px; border:1px solid var(--border); border-radius:8px; }
