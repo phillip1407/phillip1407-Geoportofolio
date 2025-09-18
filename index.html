@@ -50,10 +50,18 @@ async function loadSiteData() {
     if (siteData) {
       document.getElementById('site-title').textContent = siteData.siteTitle;
       document.getElementById('footer-left').innerText = siteData.footerLeft;
-      document.getElementById('footer-mail').href = 'mailto:' + siteData.contactMail;
-      document.getElementById('footer-phone').href = 'tel:' + siteData.contactPhone;
-      document.getElementById('footer-linkedin').href = siteData.contactLinkedin;
-      document.getElementById('footer-instagram').href = siteData.contactInstagram;
+
+      // Opdater links
+      document.getElementById('footer-mail').href = siteData.contactMail ? 'mailto:' + siteData.contactMail : '#';
+      document.getElementById('footer-phone').href = siteData.contactPhone ? 'tel:' + siteData.contactPhone : '#';
+      document.getElementById('footer-linkedin').href = siteData.contactLinkedin || '#';
+      document.getElementById('footer-instagram').href = siteData.contactInstagram || '#';
+
+      // Opdater ikoner
+      document.querySelector('#footer-mail img').src = siteData.footerMailIcon || 'icons/mail.png';
+      document.querySelector('#footer-phone img').src = siteData.footerPhoneIcon || 'icons/phone.png';
+      document.querySelector('#footer-linkedin img').src = siteData.footerLinkedinIcon || 'icons/linkedin.png';
+      document.querySelector('#footer-instagram img').src = siteData.footerInstagramIcon || 'icons/instagram.png';
     }
   } catch(e){
     console.error('Error loading site content:', e);
