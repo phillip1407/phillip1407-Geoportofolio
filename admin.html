@@ -29,7 +29,7 @@
     <h2>Login</h2>
     <input type="text" id="username" placeholder="Username"><br>
     <input type="password" id="password" placeholder="Password"><br>
-    <button id="login-btn">Login</button>
+    <button id="login-btn" type="button">Login</button>
     <p id="login-message"></p>
   </section>
 
@@ -138,4 +138,43 @@ async function loadSiteContent(){
     document.getElementById("footerMailIcon").value = data.footerMailIcon || "";
     document.getElementById("footerPhoneIcon").value = data.footerPhoneIcon || "";
     document.getElementById("footerLinkedinIcon").value = data.footerLinkedinIcon || "";
-    document.getElementById("footerInstagramIcon").value = dat
+    document.getElementById("footerInstagramIcon").value = data.footerInstagramIcon || "";
+  }
+}
+
+// GEM site_content
+document.getElementById("site-form").addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  const updates = {
+    id: 1,
+    siteTitle: document.getElementById("siteTitle").value,
+    footerLeft: document.getElementById("footerLeft").value,
+    contactMail: document.getElementById("contactMail").value,
+    contactPhone: document.getElementById("contactPhone").value,
+    contactLinkedin: document.getElementById("contactLinkedin").value,
+    contactInstagram: document.getElementById("contactInstagram").value,
+    footerMailIcon: document.getElementById("footerMailIcon").value,
+    footerPhoneIcon: document.getElementById("footerPhoneIcon").value,
+    footerLinkedinIcon: document.getElementById("footerLinkedinIcon").value,
+    footerInstagramIcon: document.getElementById("footerInstagramIcon").value
+  };
+  const { error } = await supabase.from("site_content").upsert(updates);
+  if(error) alert("Fejl ved gem: " + error.message);
+  else alert("Indhold gemt!");
+});
+
+// TILFØJ projekt
+document.getElementById("project-form").addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  const project = {
+    title: document.getElementById("projectTitle").value,
+    link: document.getElementById("projectLink").value,
+    image_url: document.getElementById("projectImage").value
+  };
+  const { error } = await supabase.from("projects").insert([project]);
+  if(error) alert("Fejl ved tilføj projekt: " + error.message);
+  else alert("Projekt tilføjet!");
+});
+</script>
+</body>
+</html>
