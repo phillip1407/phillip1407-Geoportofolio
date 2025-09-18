@@ -2,115 +2,167 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Phillip Geo / BareetDesign</title>
+  <title>Admin - Phillip Geo / BareetDesign</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="geoportofolio.png" type="image/png">
 </head>
 <body>
 <header>
-  <div class="logo"><a href="index.html" id="site-title" style="text-decoration:none;color:inherit;">Phillip Geo / BareetDesign</a></div>
+  <div class="logo">
+    <a href="index.html" style="text-decoration:none;color:inherit;">Phillip Geo / BareetDesign</a>
+  </div>
   <nav>
-    <a href="index.html" class="active">Projekter</a>
+    <a href="index.html">Projekter</a>
     <a href="about.html">Omkring Mig</a>
     <a href="contact.html">Kontakt Mig</a>
-    <a href="admin.html" class="admin-link">Admin</a>
+    <a href="admin.html" class="active">Admin</a>
   </nav>
 </header>
 
 <main>
-  <section id="projects-grid" class="grid">
-    <p>Loading projects...</p>
+  <h1>Admin Panel</h1>
+
+  <!-- LOGIN -->
+  <section id="login-section">
+    <h2>Login</h2>
+    <input type="email" id="email" placeholder="Email"><br>
+    <input type="password" id="password" placeholder="Password"><br>
+    <button id="login-btn">Login</button>
+    <button id="signup-btn">Opret konto</button>
+    <p id="login-message"></p>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section id="admin-section" style="display:none;">
+    <button id="logout-btn">Logout</button>
+
+    <h2>Rediger siteindhold</h2>
+    <form id="site-form">
+      <label>Site Title:</label><br>
+      <input type="text" id="siteTitle"><br><br>
+
+      <label>Footer Left:</label><br>
+      <input type="text" id="footerLeft"><br><br>
+
+      <label>Mail:</label><br>
+      <input type="email" id="contactMail"><br><br>
+      <label>Mail Icon URL:</label><br>
+      <input type="text" id="footerMailIcon"><br><br>
+
+      <label>Phone:</label><br>
+      <input type="text" id="contactPhone"><br><br>
+      <label>Phone Icon URL:</label><br>
+      <input type="text" id="footerPhoneIcon"><br><br>
+
+      <label>LinkedIn:</label><br>
+      <input type="text" id="contactLinkedin"><br><br>
+      <label>LinkedIn Icon URL:</label><br>
+      <input type="text" id="footerLinkedinIcon"><br><br>
+
+      <label>Instagram:</label><br>
+      <input type="text" id="contactInstagram"><br><br>
+      <label>Instagram Icon URL:</label><br>
+      <input type="text" id="footerInstagramIcon"><br><br>
+
+      <button type="submit">Gem</button>
+    </form>
+
+    <h2>Tilføj projekt</h2>
+    <form id="project-form">
+      <label>Title:</label><br>
+      <input type="text" id="projectTitle"><br><br>
+
+      <label>Link:</label><br>
+      <input type="text" id="projectLink"><br><br>
+
+      <label>Billede (URL):</label><br>
+      <input type="text" id="projectImage"><br><br>
+
+      <button type="submit">Tilføj</button>
+    </form>
   </section>
 </main>
 
 <footer id="site-footer">
   <div id="footer-left"></div>
   <div id="footer-middle">
-    <a id="footer-mail" href="#"><img class="social-icon" alt="Mail"></a>
-    <a id="footer-phone" href="#"><img class="social-icon" alt="Phone"></a>
+    <a id="footer-mail" href="#"><img src="icons/mail.png" class="social-icon" alt="Mail"></a>
+    <a id="footer-phone" href="#"><img src="icons/phone.png" class="social-icon" alt="Phone"></a>
   </div>
   <div id="footer-right">
-    <a id="footer-linkedin" href="#" target="_blank"><img class="social-icon" alt="LinkedIn"></a>
-    <a id="footer-instagram" href="#" target="_blank"><img class="social-icon" alt="Instagram"></a>
+    <a id="footer-linkedin" href="#" target="_blank"><img src="icons/linkedin.png" class="social-icon" alt="LinkedIn"></a>
+    <a id="footer-instagram" href="#" target="_blank"><img src="icons/instagram.png" class="social-icon" alt="Instagram"></a>
   </div>
 </footer>
 
 <script type="module">
-import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co"
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU"
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU";
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-async function loadSiteData(){
-  try {
-    const { data: siteData, error } = await supabase.from('site_content').select('*').eq('id',1).single()
-    if(error) throw error
-    if(siteData){
-      document.getElementById('site-title').textContent = siteData.siteTitle
-      document.getElementById('footer-left').innerText = siteData.footerLeft
+const loginSection = document.getElementById("login-section");
+const adminSection = document.getElementById("admin-section");
+const loginMessage = document.getElementById("login-message");
+const loginBtn = document.getElementById("login-btn");
+const signupBtn = document.getElementById("signup-btn");
+const logoutBtn = document.getElementById("logout-btn");
 
-      // Dynamiske links
-      document.getElementById('footer-mail').href = 'mailto:' + siteData.contactMail
-      document.getElementById('footer-phone').href = 'tel:' + siteData.contactPhone
-      document.getElementById('footer-linkedin').href = siteData.contactLinkedin
-      document.getElementById('footer-instagram').href = siteData.contactInstagram
+// LOGIN
+loginBtn.addEventListener("click", async () => {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) {
+    loginMessage.textContent = "Login fejlede: " + error.message;
+  } else {
+    loginMessage.textContent = "";
+    loginSection.style.display = "none";
+    adminSection.style.display = "block";
+    loadSiteContent();
+  }
+});
 
-      // Dynamiske ikoner
-      document.querySelector('#footer-mail img').src = siteData.footerMailIcon
-      document.querySelector('#footer-phone img').src = siteData.footerPhoneIcon
-      document.querySelector('#footer-linkedin img').src = siteData.footerLinkedinIcon
-      document.querySelector('#footer-instagram img').src = siteData.footerInstagramIcon
-    }
-  } catch(e){
-    console.error('Error loading site content:', e)
+// SIGNUP (valgfri)
+signupBtn.addEventListener("click", async () => {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  
+  const { data, error } = await supabase.auth.signUp({ email, password });
+  if (error) {
+    loginMessage.textContent = "Oprettelse fejlede: " + error.message;
+  } else {
+    loginMessage.textContent = "Bruger oprettet! Login nu.";
+  }
+});
+
+// LOGOUT
+logoutBtn.addEventListener("click", async () => {
+  await supabase.auth.signOut();
+  loginSection.style.display = "block";
+  adminSection.style.display = "none";
+});
+
+// LOAD site content inkl. footer ikoner
+async function loadSiteContent() {
+  const { data, error } = await supabase.from("site_content").select("*").eq("id",1).single();
+  if(error) return console.error(error);
+  if(data){
+    document.getElementById("siteTitle").value = data.siteTitle || "";
+    document.getElementById("footerLeft").value = data.footerLeft || "";
+    document.getElementById("contactMail").value = data.contactMail || "";
+    document.getElementById("contactPhone").value = data.contactPhone || "";
+    document.getElementById("contactLinkedin").value = data.contactLinkedin || "";
+    document.getElementById("contactInstagram").value = data.contactInstagram || "";
+
+    document.getElementById("footerMailIcon").value = data.footerMailIcon || "";
+    document.getElementById("footerPhoneIcon").value = data.footerPhoneIcon || "";
+    document.getElementById("footerLinkedinIcon").value = data.footerLinkedinIcon || "";
+    document.getElementById("footerInstagramIcon").value = data.footerInstagramIcon || "";
   }
 }
-
-async function loadProjects(){
-  try {
-    const { data: projects, error } = await supabase.from('projects').select('*').order('created_at', { ascending:false })
-    const grid = document.getElementById('projects-grid')
-    grid.innerHTML = ''
-    if(error) throw error
-    if(projects && projects.length > 0){
-      projects.forEach(p=>{
-        const a = document.createElement('a')
-        a.href = p.link || '#'
-        a.className = 'project'
-
-        const img = document.createElement('img')
-        img.src = p.image_url || 'images/placeholder.png'
-        img.alt = p.title
-
-        const content = document.createElement('div')
-        content.className = 'project-content'
-
-        const h3 = document.createElement('h3')
-        h3.textContent = p.title
-
-        const url = document.createElement('div')
-        url.className = 'project-url'
-        url.textContent = p.link || 'No link'
-
-        content.appendChild(h3)
-        content.appendChild(url)
-
-        a.appendChild(img)
-        a.appendChild(content)
-
-        grid.appendChild(a)
-      })
-    } else {
-      grid.innerHTML = '<p>No projects found.</p>'
-    }
-  } catch(e){
-    console.error('Error loading projects:', e)
-  }
-}
-
-loadSiteData()
-loadProjects()
 </script>
 </body>
 </html>
