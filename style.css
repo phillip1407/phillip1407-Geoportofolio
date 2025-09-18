@@ -3,6 +3,12 @@
   --text: #111;
   --muted: #666;
   --border: #ddd;
+  --primary: #1a1f4c;
+  --primary-hover: #333a80;
+  --danger: #d9534f;
+  --danger-hover: #c12e2a;
+  --alert-bg: #ffdddd;
+  --alert-border: #ff0000;
 }
 
 * { box-sizing: border-box; }
@@ -58,13 +64,13 @@ main { padding:28px; min-height:60vh; }
 
 .project img {
   width: 100%;
-  aspect-ratio: 16 / 10; /* 1920x1080 */
+  aspect-ratio: 16 / 10;
   object-fit: cover;
   transition: transform 0.4s ease;
 }
 
 .project:hover img {
-  transform: scale(1.05); /* zoom effect on hover */
+  transform: scale(1.05);
 }
 
 .project-content {
@@ -88,7 +94,7 @@ main { padding:28px; min-height:60vh; }
 }
 
 .project:hover .project-url {
-  color: #111; /* lidt mørkere på hover */
+  color: #111;
 }
 
 /* footer */
@@ -107,30 +113,43 @@ footer a:hover { text-decoration:underline; }
 
 /* social media icons */
 .social-icon {
-  width: 24px;           /* ikonstørrelse */
+  width: 24px;
   height: 24px;
-  margin-right: 8px;     /* afstand mellem ikoner */
+  margin-right: 8px;
   vertical-align: middle;
   transition: transform 0.3s ease;
 }
 
 .social-icon:hover {
-  transform: scale(1.2); /* lille zoom ved hover */
+  transform: scale(1.2);
 }
 
 /* admin styles */
 .admin-area { max-width:920px; margin:auto; display:grid; gap:18px; }
 .card { background:#fafafa; padding:16px; border:1px solid var(--border); border-radius:8px; }
 label { display:block; margin:8px 0; font-size:14px; }
-input[type="text"], input[type="password"], textarea {
+input[type="text"], input[type="password"], input[type="email"], textarea {
   width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:14px;
 }
-button { padding:8px 12px; border-radius:6px; border:1px solid var(--border); background:#fff; cursor:pointer; margin-top:6px; }
-button:hover { background:#f2f2f2; }
+button { padding:8px 12px; border-radius:6px; border:none; background: var(--primary); color:#fff; cursor:pointer; margin-top:6px; transition: background 0.3s; }
+button:hover { background: var(--primary-hover); }
+#logout-btn { background: var(--danger); }
+#logout-btn:hover { background: var(--danger-hover); }
 .project-edit { margin-bottom:8px; }
 .project-edit .row { display:flex; gap:8px; margin-top:6px; }
 .hint { font-size:13px; color:var(--muted); margin-top:8px; }
 .editor-actions { display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+
+/* alert box */
+.alert-box {
+  background-color: var(--alert-bg);
+  color: var(--danger);
+  padding: 12px 20px;
+  border-left: 6px solid var(--alert-border);
+  margin-bottom: 24px;
+  border-radius: 6px;
+  font-weight: bold;
+}
 
 /* responsive */
 @media (max-width:600px){
