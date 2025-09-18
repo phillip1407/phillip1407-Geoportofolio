@@ -69,13 +69,27 @@ async function loadProjects(){
         const a = document.createElement('a')
         a.href = p.link || '#'
         a.className = 'project'
+
         const img = document.createElement('img')
         img.src = p.image_url || 'images/placeholder.png'
         img.alt = p.title
+
+        const content = document.createElement('div')
+        content.className = 'project-content'
+
         const h3 = document.createElement('h3')
         h3.textContent = p.title
+
+        const url = document.createElement('div')
+        url.className = 'project-url'
+        url.textContent = p.link || 'No link'
+
+        content.appendChild(h3)
+        content.appendChild(url)
+
         a.appendChild(img)
-        a.appendChild(h3)
+        a.appendChild(content)
+
         grid.appendChild(a)
       })
     } else {
@@ -91,4 +105,3 @@ loadProjects()
 </script>
 </body>
 </html>
- 
