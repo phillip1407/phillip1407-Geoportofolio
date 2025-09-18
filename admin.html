@@ -2,188 +2,174 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Admin - Portfolio</title>
+  <title>Admin - Phillip Geo / BareetDesign</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <div class="logo"><a href="index.html" style="text-decoration:none;color:inherit;">Admin / BareetDesign</a></div>
-  <nav>
-    <a href="index.html">View Site</a>
-  </nav>
-</header>
+  <header>
+    <div class="logo">
+      <a href="index.html" style="text-decoration:none;color:inherit;">
+        Phillip Geo / BareetDesign
+      </a>
+    </div>
+    <nav>
+      <a href="index.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="admin.html" class="active">Admin</a>
+    </nav>
+  </header>
 
-<main>
-  <section class="admin-area">
-    <div id="login-box" class="card">
+  <main>
+    <h1>Admin Panel</h1>
+
+    <!-- LOGIN -->
+    <section id="login-section">
       <h2>Login</h2>
-      <label>Username<input id="username" type="text"></label>
-      <label>Password<input id="password" type="password"></label>
-      <button id="login-btn">Log ind</button>
-      <p class="hint">Klient-side login (demo/lokal brug)</p>
-    </div>
+      <input type="text" id="username" placeholder="Username"><br>
+      <input type="password" id="password" placeholder="Password"><br>
+      <button id="login-btn">Login</button>
+      <p id="login-message"></p>
+    </section>
 
-    <div id="editor" class="card" style="display:none;">
-      <h2>Site Editor</h2>
-      <label>Site title<input id="input-siteTitle" type="text"></label>
-      <label>About text<textarea id="input-about" rows="4"></textarea></label>
+    <!-- DASHBOARD -->
+    <section id="admin-section" style="display:none;">
+      <h2>Rediger sideindhold</h2>
+      <form id="site-form">
+        <label>Site Title:</label><br>
+        <input type="text" id="siteTitle"><br><br>
 
-      <h3>Projects</h3>
-      <div id="projects-editor"></div>
-      <button id="add-project">+ Add project</button>
+        <label>Footer Left:</label><br>
+        <input type="text" id="footerLeft"><br><br>
 
-      <h3>Contact</h3>
-      <label>Mail<input id="input-mail" type="text"></label>
-      <label>Phone<input id="input-phone" type="text"></label>
-      <label>Address<input id="input-address" type="text"></label>
-      <label>LinkedIn<input id="input-linkedin" type="text"></label>
-      <label>Instagram<input id="input-instagram" type="text"></label>
+        <label>Mail:</label><br>
+        <input type="email" id="contactMail"><br><br>
 
-      <h3>Footer</h3>
-      <label>Footer left<input id="input-footerLeft" type="text"></label>
+        <label>Phone:</label><br>
+        <input type="text" id="contactPhone"><br><br>
 
-      <div class="editor-actions">
-        <button id="save-btn">Save changes</button>
-        <button id="reset-btn">Reset to defaults</button>
-      </div>
-    </div>
-  </section>
-</main>
+        <label>LinkedIn:</label><br>
+        <input type="text" id="contactLinkedin"><br><br>
 
-<footer>
-  <div>Admin area</div>
-</footer>
+        <label>Instagram:</label><br>
+        <input type="text" id="contactInstagram"><br><br>
 
-<script type="module">
-import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+        <button type="submit">Gem</button>
+      </form>
 
-const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co"
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU"
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+      <h2>Tilføj projekt</h2>
+      <form id="project-form">
+        <label>Title:</label><br>
+        <input type="text" id="projectTitle"><br><br>
 
-// ========== credentials ==========
-const ADMIN_USER = "Bareetdesign";
-const ADMIN_PASS = "jyy24jad";
+        <label>Link:</label><br>
+        <input type="text" id="projectLink"><br><br>
 
-// ========== login ==========
-document.getElementById('login-btn').addEventListener('click', async ()=>{
-  const u = document.getElementById('username').value.trim()
-  const p = document.getElementById('password').value
-  if(u === ADMIN_USER && p === ADMIN_PASS){
-    document.getElementById('login-box').style.display = 'none'
-    document.getElementById('editor').style.display = 'block'
-    await loadSiteData()
-    await loadProjects()
-  } else {
-    alert('Forkert brugernavn eller password')
-  }
-})
+        <label>Billede (URL):</label><br>
+        <input type="text" id="projectImage"><br><br>
 
-// ========== site editor ==========
-async function loadSiteData(){
-  const { data, error } = await supabase.from('site_content').select('*').single()
-  if(error){
-    console.error(error)
-    return
-  }
-  document.getElementById('input-siteTitle').value = data.siteTitle || ''
-  document.getElementById('input-about').value = data.about || ''
-  document.getElementById('input-footerLeft').value = data.footerLeft || ''
-  document.getElementById('input-mail').value = data.contactMail || ''
-  document.getElementById('input-phone').value = data.contactPhone || ''
-  document.getElementById('input-address').value = data.contactAddress || ''
-  document.getElementById('input-linkedin').value = data.contactLinkedin || ''
-  document.getElementById('input-instagram').value = data.contactInstagram || ''
-}
+        <button type="submit">Tilføj</button>
+      </form>
+    </section>
+  </main>
 
-document.getElementById('save-btn').addEventListener('click', async ()=>{
-  const updates = {
-    siteTitle: document.getElementById('input-siteTitle').value,
-    about: document.getElementById('input-about').value,
-    footerLeft: document.getElementById('input-footerLeft').value,
-    contactMail: document.getElementById('input-mail').value,
-    contactPhone: document.getElementById('input-phone').value,
-    contactAddress: document.getElementById('input-address').value,
-    contactLinkedin: document.getElementById('input-linkedin').value,
-    contactInstagram: document.getElementById('input-instagram').value
-  }
-  const { error } = await supabase.from('site_content').update(updates).eq('id', 1)
-  if(error){
-    alert('Fejl ved gem: ' + error.message)
-  } else {
-    alert('Changes saved!')
-  }
-})
+  <footer>
+    <p>Admin Area - Phillip Geo / BareetDesign</p>
+  </footer>
 
-// ========== projects editor ==========
-async function loadProjects(){
-  const { data: projects, error } = await supabase.from('projects').select('*').order('created_at', { ascending:false })
-  if(error){
-    console.error(error)
-    return
-  }
-  const container = document.getElementById('projects-editor')
-  container.innerHTML = ''
-  projects.forEach(p=>{
-    const wrap = document.createElement('div')
-    wrap.className = 'project-edit'
-    wrap.innerHTML = `
-      <label>Title <input value="${p.title}" data-id="${p.id}" data-field="title"></label>
-      <label>Image URL <input value="${p.image_url}" data-id="${p.id}" data-field="image_url"></label>
-      <label>Link <input value="${p.link}" data-id="${p.id}" data-field="link"></label>
-      <div class="row">
-        <button data-action="update" data-id="${p.id}">Save</button>
-        <button data-action="remove" data-id="${p.id}">Remove</button>
-      </div>
-      <hr>
-    `
-    container.appendChild(wrap)
-  })
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-  container.querySelectorAll('button[data-action]').forEach(btn=>{
-    btn.addEventListener('click', async (e)=>{
-      const action = e.target.dataset.action
-      const id = e.target.dataset.id
-      if(action === 'remove'){
-        const { error } = await supabase.from('projects').delete().eq('id', id)
-        if(error) alert('Error: ' + error.message)
-        else loadProjects()
-      } else if(action === 'update'){
-        const inputs = container.querySelectorAll(`input[data-id='${id}']`)
-        const updateObj = {}
-        inputs.forEach(i=> updateObj[i.dataset.field] = i.value)
-        const { error } = await supabase.from('projects').update(updateObj).eq('id', id)
-        if(error) alert('Error: ' + error.message)
-        else alert('Project updated!')
+    // Din Supabase opsætning
+    const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU";
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Login info (hardcoded)
+    const ADMIN_USER = "Bareetdesign";
+    const ADMIN_PASS = "Bedstegrafiker2006";
+
+    const loginSection = document.getElementById("login-section");
+    const adminSection = document.getElementById("admin-section");
+    const loginBtn = document.getElementById("login-btn");
+    const loginMessage = document.getElementById("login-message");
+
+    // LOGIN funktion
+    loginBtn.addEventListener("click", () => {
+      const u = document.getElementById("username").value;
+      const p = document.getElementById("password").value;
+
+      if (u === ADMIN_USER && p === ADMIN_PASS) {
+        loginSection.style.display = "none";
+        adminSection.style.display = "block";
+        loadSiteContent();
+      } else {
+        loginMessage.textContent = "Forkert brugernavn eller kodeord!";
       }
-    })
-  })
-}
+    });
 
-document.getElementById('add-project').addEventListener('click', async ()=>{
-  const { data, error } = await supabase.from('projects').insert([{ title:'New Project', image_url:'images/placeholder.png', link:'#' }])
-  if(error) alert('Error: ' + error.message)
-  else loadProjects()
-})
+    // LOAD eksisterende site_content
+    async function loadSiteContent() {
+      const { data, error } = await supabase
+        .from("site_content")
+        .select("*")
+        .eq("id", 1)
+        .single();
 
-// Reset site content
-document.getElementById('reset-btn').addEventListener('click', async ()=>{
-  if(confirm('Reset all site content to defaults?')){
-    const { error } = await supabase.from('site_content').update({
-      siteTitle:'Phillip Geo / BareetDesign',
-      about:'I am currently working on creative projects but open to taking on smaller side projects. Feel free to reach out.',
-      footerLeft:'Phillip Geo\\nCopyright © 2024',
-      contactMail:'example@mail.com',
-      contactPhone:'+45 12 34 56 78',
-      contactAddress:'Copenhagen, Denmark',
-      contactLinkedin:'#',
-      contactInstagram:'#'
-    }).eq('id', 1)
-    if(error) alert('Error: '+error.message)
-    else { alert('Site content reset!'); loadSiteData() }
-  }
-})
-</script>
+      if (error) {
+        console.error("Fejl ved load:", error);
+        return;
+      }
+
+      if (data) {
+        document.getElementById("siteTitle").value = data.siteTitle || "";
+        document.getElementById("footerLeft").value = data.footerLeft || "";
+        document.getElementById("contactMail").value = data.contactMail || "";
+        document.getElementById("contactPhone").value = data.contactPhone || "";
+        document.getElementById("contactLinkedin").value = data.contactLinkedin || "";
+        document.getElementById("contactInstagram").value = data.contactInstagram || "";
+      }
+    }
+
+    // GEM site_content
+    document.getElementById("site-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const updates = {
+        id: 1,
+        siteTitle: document.getElementById("siteTitle").value,
+        footerLeft: document.getElementById("footerLeft").value,
+        contactMail: document.getElementById("contactMail").value,
+        contactPhone: document.getElementById("contactPhone").value,
+        contactLinkedin: document.getElementById("contactLinkedin").value,
+        contactInstagram: document.getElementById("contactInstagram").value
+      };
+
+      const { error } = await supabase.from("site_content").upsert(updates);
+      if (error) {
+        alert("Fejl ved gem: " + error.message);
+      } else {
+        alert("Indhold gemt!");
+      }
+    });
+
+    // TILFØJ projekt
+    document.getElementById("project-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const project = {
+        title: document.getElementById("projectTitle").value,
+        link: document.getElementById("projectLink").value,
+        image_url: document.getElementById("projectImage").value
+      };
+
+      const { error } = await supabase.from("projects").insert([project]);
+      if (error) {
+        alert("Fejl ved tilføj projekt: " + error.message);
+      } else {
+        alert("Projekt tilføjet!");
+      }
+    });
+  </script>
 </body>
 </html>
