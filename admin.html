@@ -67,7 +67,7 @@
       <input type="text" id="footerInstagramIcon">
 
       <button type="submit">Gem</button>
-      <p id="site-save-message" class="hint"></p>
+      <p id="site-message" class="hint"></p>
     </form>
 
     <h2>Tilføj projekt</h2>
@@ -82,7 +82,7 @@
       <input type="text" id="projectImage">
 
       <button type="submit">Tilføj</button>
-      <p id="project-save-message" class="hint"></p>
+      <p id="project-message" class="hint"></p>
     </form>
   </section>
 </main>
@@ -90,12 +90,12 @@
 <footer>
   <div id="footer-left"></div>
   <div id="footer-middle">
-    <a id="footer-mail" href="#"><img src="icons/mail.png" class="social-icon" alt="Mail"></a>
-    <a id="footer-phone" href="#"><img src="icons/phone.png" class="social-icon" alt="Phone"></a>
+    <a id="footer-mail" href="#"><img src="" class="social-icon" alt="Mail"></a>
+    <a id="footer-phone" href="#"><img src="" class="social-icon" alt="Phone"></a>
   </div>
   <div id="footer-right">
-    <a id="footer-linkedin" href="#" target="_blank"><img src="icons/linkedin.png" class="social-icon" alt="LinkedIn"></a>
-    <a id="footer-instagram" href="#" target="_blank"><img src="icons/instagram.png" class="social-icon" alt="Instagram"></a>
+    <a id="footer-linkedin" href="#" target="_blank"><img src="" class="social-icon" alt="LinkedIn"></a>
+    <a id="footer-instagram" href="#" target="_blank"><img src="" class="social-icon" alt="Instagram"></a>
   </div>
 </footer>
 
@@ -112,6 +112,10 @@ const loginMessage = document.getElementById("login-message");
 const loginBtn = document.getElementById("login-btn");
 const signupBtn = document.getElementById("signup-btn");
 const logoutBtn = document.getElementById("logout-btn");
+const siteForm = document.getElementById("site-form");
+const siteMessage = document.getElementById("site-message");
+const projectForm = document.getElementById("project-form");
+const projectMessage = document.getElementById("project-message");
 
 // LOGIN
 loginBtn.addEventListener("click", async () => {
@@ -165,13 +169,33 @@ async function loadSiteContent() {
     document.getElementById("footerPhoneIcon").value = data.footerPhoneIcon || "";
     document.getElementById("footerLinkedinIcon").value = data.footerLinkedinIcon || "";
     document.getElementById("footerInstagramIcon").value = data.footerInstagramIcon || "";
+
+    // opdater footer-logoer
+    updateFooterDOM(data);
   }
 }
 
-// GEM site content
-document.getElementById("site-form").addEventListener("submit", async (e) => {
+// OPDATER FOOTER-DOM
+function updateFooterDOM(data) {
+  document.getElementById("footer-mail").querySelector("img").src = data.footerMailIcon || "icons/mail.png";
+  document.getElementById("footer-phone").querySelector("img").src = data.footerPhoneIcon || "icons/phone.png";
+  document.getElementById("footer-linkedin").querySelector("img").src = data.footerLinkedinIcon || "icons/linkedin.png";
+  document.getElementById("footer-instagram").querySelector("img").src = data.footerInstagramIcon || "icons/instagram.png";
+
+  document.getElementById("footer-mail").href = "mailto:" + data.contactMail;
+  document.getElementById("footer-phone").href = "tel:" + data.contactPhone;
+  document.getElementById("footer-linkedin").href = data.contactLinkedin;
+  document.getElementById("footer-instagram").href = data.contactInstagram;
+
+  document.getElementById("site-title").textContent = data.siteTitle;
+}
+
+// GEM SITE DATA
+siteForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const siteData = {
+  siteMessage.textContent = "Gemmer...";
+
+  const updates = {
     siteTitle: document.getElementById("siteTitle").value,
     footerLeft: document.getElementById("footerLeft").value,
     contactMail: document.getElementById("contactMail").value,
@@ -181,36 +205,38 @@ document.getElementById("site-form").addEventListener("submit", async (e) => {
     footerMailIcon: document.getElementById("footerMailIcon").value,
     footerPhoneIcon: document.getElementById("footerPhoneIcon").value,
     footerLinkedinIcon: document.getElementById("footerLinkedinIcon").value,
-    footerInstagramIcon: document.getElementById("footerInstagramIcon").value
+    footerInstagramIcon: document.getElementById("footerInstagramIcon").value,
   };
-  
-  const { data, error } = await supabase.from("site_content").update(siteData).eq("id",1);
-  const messageEl = document.getElementById("site-save-message");
+
+  const { data, error } = await supabase.from("site_content").update(updates).eq("id",1);
   if (error) {
-    messageEl.textContent = "Der skete en fejl: " + error.message;
+    siteMessage.textContent = "Fejl ved gem: " + error.message;
   } else {
-    messageEl.textContent = "✅ Site-indhold gemt!";
-    setTimeout(() => messageEl.textContent = "", 3000);
+    siteMessage.textContent = "✅ Site-indhold gemt!";
+    updateFooterDOM(updates);
+    setTimeout(()=> siteMessage.textContent="", 3000);
   }
 });
 
-// GEM projekt
-document.getElementById("project-form").addEventListener("submit", async (e) => {
+// TILFØJ PROJEKT
+projectForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const projectData = {
+  projectMessage.textContent = "Gemmer projekt...";
+
+  const newProject = {
     title: document.getElementById("projectTitle").value,
     link: document.getElementById("projectLink").value,
-    image_url: document.getElementById("projectImage").value
+    image_url: document.getElementById("projectImage").value,
+    created_at: new Date()
   };
 
-  const { data, error } = await supabase.from("projects").insert([projectData]);
-  const messageEl = document.getElementById("project-save-message");
+  const { data, error } = await supabase.from("projects").insert([newProject]);
   if (error) {
-    messageEl.textContent = "Der skete en fejl: " + error.message;
+    projectMessage.textContent = "Fejl ved tilføjelse: " + error.message;
   } else {
-    messageEl.textContent = "✅ Projekt tilføjet!";
-    setTimeout(() => messageEl.textContent = "", 3000);
-    document.getElementById("project-form").reset();
+    projectMessage.textContent = "✅ Projekt tilføjet!";
+    projectForm.reset();
+    setTimeout(()=> projectMessage.textContent="", 3000);
   }
 });
 </script>
