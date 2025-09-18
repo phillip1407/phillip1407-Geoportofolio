@@ -5,7 +5,6 @@
   <title>Admin - Phillip Geo / BareetDesign</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="geoportofolio.png" type="image/png">
-
 </head>
 <body>
   <header>
@@ -75,19 +74,25 @@
     </section>
   </main>
 
-  <footer>
-    <p>Admin Area - Phillip Geo / BareetDesign</p>
+  <footer id="site-footer">
+    <div id="footer-left"></div>
+    <div id="footer-middle">
+      <a id="footer-mail" href="#"><img src="icons/mail.png" class="social-icon" alt="Mail"></a>
+      <a id="footer-phone" href="#"><img src="icons/phone.png" class="social-icon" alt="Phone"></a>
+    </div>
+    <div id="footer-right">
+      <a id="footer-linkedin" href="#" target="_blank"><img src="icons/linkedin.png" class="social-icon" alt="LinkedIn"></a>
+      <a id="footer-instagram" href="#" target="_blank"><img src="icons/instagram.png" class="social-icon" alt="Instagram"></a>
+    </div>
   </footer>
 
   <script type="module">
     import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-    // Din Supabase opsætning
     const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU";
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Login info (hardcoded)
     const ADMIN_USER = "Bareetdesign";
     const ADMIN_PASS = "Bedstegrafiker2006";
 
@@ -96,7 +101,6 @@
     const loginBtn = document.getElementById("login-btn");
     const loginMessage = document.getElementById("login-message");
 
-    // LOGIN funktion
     loginBtn.addEventListener("click", () => {
       const u = document.getElementById("username").value;
       const p = document.getElementById("password").value;
@@ -110,68 +114,13 @@
       }
     });
 
-    // LOAD eksisterende site_content
     async function loadSiteContent() {
-      const { data, error } = await supabase
-        .from("site_content")
-        .select("*")
-        .eq("id", 1)
-        .single();
-
-      if (error) {
-        console.error("Fejl ved load:", error);
-        return;
-      }
+      const { data, error } = await supabase.from("site_content").select("*").eq("id", 1).single();
+      if (error) return console.error("Fejl ved load:", error);
 
       if (data) {
         document.getElementById("siteTitle").value = data.siteTitle || "";
         document.getElementById("footerLeft").value = data.footerLeft || "";
         document.getElementById("contactMail").value = data.contactMail || "";
         document.getElementById("contactPhone").value = data.contactPhone || "";
-        document.getElementById("contactLinkedin").value = data.contactLinkedin || "";
-        document.getElementById("contactInstagram").value = data.contactInstagram || "";
-      }
-    }
-
-    // GEM site_content
-    document.getElementById("site-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const updates = {
-        id: 1,
-        siteTitle: document.getElementById("siteTitle").value,
-        footerLeft: document.getElementById("footerLeft").value,
-        contactMail: document.getElementById("contactMail").value,
-        contactPhone: document.getElementById("contactPhone").value,
-        contactLinkedin: document.getElementById("contactLinkedin").value,
-        contactInstagram: document.getElementById("contactInstagram").value
-      };
-
-      const { error } = await supabase.from("site_content").upsert(updates);
-      if (error) {
-        alert("Fejl ved gem: " + error.message);
-      } else {
-        alert("Indhold gemt!");
-      }
-    });
-
-    // TILFØJ projekt
-    document.getElementById("project-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const project = {
-        title: document.getElementById("projectTitle").value,
-        link: document.getElementById("projectLink").value,
-        image_url: document.getElementById("projectImage").value
-      };
-
-      const { error } = await supabase.from("projects").insert([project]);
-      if (error) {
-        alert("Fejl ved tilføj projekt: " + error.message);
-      } else {
-        alert("Projekt tilføjet!");
-      }
-    });
-  </script>
-</body>
-</html>
+        document.getElementById("contactLi
