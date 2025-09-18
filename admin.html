@@ -9,9 +9,7 @@
 <body>
 <header>
   <div class="logo">
-    <a href="index.html" style="text-decoration:none;color:inherit;">
-      Phillip Geo / BareetDesign
-    </a>
+    <a href="index.html" style="text-decoration:none;color:inherit;">Phillip Geo / BareetDesign</a>
   </div>
   <nav>
     <a href="index.html">Projekter</a>
@@ -27,15 +25,18 @@
   <!-- LOGIN -->
   <section id="login-section">
     <h2>Login</h2>
-    <input type="text" id="username" placeholder="Username"><br>
+    <input type="email" id="email" placeholder="Email"><br>
     <input type="password" id="password" placeholder="Password"><br>
-    <button id="login-btn" type="button">Login</button>
+    <button id="login-btn">Login</button>
+    <button id="signup-btn">Opret konto</button>
     <p id="login-message"></p>
   </section>
 
   <!-- DASHBOARD -->
   <section id="admin-section" style="display:none;">
-    <h2>Rediger sideindhold</h2>
+    <button id="logout-btn">Logout</button>
+
+    <h2>Rediger siteindhold</h2>
     <form id="site-form">
       <label>Site Title:</label><br>
       <input type="text" id="siteTitle"><br><br>
@@ -101,30 +102,51 @@ const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const ADMIN_USER = "Bareetdesign";
-const ADMIN_PASS = "Bedstegrafiker2006";
-
 const loginSection = document.getElementById("login-section");
 const adminSection = document.getElementById("admin-section");
-const loginBtn = document.getElementById("login-btn");
 const loginMessage = document.getElementById("login-message");
+const loginBtn = document.getElementById("login-btn");
+const signupBtn = document.getElementById("signup-btn");
+const logoutBtn = document.getElementById("logout-btn");
 
 // LOGIN
-loginBtn.addEventListener("click", () => {
-  const u = document.getElementById("username").value;
-  const p = document.getElementById("password").value;
-
-  if(u === ADMIN_USER && p === ADMIN_PASS){
+loginBtn.addEventListener("click", async () => {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) {
+    loginMessage.textContent = "Login fejlede: " + error.message;
+  } else {
+    loginMessage.textContent = "";
     loginSection.style.display = "none";
     adminSection.style.display = "block";
     loadSiteContent();
-  } else {
-    loginMessage.textContent = "Forkert brugernavn eller kodeord!";
   }
 });
 
+// SIGNUP (valgfri)
+signupBtn.addEventListener("click", async () => {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  
+  const { data, error } = await supabase.auth.signUp({ email, password });
+  if (error) {
+    loginMessage.textContent = "Oprettelse fejlede: " + error.message;
+  } else {
+    loginMessage.textContent = "Bruger oprettet! Login nu.";
+  }
+});
+
+// LOGOUT
+logoutBtn.addEventListener("click", async () => {
+  await supabase.auth.signOut();
+  loginSection.style.display = "block";
+  adminSection.style.display = "none";
+});
+
 // LOAD site content inkl. footer ikoner
-async function loadSiteContent(){
+async function loadSiteContent() {
   const { data, error } = await supabase.from("site_content").select("*").eq("id",1).single();
   if(error) return console.error(error);
   if(data){
@@ -141,40 +163,6 @@ async function loadSiteContent(){
     document.getElementById("footerInstagramIcon").value = data.footerInstagramIcon || "";
   }
 }
-
-// GEM site_content
-document.getElementById("site-form").addEventListener("submit", async (e)=>{
-  e.preventDefault();
-  const updates = {
-    id: 1,
-    siteTitle: document.getElementById("siteTitle").value,
-    footerLeft: document.getElementById("footerLeft").value,
-    contactMail: document.getElementById("contactMail").value,
-    contactPhone: document.getElementById("contactPhone").value,
-    contactLinkedin: document.getElementById("contactLinkedin").value,
-    contactInstagram: document.getElementById("contactInstagram").value,
-    footerMailIcon: document.getElementById("footerMailIcon").value,
-    footerPhoneIcon: document.getElementById("footerPhoneIcon").value,
-    footerLinkedinIcon: document.getElementById("footerLinkedinIcon").value,
-    footerInstagramIcon: document.getElementById("footerInstagramIcon").value
-  };
-  const { error } = await supabase.from("site_content").upsert(updates);
-  if(error) alert("Fejl ved gem: " + error.message);
-  else alert("Indhold gemt!");
-});
-
-// TILFØJ projekt
-document.getElementById("project-form").addEventListener("submit", async (e)=>{
-  e.preventDefault();
-  const project = {
-    title: document.getElementById("projectTitle").value,
-    link: document.getElementById("projectLink").value,
-    image_url: document.getElementById("projectImage").value
-  };
-  const { error } = await supabase.from("projects").insert([project]);
-  if(error) alert("Fejl ved tilføj projekt: " + error.message);
-  else alert("Projekt tilføjet!");
-});
 </script>
 </body>
 </html>
