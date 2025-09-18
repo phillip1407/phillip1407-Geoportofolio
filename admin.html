@@ -7,120 +7,135 @@
   <link rel="icon" href="geoportofolio.png" type="image/png">
 </head>
 <body>
-  <header>
-    <div class="logo">
-      <a href="index.html" style="text-decoration:none;color:inherit;">
-        Phillip Geo / BareetDesign
-      </a>
-    </div>
-    <nav>
-      <a href="index.html">Projects</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-      <a href="admin.html" class="active">Admin</a>
-    </nav>
-  </header>
+<header>
+  <div class="logo">
+    <a href="index.html" style="text-decoration:none;color:inherit;">
+      Phillip Geo / BareetDesign
+    </a>
+  </div>
+  <nav>
+    <a href="index.html">Projekter</a>
+    <a href="about.html">Omkring Mig</a>
+    <a href="contact.html">Kontakt Mig</a>
+    <a href="admin.html" class="active">Admin</a>
+  </nav>
+</header>
 
-  <main>
-    <h1>Admin Panel</h1>
+<main>
+  <h1>Admin Panel</h1>
 
-    <!-- LOGIN -->
-    <section id="login-section">
-      <h2>Login</h2>
-      <input type="text" id="username" placeholder="Username"><br>
-      <input type="password" id="password" placeholder="Password"><br>
-      <button id="login-btn">Login</button>
-      <p id="login-message"></p>
-    </section>
+  <!-- LOGIN -->
+  <section id="login-section">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Username"><br>
+    <input type="password" id="password" placeholder="Password"><br>
+    <button id="login-btn">Login</button>
+    <p id="login-message"></p>
+  </section>
 
-    <!-- DASHBOARD -->
-    <section id="admin-section" style="display:none;">
-      <h2>Rediger sideindhold</h2>
-      <form id="site-form">
-        <label>Site Title:</label><br>
-        <input type="text" id="siteTitle"><br><br>
+  <!-- DASHBOARD -->
+  <section id="admin-section" style="display:none;">
+    <h2>Rediger sideindhold</h2>
+    <form id="site-form">
+      <label>Site Title:</label><br>
+      <input type="text" id="siteTitle"><br><br>
 
-        <label>Footer Left:</label><br>
-        <input type="text" id="footerLeft"><br><br>
+      <label>Footer Left:</label><br>
+      <input type="text" id="footerLeft"><br><br>
 
-        <label>Mail:</label><br>
-        <input type="email" id="contactMail"><br><br>
+      <label>Mail:</label><br>
+      <input type="email" id="contactMail"><br><br>
+      <label>Mail Icon URL:</label><br>
+      <input type="text" id="footerMailIcon"><br><br>
 
-        <label>Phone:</label><br>
-        <input type="text" id="contactPhone"><br><br>
+      <label>Phone:</label><br>
+      <input type="text" id="contactPhone"><br><br>
+      <label>Phone Icon URL:</label><br>
+      <input type="text" id="footerPhoneIcon"><br><br>
 
-        <label>LinkedIn:</label><br>
-        <input type="text" id="contactLinkedin"><br><br>
+      <label>LinkedIn:</label><br>
+      <input type="text" id="contactLinkedin"><br><br>
+      <label>LinkedIn Icon URL:</label><br>
+      <input type="text" id="footerLinkedinIcon"><br><br>
 
-        <label>Instagram:</label><br>
-        <input type="text" id="contactInstagram"><br><br>
+      <label>Instagram:</label><br>
+      <input type="text" id="contactInstagram"><br><br>
+      <label>Instagram Icon URL:</label><br>
+      <input type="text" id="footerInstagramIcon"><br><br>
 
-        <button type="submit">Gem</button>
-      </form>
+      <button type="submit">Gem</button>
+    </form>
 
-      <h2>Tilføj projekt</h2>
-      <form id="project-form">
-        <label>Title:</label><br>
-        <input type="text" id="projectTitle"><br><br>
+    <h2>Tilføj projekt</h2>
+    <form id="project-form">
+      <label>Title:</label><br>
+      <input type="text" id="projectTitle"><br><br>
 
-        <label>Link:</label><br>
-        <input type="text" id="projectLink"><br><br>
+      <label>Link:</label><br>
+      <input type="text" id="projectLink"><br><br>
 
-        <label>Billede (URL):</label><br>
-        <input type="text" id="projectImage"><br><br>
+      <label>Billede (URL):</label><br>
+      <input type="text" id="projectImage"><br><br>
 
-        <button type="submit">Tilføj</button>
-      </form>
-    </section>
-  </main>
+      <button type="submit">Tilføj</button>
+    </form>
+  </section>
+</main>
 
-  <footer id="site-footer">
-    <div id="footer-left"></div>
-    <div id="footer-middle">
-      <a id="footer-mail" href="#"><img src="icons/mail.png" class="social-icon" alt="Mail"></a>
-      <a id="footer-phone" href="#"><img src="icons/phone.png" class="social-icon" alt="Phone"></a>
-    </div>
-    <div id="footer-right">
-      <a id="footer-linkedin" href="#" target="_blank"><img src="icons/linkedin.png" class="social-icon" alt="LinkedIn"></a>
-      <a id="footer-instagram" href="#" target="_blank"><img src="icons/instagram.png" class="social-icon" alt="Instagram"></a>
-    </div>
-  </footer>
+<footer id="site-footer">
+  <div id="footer-left"></div>
+  <div id="footer-middle">
+    <a id="footer-mail" href="#"><img src="icons/mail.png" class="social-icon" alt="Mail"></a>
+    <a id="footer-phone" href="#"><img src="icons/phone.png" class="social-icon" alt="Phone"></a>
+  </div>
+  <div id="footer-right">
+    <a id="footer-linkedin" href="#" target="_blank"><img src="icons/linkedin.png" class="social-icon" alt="LinkedIn"></a>
+    <a id="footer-instagram" href="#" target="_blank"><img src="icons/instagram.png" class="social-icon" alt="Instagram"></a>
+  </div>
+</footer>
 
-  <script type="module">
-    import { createClient } from "https://esm.sh/@supabase/supabase-js";
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-    const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU";
-    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU";
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const ADMIN_USER = "Bareetdesign";
-    const ADMIN_PASS = "Bedstegrafiker2006";
+const ADMIN_USER = "Bareetdesign";
+const ADMIN_PASS = "Bedstegrafiker2006";
 
-    const loginSection = document.getElementById("login-section");
-    const adminSection = document.getElementById("admin-section");
-    const loginBtn = document.getElementById("login-btn");
-    const loginMessage = document.getElementById("login-message");
+const loginSection = document.getElementById("login-section");
+const adminSection = document.getElementById("admin-section");
+const loginBtn = document.getElementById("login-btn");
+const loginMessage = document.getElementById("login-message");
 
-    loginBtn.addEventListener("click", () => {
-      const u = document.getElementById("username").value;
-      const p = document.getElementById("password").value;
+// LOGIN
+loginBtn.addEventListener("click", () => {
+  const u = document.getElementById("username").value;
+  const p = document.getElementById("password").value;
 
-      if (u === ADMIN_USER && p === ADMIN_PASS) {
-        loginSection.style.display = "none";
-        adminSection.style.display = "block";
-        loadSiteContent();
-      } else {
-        loginMessage.textContent = "Forkert brugernavn eller kodeord!";
-      }
-    });
+  if(u === ADMIN_USER && p === ADMIN_PASS){
+    loginSection.style.display = "none";
+    adminSection.style.display = "block";
+    loadSiteContent();
+  } else {
+    loginMessage.textContent = "Forkert brugernavn eller kodeord!";
+  }
+});
 
-    async function loadSiteContent() {
-      const { data, error } = await supabase.from("site_content").select("*").eq("id", 1).single();
-      if (error) return console.error("Fejl ved load:", error);
+// LOAD site content inkl. footer ikoner
+async function loadSiteContent(){
+  const { data, error } = await supabase.from("site_content").select("*").eq("id",1).single();
+  if(error) return console.error(error);
+  if(data){
+    document.getElementById("siteTitle").value = data.siteTitle || "";
+    document.getElementById("footerLeft").value = data.footerLeft || "";
+    document.getElementById("contactMail").value = data.contactMail || "";
+    document.getElementById("contactPhone").value = data.contactPhone || "";
+    document.getElementById("contactLinkedin").value = data.contactLinkedin || "";
+    document.getElementById("contactInstagram").value = data.contactInstagram || "";
 
-      if (data) {
-        document.getElementById("siteTitle").value = data.siteTitle || "";
-        document.getElementById("footerLeft").value = data.footerLeft || "";
-        document.getElementById("contactMail").value = data.contactMail || "";
-        document.getElementById("contactPhone").value = data.contactPhone || "";
-        document.getElementById("contactLi
+    document.getElementById("footerMailIcon").value = data.footerMailIcon || "";
+    document.getElementById("footerPhoneIcon").value = data.footerPhoneIcon || "";
+    document.getElementById("footerLinkedinIcon").value = data.footerLinkedinIcon || "";
+    document.getElementById("footerInstagramIcon").value = dat
