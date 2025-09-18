@@ -67,6 +67,7 @@
       <input type="text" id="footerInstagramIcon">
 
       <button type="submit">Gem</button>
+      <p id="site-save-message" class="hint"></p>
     </form>
 
     <h2>Tilføj projekt</h2>
@@ -81,6 +82,7 @@
       <input type="text" id="projectImage">
 
       <button type="submit">Tilføj</button>
+      <p id="project-save-message" class="hint"></p>
     </form>
   </section>
 </main>
@@ -165,6 +167,52 @@ async function loadSiteContent() {
     document.getElementById("footerInstagramIcon").value = data.footerInstagramIcon || "";
   }
 }
+
+// GEM site content
+document.getElementById("site-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const siteData = {
+    siteTitle: document.getElementById("siteTitle").value,
+    footerLeft: document.getElementById("footerLeft").value,
+    contactMail: document.getElementById("contactMail").value,
+    contactPhone: document.getElementById("contactPhone").value,
+    contactLinkedin: document.getElementById("contactLinkedin").value,
+    contactInstagram: document.getElementById("contactInstagram").value,
+    footerMailIcon: document.getElementById("footerMailIcon").value,
+    footerPhoneIcon: document.getElementById("footerPhoneIcon").value,
+    footerLinkedinIcon: document.getElementById("footerLinkedinIcon").value,
+    footerInstagramIcon: document.getElementById("footerInstagramIcon").value
+  };
+  
+  const { data, error } = await supabase.from("site_content").update(siteData).eq("id",1);
+  const messageEl = document.getElementById("site-save-message");
+  if (error) {
+    messageEl.textContent = "Der skete en fejl: " + error.message;
+  } else {
+    messageEl.textContent = "✅ Site-indhold gemt!";
+    setTimeout(() => messageEl.textContent = "", 3000);
+  }
+});
+
+// GEM projekt
+document.getElementById("project-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const projectData = {
+    title: document.getElementById("projectTitle").value,
+    link: document.getElementById("projectLink").value,
+    image_url: document.getElementById("projectImage").value
+  };
+
+  const { data, error } = await supabase.from("projects").insert([projectData]);
+  const messageEl = document.getElementById("project-save-message");
+  if (error) {
+    messageEl.textContent = "Der skete en fejl: " + error.message;
+  } else {
+    messageEl.textContent = "✅ Projekt tilføjet!";
+    setTimeout(() => messageEl.textContent = "", 3000);
+    document.getElementById("project-form").reset();
+  }
+});
 </script>
 </body>
 </html>
