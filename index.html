@@ -47,10 +47,12 @@
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
+// Supabase setup
 const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co"
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
+// Load site data
 async function loadSiteData(){
   try {
     const { data: siteData, error } = await supabase
@@ -87,6 +89,7 @@ async function loadSiteData(){
   }
 }
 
+// Load projects
 async function loadProjects(){
   try {
     const { data: projects, error } = await supabase
@@ -117,6 +120,7 @@ async function loadProjects(){
   }
 }
 
+// Run loaders
 loadSiteData()
 loadProjects()
 </script>
