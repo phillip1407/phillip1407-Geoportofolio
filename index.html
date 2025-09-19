@@ -14,32 +14,48 @@
     </a>
   </div>
   <nav>
-    <a href="index.html" class="active">Projects</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
-    <a href="admin.html" class="admin-link">Admin</a>
+    <a href="index.html" class="active">Projekter</a>
+    <a href="about.html">Omk</a>
+    <a href="contact.html">Kontakt</a>
+    <a href="admin.html" class="admin-link">⚙</a>
   </nav>
 </header>
 
 <main>
-  <section class="grid" style="padding:24px;">
-    <div id="projects-list">
-      <p>Loading projects...</p>
-    </div>
+  <section id="projects-grid" class="grid">
+    <p>Loading projects...</p>
   </section>
 </main>
 
-<footer id="site-footer">
-  <div id="footer-left"></div>
-  <div id="footer-middle">
-    <a id="footer-mail" href="mailto:phillipgeo7@gmail.com">phillipgeo7@gmail.com</a><br>
-    <a id="footer-phone" href="tel:+4593956339">+45 93 95 63 39</a>
-  </div>
-  <div id="footer-right">
-    <div id="social-icons"></div>
+<footer>
+  <div class="footer-social">
+    <!-- Fast sat mail -->
+    <a id="footer-mail" href="mailto:phillipgeo7@gmail.com">
+      <img src="icons/mail.png" class="social-icon" alt="Mail">
+      <span>phillipgeo7@gmail.com</span>
+    </a>
+
+    <!-- Fast sat telefon -->
+    <a id="footer-phone" href="tel:+4593956339">
+      <img src="icons/phone.png" class="social-icon" alt="Phone">
+      <span>+45 93 95 63 39</span>
+    </a>
+
+    <!-- Dynamisk LinkedIn fra Supabase -->
+    <a id="footer-linkedin" href="#" target="_blank">
+      <img src="icons/linkedin.png" class="social-icon" alt="LinkedIn">
+      <span>LinkedIn</span>
+    </a>
+
+    <!-- Dynamisk Instagram fra Supabase -->
+    <a id="footer-instagram" href="#" target="_blank">
+      <img src="icons/instagram.png" class="social-icon" alt="Instagram">
+      <span>Instagram</span>
+    </a>
   </div>
 </footer>
 
+<!-- Copyright adskilt -->
 <div id="copyright">
   <p>&copy; <span id="copyright-text"></span></p>
 </div>
@@ -47,82 +63,91 @@
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
-// Supabase setup
-const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co"
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU";
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Load site data
-async function loadSiteData(){
+// Hent footer og site title
+async function loadSiteData() {
   try {
     const { data: siteData, error } = await supabase
       .from('site_content')
       .select('*')
       .eq('id', 1)
-      .single()
+      .single();
 
-    if(error) throw error
+    if (error) throw error;
 
-    if(siteData){
-      // Titel + venstre footer
-      document.getElementById('site-title').textContent = siteData.siteTitle
-      document.getElementById('footer-left').innerText = siteData.footerLeft
+    if (siteData) {
+      // Opdater titel
+      document.getElementById('site-title').textContent = siteData.siteTitle;
 
-      // Social media ikoner (fra Supabase)
-      const socialDiv = document.getElementById('social-icons')
-      socialDiv.innerHTML = `
-        <a href="${siteData.footerLinkedin}" target="_blank">
-          <img src="${siteData.footerLinkedinLogo}" alt="LinkedIn" style="width:20px;vertical-align:middle;">
-          LinkedIn
-        </a><br>
-        <a href="${siteData.footerInstagram}" target="_blank">
-          <img src="${siteData.footerInstagramLogo}" alt="Instagram" style="width:20px;vertical-align:middle;">
-          Instagram
-        </a>
-      `
+      // Opdater LinkedIn og Instagram links
+      document.getElementById('footer-linkedin').href = siteData.contactLinkedin || '#';
+      document.getElementById('footer-instagram').href = siteData.contactInstagram || '#';
+
+      // Opdater logoer fra DB (hvis de findes)
+      document.querySelector('#footer-linkedin img').src = siteData.footerLinkedinIcon || 'icons/linkedin.png';
+      document.querySelector('#footer-instagram img').src = siteData.footerInstagramIcon || 'icons/instagram.png';
 
       // Copyright tekst
-      document.getElementById('copyright-text').textContent = siteData.copyright
+      document.getElementById('copyright-text').textContent = siteData.copyright || "Phillip Geo / BareetDesign";
     }
-  } catch (err) {
-    console.error('Error loading site data:', err.message)
+  } catch (e) {
+    console.error('Error loading site content:', e);
   }
 }
 
-// Load projects
-async function loadProjects(){
+// Hent projekter
+async function loadProjects() {
   try {
     const { data: projects, error } = await supabase
       .from('projects')
       .select('*')
-      .order('id', { ascending: false })
+      .order('created_at', { ascending: false });
 
-    if(error) throw error
+    const grid = document.getElementById('projects-grid');
+    grid.innerHTML = '';
 
-    const container = document.getElementById('projects-list')
-    container.innerHTML = ""
-    if(projects && projects.length > 0){
-      projects.forEach(project => {
-        const div = document.createElement('div')
-        div.classList.add('project-item')
-        div.innerHTML = `
-          <h3>${project.title}</h3>
-          <p>${project.description}</p>
-          ${project.image_url ? `<img src="${project.image_url}" alt="${project.title}" style="max-width:200px;">` : ""}
-        `
-        container.appendChild(div)
-      })
+    if (error) throw error;
+
+    if (projects && projects.length > 0) {
+      projects.forEach(p => {
+        const a = document.createElement('a');
+        a.href = p.link || '#';
+        a.className = 'project';
+
+        const img = document.createElement('img');
+        img.src = p.image_url || 'images/placeholder.png';
+        img.alt = p.title;
+
+        const content = document.createElement('div');
+        content.className = 'project-content';
+
+        const h3 = document.createElement('h3');
+        h3.textContent = p.title;
+
+        const url = document.createElement('div');
+        url.className = 'project-url';
+        url.textContent = p.link || 'No link';
+
+        content.appendChild(h3);
+        content.appendChild(url);
+        a.appendChild(img);
+        a.appendChild(content);
+
+        grid.appendChild(a);
+      });
     } else {
-      container.innerHTML = "<p>No projects available.</p>"
+      grid.innerHTML = '<p>Ingen projekter fundet.</p>';
     }
-  } catch (err) {
-    console.error('Error loading projects:', err.message)
+  } catch (e) {
+    console.error('Error loading projects:', e);
   }
 }
 
-// Run loaders
-loadSiteData()
-loadProjects()
+loadSiteData();
+loadProjects();
 </script>
 </body>
 </html>
