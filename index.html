@@ -8,11 +8,13 @@
 </head>
 <body>
 <header>
-  <div class="logo"><a href="index.html" id="site-title" style="text-decoration:none;color:inherit;">Phillip Geo / BareetDesign</a></div>
+  <div class="logo">
+    <a href="index.html" id="site-title" style="text-decoration:none;color:inherit;">Phillip Geo / BareetDesign</a>
+  </div>
   <nav>
     <a href="index.html" class="active">Projekter</a>
-    <a href="about.html">Om Mig</a>
-    <a href="contact.html">Kontakt</a>
+    <a href="about.html">Omkring Mig</a>
+    <a href="contact.html">Kontakt Mig</a>
     <a href="admin.html" class="admin-link">Admin</a>
   </nav>
 </header>
@@ -23,19 +25,23 @@
   </section>
 </main>
 
-<footer id="site-footer">
+<footer>
   <div class="footer-social">
     <a id="footer-mail" href="#">
-      <img src="icons/mail.png" class="social-icon" alt="Mail"><span>Mail</span>
+      <img src="icons/mail.png" class="social-icon" alt="Mail">
+      <span>Mail</span>
     </a>
     <a id="footer-phone" href="#">
-      <img src="icons/phone.png" class="social-icon" alt="Phone"><span>Telefon</span>
+      <img src="icons/phone.png" class="social-icon" alt="Phone">
+      <span>Telefon</span>
     </a>
     <a id="footer-linkedin" href="#" target="_blank">
-      <img src="icons/linkedin.png" class="social-icon" alt="LinkedIn"><span>LinkedIn</span>
+      <img src="icons/linkedin.png" class="social-icon" alt="LinkedIn">
+      <span>LinkedIn</span>
     </a>
     <a id="footer-instagram" href="#" target="_blank">
-      <img src="icons/instagram.png" class="social-icon" alt="Instagram"><span>Instagram</span>
+      <img src="icons/instagram.png" class="social-icon" alt="Instagram">
+      <span>Instagram</span>
     </a>
   </div>
 </footer>
@@ -44,23 +50,36 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
 const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // Hent footer og site title
 async function loadSiteData() {
   try {
-    const { data: siteData, error } = await supabase.from('site_content').select('*').eq('id',1).single();
+    const { data: siteData, error } = await supabase
+      .from('site_content')
+      .select('*')
+      .eq('id', 1)
+      .single();
+
     if (error) throw error;
+
     if (siteData) {
       document.getElementById('site-title').textContent = siteData.siteTitle;
 
+      // Opdater links
       document.getElementById('footer-mail').href = siteData.contactMail ? 'mailto:' + siteData.contactMail : '#';
       document.getElementById('footer-phone').href = siteData.contactPhone ? 'tel:' + siteData.contactPhone : '#';
       document.getElementById('footer-linkedin').href = siteData.contactLinkedin || '#';
       document.getElementById('footer-instagram').href = siteData.contactInstagram || '#';
+
+      // Opdater ikoner hvis de findes i DB
+      document.querySelector('#footer-mail img').src = siteData.footerMailIcon || 'icons/mail.png';
+      document.querySelector('#footer-phone img').src = siteData.footerPhoneIcon || 'icons/phone.png';
+      document.querySelector('#footer-linkedin img').src = siteData.footerLinkedinIcon || 'icons/linkedin.png';
+      document.querySelector('#footer-instagram img').src = siteData.footerInstagramIcon || 'icons/instagram.png';
     }
-  } catch(e){
+  } catch (e) {
     console.error('Error loading site content:', e);
   }
 }
@@ -68,10 +87,16 @@ async function loadSiteData() {
 // Hent projekter
 async function loadProjects() {
   try {
-    const { data: projects, error } = await supabase.from('projects').select('*').order('created_at', { ascending:false });
+    const { data: projects, error } = await supabase
+      .from('projects')
+      .select('*')
+      .order('created_at', { ascending: false });
+
     const grid = document.getElementById('projects-grid');
     grid.innerHTML = '';
+
     if (error) throw error;
+
     if (projects && projects.length > 0) {
       projects.forEach(p => {
         const a = document.createElement('a');
@@ -102,7 +127,7 @@ async function loadProjects() {
     } else {
       grid.innerHTML = '<p>Ingen projekter fundet.</p>';
     }
-  } catch(e){
+  } catch (e) {
     console.error('Error loading projects:', e);
   }
 }
