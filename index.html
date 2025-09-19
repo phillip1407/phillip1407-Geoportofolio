@@ -26,14 +26,15 @@
 </main>
 
 <footer>
+  <span>&copy; 2025 Phillip Geo / BareetDesign</span>
   <div class="footer-social">
-    <a id="footer-mail" href="#">
+    <a id="footer-mail" href="mailto:phillipgeo7@gmail.com">
       <img src="icons/mail.png" class="social-icon" alt="Mail">
-      <span>Mail</span>
+      <span>phillipgeo7@gmail.com</span>
     </a>
-    <a id="footer-phone" href="#">
+    <a id="footer-phone" href="tel:+4593956339">
       <img src="icons/phone.png" class="social-icon" alt="Phone">
-      <span>Telefon</span>
+      <span>+45 93 95 63 39</span>
     </a>
     <a id="footer-linkedin" href="#" target="_blank">
       <img src="icons/linkedin.png" class="social-icon" alt="LinkedIn">
@@ -53,30 +54,34 @@ const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-<footer>
-  <div class="footer-social">
-    <a href="mailto:phillipgeo7@gmail.com">
-      <img src="icons/mail.png" class="social-icon" alt="Mail">
-      <span>phillipgeo7@gmail.com</span>
-    </a>
-    <a href="tel:+4593956339">
-      <img src="icons/phone.png" class="social-icon" alt="Phone">
-      <span>+45 93 95 63 39</span>
-    </a>
-    <a id="footer-linkedin" href="#" target="_blank">
-      <img src="icons/linkedin.png" class="social-icon" alt="LinkedIn">
-      <span>LinkedIn</span>
-    </a>
-    <a id="footer-instagram" href="#" target="_blank">
-      <img src="icons/instagram.png" class="social-icon" alt="Instagram">
-      <span>Instagram</span>
-    </a>
-  </div>
-  <div class="footer-copy">
-    <p>&copy; 2025 Phillip Geo / BareetDesign. All rights reserved.</p>
-  </div>
-</footer>
+// Hent footer og site title
+async function loadSiteData() {
+  try {
+    const { data: siteData, error } = await supabase
+      .from('site_content')
+      .select('*')
+      .eq('id', 1)
+      .single();
 
+    if (error) throw error;
+
+    if (siteData) {
+      document.getElementById('site-title').textContent = siteData.siteTitle;
+
+      // Opdater dynamiske links (LinkedIn & Instagram)
+      document.getElementById('footer-linkedin').href = siteData.contactLinkedin || '#';
+      document.getElementById('footer-instagram').href = siteData.contactInstagram || '#';
+
+      // Opdater ikoner hvis de findes i DB
+      if (siteData.footerMailIcon) document.querySelector('#footer-mail img').src = siteData.footerMailIcon;
+      if (siteData.footerPhoneIcon) document.querySelector('#footer-phone img').src = siteData.footerPhoneIcon;
+      if (siteData.footerLinkedinIcon) document.querySelector('#footer-linkedin img').src = siteData.footerLinkedinIcon;
+      if (siteData.footerInstagramIcon) document.querySelector('#footer-instagram img').src = siteData.footerInstagramIcon;
+    }
+  } catch (e) {
+    console.error('Error loading site content:', e);
+  }
+}
 
 // Hent projekter
 async function loadProjects() {
