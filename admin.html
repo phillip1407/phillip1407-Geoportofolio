@@ -11,9 +11,9 @@
   <div class="logo"><a href="index.html" style="text-decoration:none;color:inherit;">Phillip Geo / BareetDesign</a></div>
   <nav>
     <a href="index.html">Projekter</a>
-    <a href="about.html">Omkring Mig</a>
-    <a href="contact.html">Kontakt Mig</a>
-    <a href="admin.html" class="active">Admin</a>
+    <a href="about.html">Om</a>
+    <a href="contact.html">Kontakt</a>
+    <a href="admin.html" class="active">🔒</a>
   </nav>
 </header>
 
@@ -88,14 +88,30 @@
 </main>
 
 <footer>
-  <div id="footer-left"></div>
-  <div id="footer-middle">
-    <a id="footer-mail" href="#"><img src="" class="social-icon" alt="Mail"></a>
-    <a id="footer-phone" href="#"><img src="" class="social-icon" alt="Phone"></a>
-  </div>
-  <div id="footer-right">
-    <a id="footer-linkedin" href="#" target="_blank"><img src="" class="social-icon" alt="LinkedIn"></a>
-    <a id="footer-instagram" href="#" target="_blank"><img src="" class="social-icon" alt="Instagram"></a>
+  <div class="footer-social">
+    <!-- Fast sat mail -->
+    <a id="footer-mail" href="mailto:phillipgeo7@gmail.com">
+      <img src="icons/mail.png" class="social-icon" alt="Mail">
+      <span>phillipgeo7@gmail.com</span>
+    </a>
+
+    <!-- Fast sat telefon -->
+    <a id="footer-phone" href="tel:+4593956339">
+      <img src="icons/phone.png" class="social-icon" alt="Phone">
+      <span>+45 93 95 63 39</span>
+    </a>
+
+    <!-- Dynamisk LinkedIn fra Supabase -->
+    <a id="footer-linkedin" href="#" target="_blank">
+      <img src="icons/linkedin.png" class="social-icon" alt="LinkedIn">
+      <span>LinkedIn</span>
+    </a>
+
+    <!-- Dynamisk Instagram fra Supabase -->
+    <a id="footer-instagram" href="#" target="_blank">
+      <img src="icons/instagram.png" class="social-icon" alt="Instagram">
+      <span>Instagram</span>
+    </a>
   </div>
 </footer>
 
@@ -212,7 +228,7 @@ siteForm.addEventListener("submit", async (e) => {
   if (error) {
     siteMessage.textContent = "Fejl ved gem: " + error.message;
   } else {
-    siteMessage.textContent = "✅ Site-indhold gemt!";
+    siteMessage.textContent = "✔ Site-indhold gemt!";
     updateFooterDOM(updates);
     setTimeout(()=> siteMessage.textContent="", 3000);
   }
@@ -234,7 +250,7 @@ projectForm.addEventListener("submit", async (e) => {
   if (error) {
     projectMessage.textContent = "Fejl ved tilføjelse: " + error.message;
   } else {
-    projectMessage.textContent = "✅ Projekt tilføjet!";
+    projectMessage.textContent = "✔ Projekt tilføjet!";
     projectForm.reset();
     setTimeout(()=> projectMessage.textContent="", 3000);
   }
