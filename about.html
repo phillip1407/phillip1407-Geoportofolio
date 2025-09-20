@@ -185,34 +185,89 @@
   </section>
 </main>
 
+<!-- Footer -->
 <footer>
   <div class="footer-social">
+    <!-- Mail -->
     <a id="footer-mail" href="mailto:phillipgeo7@gmail.com">
-      <img id="footer-mail-icon" src="icons/mail.png" class="social-icon" alt="Mail">
+      <img src="icons/mail.png" class="social-icon" alt="Mail">
       <span>phillipgeo7@gmail.com</span>
     </a>
 
+    <!-- Telefon -->
     <a id="footer-phone" href="tel:+4593956339">
-      <img id="footer-phone-icon" src="icons/phone.png" class="social-icon" alt="Phone">
+      <img src="icons/phone.png" class="social-icon" alt="Phone">
       <span>+45 93 95 63 39</span>
     </a>
 
+    <!-- LinkedIn -->
     <a id="footer-linkedin" href="#" target="_blank">
-      <img id="footer-linkedin-icon" src="icons/linkedin.png" class="social-icon" alt="LinkedIn">
+      <img src="icons/linkedin.png" class="social-icon" alt="LinkedIn">
       <span>LinkedIn</span>
     </a>
 
+    <!-- Instagram -->
     <a id="footer-instagram" href="#" target="_blank">
-      <img id="footer-instagram-icon" src="icons/instagram.png" class="social-icon" alt="Instagram">
+      <img src="icons/instagram.png" class="social-icon" alt="Instagram">
       <span>Instagram</span>
     </a>
   </div>
-  <div id="footer-intro" style="text-align:center;"></div>
-  <div id="copyright">
-    <p>&copy; <span id="copyright-text"></span></p>
-  </div>
 </footer>
 
+<!-- Copyright -->
+<div id="copyright">
+  <p>&copy; <span id="copyright-text"></span></p>
+</div>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+
+const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU";
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Hent footer-data
+async function loadFooterData() {
+  try {
+    const { data: siteData, error } = await supabase
+      .from('site_content')
+      .select('*')
+      .eq('id', 1)
+      .single();
+
+    if (error) throw error;
+
+    if (siteData) {
+      // Mail
+      document.getElementById('footer-mail').href = siteData.contactMail ? `mailto:${siteData.contactMail}` : '#';
+      document.querySelector('#footer-mail span').textContent = siteData.contactMail || 'Mail';
+      document.querySelector('#footer-mail img').src = siteData.footerMailIcon || 'icons/mail.png';
+
+      // Telefon
+      document.getElementById('footer-phone').href = siteData.contactPhone ? `tel:${siteData.contactPhone}` : '#';
+      document.querySelector('#footer-phone span').textContent = siteData.contactPhone || 'Telefon';
+      document.querySelector('#footer-phone img').src = siteData.footerPhoneIcon || 'icons/phone.png';
+
+      // LinkedIn
+      document.getElementById('footer-linkedin').href = siteData.contactLinkedin || '#';
+      document.querySelector('#footer-linkedin img').src = siteData.footerLinkedinIcon || 'icons/linkedin.png';
+
+      // Instagram
+      document.getElementById('footer-instagram').href = siteData.contactInstagram || '#';
+      document.querySelector('#footer-instagram img').src = siteData.footerInstagramIcon || 'icons/instagram.png';
+
+      // Copyright
+      document.getElementById('copyright-text').textContent = siteData.copyright || "Phillip Geo / BareetDesign";
+    }
+  } catch (e) {
+    console.error('Error loading footer content:', e);
+  }
+}
+
+loadFooterData();
+</script>
+
+  
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
