@@ -8,7 +8,11 @@
 </head>
 <body>
 <header>
-  <div class="logo"><a href="index.html" id="site-title" style="text-decoration:none;color:inherit;">Phillip Geo / BareetDesign</a></div>
+  <div class="logo">
+    <a href="index.html" id="site-title" style="text-decoration:none;color:inherit;">
+      Phillip Geo / BareetDesign
+    </a>
+  </div>
   <nav>
     <a href="index.html">Projekter</a>
     <a href="about.html" class="active">Om</a>
@@ -25,17 +29,38 @@
   </section>
 </main>
 
-<footer id="site-footer">
-  <div id="footer-left"></div>
-  <div id="footer-middle">
-    <a id="footer-mail" href="#"><img src="icons/mail.png" class="social-icon" alt="Mail"></a>
-    <a id="footer-phone" href="#"><img src="icons/phone.png" class="social-icon" alt="Phone"></a>
-  </div>
-  <div id="footer-right">
-    <a id="footer-linkedin" href="#" target="_blank"><img src="icons/linkedin.png" class="social-icon" alt="LinkedIn"></a>
-    <a id="footer-instagram" href="#" target="_blank"><img src="icons/instagram.png" class="social-icon" alt="Instagram"></a>
+<footer>
+  <div class="footer-social">
+    <!-- Fast sat mail -->
+    <a id="footer-mail" href="mailto:phillipgeo7@gmail.com">
+      <img src="icons/mail.png" class="social-icon" alt="Mail">
+      <span>phillipgeo7@gmail.com</span>
+    </a>
+
+    <!-- Fast sat telefon -->
+    <a id="footer-phone" href="tel:+4593956339">
+      <img src="icons/phone.png" class="social-icon" alt="Phone">
+      <span>+45 93 95 63 39</span>
+    </a>
+
+    <!-- Dynamisk LinkedIn fra Supabase -->
+    <a id="footer-linkedin" href="#" target="_blank">
+      <img src="icons/linkedin.png" class="social-icon" alt="LinkedIn">
+      <span>LinkedIn</span>
+    </a>
+
+    <!-- Dynamisk Instagram fra Supabase -->
+    <a id="footer-instagram" href="#" target="_blank">
+      <img src="icons/instagram.png" class="social-icon" alt="Instagram">
+      <span>Instagram</span>
+    </a>
   </div>
 </footer>
+
+<!-- Copyright adskilt -->
+<div id="copyright">
+  <p>&copy; <span id="copyright-text"></span></p>
+</div>
 
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js'
@@ -46,23 +71,31 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
 async function loadSiteData(){
   try {
-    const { data: siteData, error } = await supabase.from('site_content').select('*').eq('id',1).single()
+    const { data: siteData, error } = await supabase
+      .from('site_content')
+      .select('*')
+      .eq('id',1)
+      .single()
+
     if(error) throw error
+
     if(siteData){
+      // Titel
       document.getElementById('site-title').textContent = siteData.siteTitle
-      document.getElementById('footer-left').innerText = siteData.footerLeft
-      document.getElementById('footer-mail').href = 'mailto:' + siteData.contactMail
-      document.getElementById('footer-phone').href = 'tel:' + siteData.contactPhone
-      document.getElementById('footer-linkedin').href = siteData.contactLinkedin
-      document.getElementById('footer-instagram').href = siteData.contactInstagram
 
-      // Opdater footer ikoner hvis der er gemt URL’er i Supabase
-      if(siteData.footerMailIcon) document.getElementById('footer-mail').querySelector('img').src = siteData.footerMailIcon
-      if(siteData.footerPhoneIcon) document.getElementById('footer-phone').querySelector('img').src = siteData.footerPhoneIcon
-      if(siteData.footerLinkedinIcon) document.getElementById('footer-linkedin').querySelector('img').src = siteData.footerLinkedinIcon
-      if(siteData.footerInstagramIcon) document.getElementById('footer-instagram').querySelector('img').src = siteData.footerInstagramIcon
-
+      // Tekst til "Om"
       document.getElementById('about-text').innerHTML = `<p>${siteData.about}</p>`
+
+      // LinkedIn & Instagram links fra DB
+      document.getElementById('footer-linkedin').href = siteData.contactLinkedin || '#'
+      document.getElementById('footer-instagram').href = siteData.contactInstagram || '#'
+
+      // Opdater logoer fra DB hvis de findes
+      document.querySelector('#footer-linkedin img').src = siteData.footerLinkedinIcon || 'icons/linkedin.png'
+      document.querySelector('#footer-instagram img').src = siteData.footerInstagramIcon || 'icons/instagram.png'
+
+      // Copyright
+      document.getElementById('copyright-text').textContent = siteData.copyright || "Phillip Geo / BareetDesign"
     }
   } catch(e){
     console.error('Error loading site content:', e)
