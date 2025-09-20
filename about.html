@@ -5,6 +5,15 @@
   <title>Om - Phillip Geo</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="geoportofolio.png" type="image/png">
+  <style>
+    /* Større billede i About boksen */
+    .about-image img {
+      width: 250px;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+  </style>
 </head>
 <body>
 <header>
@@ -84,8 +93,17 @@ async function loadSiteData(){
       // Titel
       document.getElementById('site-title').textContent = siteData.siteTitle
 
-      // Om mig tekst
-      document.getElementById('about-text').innerHTML = `<p>${siteData.aboutText}</p>`
+      // Om mig tekst med afsnit
+      if (siteData.aboutText) {
+        const paragraphs = siteData.aboutText
+          .split(/\r?\n/)
+          .filter(p => p.trim() !== '')
+          .map(p => `<p>${p}</p>`)
+          .join('')
+        document.getElementById('about-text').innerHTML = paragraphs
+      } else {
+        document.getElementById('about-text').innerHTML = '<p>Om mig-indhold ikke fundet.</p>'
+      }
 
       // Om mig billede
       document.getElementById('about-image').src = siteData.aboutImage || 'images/placeholder.png'
@@ -103,6 +121,7 @@ async function loadSiteData(){
     }
   } catch(e){
     console.error('Error loading site content:', e)
+    document.getElementById('about-text').innerHTML = `<p>Fejl ved indlæsning.</p>`
   }
 }
 
