@@ -5,6 +5,58 @@
   <title>Om - Phillip Geo</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="geoportofolio.png" type="image/png">
+  <style>
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+      padding: 2rem;
+    }
+    .about-box {
+      display: flex;
+      flex-direction: row;
+      width: 80%;
+      background-color: #f7f7f7;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      gap: 1.5rem;
+    }
+    .about-content {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      gap: 1.5rem;
+    }
+    .about-image img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin: 0; /* helt oppe */
+    }
+    .about-text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+    .about-text h2 {
+      margin: 0 0 1rem 0;
+      font-size: 1.8rem;
+    }
+    .about-extra {
+      width: 80%;
+      background-color: #f7f7f7;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .about-extra h3 {
+      margin-top: 0;
+    }
+  </style>
 </head>
 <body>
 <header>
@@ -24,19 +76,19 @@
 <main>
   <!-- Øverste boks -->
   <section class="about-box">
-    <h2 style="text-align:center; margin-bottom:1rem;">Phillip Geo</h2>
     <div class="about-content">
       <div class="about-image">
         <img id="about-image" src="images/placeholder.png" alt="Om mig">
       </div>
       <div class="about-text" id="about-text">
+        <h2>Phillip Geo</h2>
         <p>Loading...</p>
       </div>
     </div>
   </section>
 
-  <!-- Nederste boks med samme styling -->
-  <section class="about-box about-extra">
+  <!-- Nederste boks -->
+  <section class="about-extra">
     <h3>Udvalgte kunder</h3>
     <p id="clients">Indhold kommer her...</p>
 
@@ -101,7 +153,7 @@ async function loadAboutContent() {
     console.log('Supabase data:', data)
 
     document.getElementById('site-title').textContent = data.siteTitle || "Phillip Geo / BareetDesign"
-    document.getElementById('about-text').innerHTML = (data.aboutText || "Om mig-indhold ikke fundet.").replace(/\n/g, '<br>')
+    document.getElementById('about-text').querySelector('p').innerHTML = (data.aboutText || "Om mig-indhold ikke fundet.").replace(/\n/g, '<br>')
     document.getElementById('about-image').src = data.aboutImage || 'images/placeholder.png'
     document.getElementById('clients').innerHTML = (data.clients || "Indhold ikke fundet.").replace(/\n/g,'<br>')
     document.getElementById('experience').innerHTML = (data.experience || "Indhold ikke fundet.").replace(/\n/g,'<br>')
@@ -113,7 +165,7 @@ async function loadAboutContent() {
     document.getElementById('copyright-text').textContent = data.copyright || "Phillip Geo / BareetDesign"
   } catch(err) {
     console.error('Fejl ved indlæsning af Om mig:', err)
-    document.getElementById('about-text').innerHTML = `<p>Fejl ved indlæsning. Se konsol for detaljer.</p>`
+    document.getElementById('about-text').querySelector('p').textContent = "Fejl ved indlæsning."
     document.getElementById('clients').textContent = "Fejl ved indlæsning."
     document.getElementById('experience').textContent = "Fejl ved indlæsning."
     document.getElementById('education').textContent = "Fejl ved indlæsning."
