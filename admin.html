@@ -5,6 +5,43 @@
   <title>Admin - Phillip Geo / BareetDesign</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="geoportofolio.png" type="image/png">
+  <style>
+    /* --- Mobilvenlighed --- */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 6px;
+      }
+      nav {
+        flex-direction: column !important;
+        gap: 6px;
+        width: 100%;
+      }
+      input, textarea, button {
+        width: 100% !important;
+        max-width: 100%;
+        box-sizing: border-box;
+        font-size: 14px;
+      }
+      footer {
+        flex-direction: column !important;
+        align-items: center;
+        gap: 8px;
+        padding: 16px;
+      }
+      #footer-middle, #footer-right {
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+      }
+      .social-icon {
+        width: 22px !important;
+        height: 22px !important;
+      }
+    }
+  </style>
 </head>
 <body>
 <header>
@@ -140,6 +177,14 @@
 <div id="copyright">
   <p>&copy; <span id="copyright-text"></span></p>
 </div>
+
+<script type="module">
+// Din eksisterende JavaScript forbliver uændret
+</script>
+</body>
+</html>
+
+
 
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
