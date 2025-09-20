@@ -22,17 +22,10 @@
 </header>
 
 <main>
-  <!-- Intro / Om mig boks -->
-  <section id="about-intro" class="intro-box">
-    <h2>Velkommen til min portefølje</h2>
-    <p>
-      Denne side fungerer som min personlige portefølje, hvor du kan få et indblik i mit arbejde
-      og de projekter, jeg har lavet for forskellige firmaer indtil videre.
-    </p>
-    <p>
-      Her finder du både mine egne kreative projekter samt opgaver udført for kunder og samarbejdspartnere.
-      Mit mål er at vise mine kompetencer inden for design, udvikling og kreativt arbejde.
-    </p>
+  <!-- Intro / tekst over projekter -->
+  <section id="intro-text" class="intro-box">
+    <h2>Loading...</h2>
+    <p>Loading...</p>
   </section>
 
   <!-- Projekter -->
@@ -81,7 +74,7 @@ const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Hent footer og site title
+// Hent footer, site title og intro-tekst
 async function loadSiteData() {
   try {
     const { data: siteData, error } = await supabase
@@ -95,6 +88,15 @@ async function loadSiteData() {
     if (siteData) {
       // Titel
       document.getElementById('site-title').textContent = siteData.siteTitle;
+
+      // Intro tekst over projekter
+      const introSection = document.getElementById('intro-text');
+      if (introSection) {
+        introSection.innerHTML = `
+          <h2>${siteData.introTitle}</h2>
+          <p>${siteData.introText}</p>
+        `;
+      }
 
       // Mail
       document.getElementById('footer-mail').href = siteData.contactMail ? `mailto:${siteData.contactMail}` : '#';
