@@ -72,30 +72,29 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
 async function loadAboutBox() {
   try {
-    // Hent aboutText og billed-URL fra Supabase
+    // Hent data fra site_content, inkl. aboutText
     const { data, error } = await supabase
       .from('site_content')
-      .select('aboutText, aboutImage, siteTitle, contactLinkedin, contactInstagram, footerLinkedinIcon, footerInstagramIcon, copyright')
+      .select('siteTitle, aboutText, aboutImage, contactLinkedin, contactInstagram, footerLinkedinIcon, footerInstagramIcon, copyright')
       .eq('id', 1)
       .single()
 
     if (error) throw error
 
     if (data) {
-      // Opdater side titel
       document.getElementById('site-title').textContent = data.siteTitle || "Phillip Geo / BareetDesign"
+      
+      // Hent om mig tekst
+      document.getElementById('about-text').innerHTML = data.aboutText ? `<p>${data.aboutText}</p>` : `<p>Ingen Om mig tekst fundet.</p>`
 
-      // Om mig tekst
-      document.getElementById('about-text').innerHTML = `<p>${data.aboutText || "Om mig-indhold ikke fundet."}</p>`
-
-      // Om mig billede
+      // Hent billede
       document.getElementById('about-image').src = data.aboutImage || 'images/placeholder.png'
 
-      // LinkedIn & Instagram links
+      // Sociale links
       document.getElementById('footer-linkedin').href = data.contactLinkedin || '#'
       document.getElementById('footer-instagram').href = data.contactInstagram || '#'
 
-      // Footer ikoner
+      // Ikoner
       document.querySelector('#footer-linkedin img').src = data.footerLinkedinIcon || 'icons/linkedin.png'
       document.querySelector('#footer-instagram img').src = data.footerInstagramIcon || 'icons/instagram.png'
 
@@ -104,11 +103,10 @@ async function loadAboutBox() {
     }
   } catch (err) {
     console.error('Fejl ved indlæsning af Om mig:', err)
-    document.getElementById('about-text').innerHTML = `<p>Fejl ved indlæsning.</p>`
+    document.getElementById('about-text').innerHTML = `<p>Fejl ved indlæsning af Om mig.</p>`
   }
 }
 
-// Kør funktionen
 loadAboutBox()
 </script>
 </body>
