@@ -178,27 +178,33 @@ button:hover { background: var(--primary-hover); }
 
 /* intro-box styling */
 .intro-box {
-  background: #f5f5f5; /* lys grå baggrund */
-  padding: 2.5rem 2rem; /* lidt mere luft */
+  background: #fafafa; /* match projektkort */
+  padding: 1.5rem;
   margin: 2rem auto;
-  border-radius: 16px; /* lidt mere rundede hjørner */
+  border: 1px solid var(--border);
+  border-radius: 8px;
   max-width: 800px;
   text-align: center;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1); /* lidt stærkere skygge */
-  animation: fadeSlideIn 0.8s ease-out forwards;
-  opacity: 0; /* start skjult til animation */
-  transform: translateY(20px); /* start lidt nede til animation */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeSlideIn 0.6s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.intro-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
 }
 
 .intro-box h2 {
   margin-bottom: 1rem;
   color: #222;
-  font-size: 2rem;
+  font-size: 1.8rem;
 }
 
 .intro-box p {
   color: #444;
-  line-height: 1.7;
+  line-height: 1.6;
   margin-bottom: 1rem;
   font-size: 1rem;
 }
