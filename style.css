@@ -294,4 +294,3 @@ button:hover { background: var(--primary-hover); }
   border-bottom: none;   /* fjern eventuel border */
   color: inherit;        /* behold samme farve som headeren */
 }
-Dette vil sikre, 
