@@ -287,3 +287,11 @@ button:hover { background: var(--primary-hover); }
     transform: translateY(0);
   }
 }
+
+/* Fix logo/titel: ingen linje, ingen anden farve */
+#site-title {
+  text-decoration: none; /* fjern understregning */
+  border-bottom: none;   /* fjern eventuel border */
+  color: inherit;        /* behold samme farve som headeren */
+}
+Dette vil sikre, 
