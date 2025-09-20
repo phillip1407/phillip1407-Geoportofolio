@@ -12,7 +12,6 @@
       padding: 2rem;
     }
 
-    /* Container med billedet + kategorier til venstre, tekst til højre */
     .about-container {
       display: flex;
       width: 80%;
@@ -25,7 +24,6 @@
       flex-wrap: wrap;
     }
 
-    /* Venstre side: billede + kategorier */
     .about-left {
       display: flex;
       flex-direction: column;
@@ -57,14 +55,12 @@
       margin: 0 0 0.3rem 0;
     }
 
-    /* Vertikal linje mellem venstre og højre */
     .divider {
       width: 1px;
       background-color: #ddd;
       margin: 0 1.5rem;
     }
 
-    /* Højre side: tekst */
     .about-right {
       flex: 1;
       display: flex;
@@ -77,13 +73,11 @@
       font-size: 2rem;
     }
 
-    /* Behold linjeskift og afsnit i teksten */
     .about-right p,
     .section-block p {
       white-space: pre-line;
     }
 
-    /* Footer ikoner */
     footer {
       border-top:1px solid var(--border);
       padding:22px 28px;
@@ -196,7 +190,6 @@
 
 <main>
   <section class="about-container">
-    <!-- Venstre: billede + kategorier -->
     <div class="about-left">
       <div class="about-image">
         <img id="about-image" src="images/placeholder.png" alt="Om mig">
@@ -215,10 +208,8 @@
       </div>
     </div>
 
-    <!-- Divider linje -->
     <div class="divider"></div>
 
-    <!-- Højre: tekst -->
     <div class="about-right">
       <h2>Phillip Geo</h2>
       <p id="about-text">Loading...</p>
@@ -226,7 +217,6 @@
   </section>
 </main>
 
-<!-- Footer -->
 <footer>
   <div class="footer-social">
     <a id="footer-mail" href="mailto:phillipgeo7@gmail.com">
@@ -259,7 +249,6 @@ const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Load footer data
 async function loadFooterData() {
   try {
     const { data: siteData, error } = await supabase
@@ -292,7 +281,6 @@ async function loadFooterData() {
 
 loadFooterData();
 
-// Load "Om mig" content
 async function loadAboutContent() {
   try {
     const { data, error } = await supabase.from('site_content').select('*').eq('id',1).single();
