@@ -5,129 +5,6 @@
   <title>Admin - Phillip Geo / BareetDesign</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="geoportofolio.png" type="image/png">
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 24px;
-      background-color: #f5f5f5;
-      border-bottom: 1px solid var(--border);
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    header .logo a {
-      font-weight: bold;
-      text-decoration: none;
-      color: inherit;
-    }
-    nav a {
-      margin-left: 16px;
-      text-decoration: none;
-      color: inherit;
-    }
-    nav a.active {
-      font-weight: bold;
-    }
-    main.admin-area {
-      padding: 16px 24px;
-    }
-    h1 {
-      margin-top: 0;
-    }
-    .alert-box {
-      background-color: #ffe0e0;
-      border: 1px solid #ffb0b0;
-      padding: 12px 16px;
-      margin-bottom: 16px;
-      border-radius: 8px;
-    }
-    .card {
-      background-color: #fafafa;
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-    input, textarea {
-      width: 100%;
-      padding: 8px;
-      margin: 4px 0 12px 0;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    button {
-      padding: 8px 16px;
-      border: none;
-      background-color: #0055ff;
-      color: white;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-right: 8px;
-    }
-    button:hover {
-      background-color: #0040cc;
-    }
-    hr {
-      border-color: var(--border);
-      margin: 16px 0;
-    }
-    footer {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 16px 24px;
-      border-top: 1px solid var(--border);
-      background-color: #f5f5f5;
-      gap: 12px;
-    }
-    .footer-social {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      justify-content: center;
-    }
-    .footer-social a {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-      color: inherit;
-    }
-    .footer-social img {
-      width: 24px;
-      height: 24px;
-    }
-    #copyright {
-      font-size: 14px;
-      color: var(--muted);
-    }
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      nav a {
-        margin-left: 0;
-        margin-top: 4px;
-      }
-      input, textarea {
-        font-size: 14px;
-      }
-      button {
-        font-size: 14px;
-      }
-      .footer-social img {
-        width: 22px;
-        height: 22px;
-      }
-    }
-  </style>
 </head>
 <body>
 <header>
@@ -189,7 +66,7 @@
       <label>Instagram Icon URL:</label>
       <input type="text" id="footerInstagramIcon">
 
-      <hr>
+      <hr style="margin:16px 0; border-color:var(--border);">
 
       <h3>Intro tekst over projekter</h3>
       <label>Intro Titel:</label>
@@ -197,7 +74,7 @@
       <label>Intro Tekst:</label>
       <textarea id="introText" rows="4"></textarea>
 
-      <hr>
+      <hr style="margin:16px 0; border-color:var(--border);">
 
       <h3>Om mig boks</h3>
       <label>Om mig tekst:</label>
@@ -205,7 +82,7 @@
       <label>Billede URL:</label>
       <input type="text" id="aboutImage">
 
-      <hr>
+      <hr style="margin:16px 0; border-color:var(--border);">
 
       <h3>Nye sektioner</h3>
       <label>Udvalgte kunder:</label>
@@ -268,10 +145,9 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
 const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co";
-const SUPABASE_KEY = "YOUR_SUPABASE_KEY";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ELEMENTER
 const loginSection = document.getElementById("login-section");
 const adminSection = document.getElementById("admin-section");
 const loginMessage = document.getElementById("login-message");
@@ -288,8 +164,9 @@ loginBtn.addEventListener("click", async () => {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
   const { error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) loginMessage.textContent = "Login fejlede: " + error.message;
-  else {
+  if (error) {
+    loginMessage.textContent = "Login fejlede: " + error.message;
+  } else {
     loginMessage.textContent = "";
     loginSection.style.display = "none";
     adminSection.style.display = "block";
@@ -302,8 +179,11 @@ signupBtn.addEventListener("click", async () => {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
   const { error } = await supabase.auth.signUp({ email, password });
-  if (error) loginMessage.textContent = "Oprettelse fejlede: " + error.message;
-  else loginMessage.textContent = "Bruger oprettet! Login nu.";
+  if (error) {
+    loginMessage.textContent = "Oprettelse fejlede: " + error.message;
+  } else {
+    loginMessage.textContent = "Bruger oprettet! Login nu.";
+  }
 });
 
 // LOGOUT
@@ -318,6 +198,7 @@ async function loadSiteContent() {
   const { data, error } = await supabase.from("site_content").select("*").eq("id",1).single();
   if(error) return console.error(error);
   if(data){
+    // eksisterende felter
     document.getElementById("siteTitle").value = data.siteTitle || "";
     document.getElementById("footerLeft").value = data.footerLeft || "";
     document.getElementById("contactMail").value = data.contactMail || "";
@@ -328,18 +209,23 @@ async function loadSiteContent() {
     document.getElementById("footerPhoneIcon").value = data.footerPhoneIcon || "";
     document.getElementById("footerLinkedinIcon").value = data.footerLinkedinIcon || "";
     document.getElementById("footerInstagramIcon").value = data.footerInstagramIcon || "";
+
+    // eksisterende felter
     document.getElementById("introTitle").value = data.introTitle || "";
     document.getElementById("introText").value = data.introText || "";
     document.getElementById("aboutText").value = data.aboutText || "";
     document.getElementById("aboutImage").value = data.aboutImage || "";
+
+    // nye felter
     document.getElementById("clients").value = data.clients || "";
     document.getElementById("experience").value = data.experience || "";
     document.getElementById("education").value = data.education || "";
+
     updateFooterDOM(data);
   }
 }
 
-// OPDATER FOOTER
+// OPDATER FOOTER-DOM
 function updateFooterDOM(data) {
   document.querySelector("#footer-mail img").src = data.footerMailIcon || "icons/mail.png";
   document.querySelector("#footer-phone img").src = data.footerPhoneIcon || "icons/phone.png";
@@ -359,6 +245,7 @@ function updateFooterDOM(data) {
 siteForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   siteMessage.textContent = "Gemmer...";
+
   const updates = {
     siteTitle: document.getElementById("siteTitle").value,
     footerLeft: document.getElementById("footerLeft").value,
@@ -378,9 +265,11 @@ siteForm.addEventListener("submit", async (e) => {
     experience: document.getElementById("experience").value,
     education: document.getElementById("education").value
   };
+
   const { error } = await supabase.from("site_content").update(updates).eq("id",1);
-  if (error) siteMessage.textContent = "Fejl ved gem: " + error.message;
-  else {
+  if (error) {
+    siteMessage.textContent = "Fejl ved gem: " + error.message;
+  } else {
     siteMessage.textContent = "✔ Site-indhold gemt!";
     updateFooterDOM(updates);
     setTimeout(()=> siteMessage.textContent="", 3000);
@@ -391,15 +280,18 @@ siteForm.addEventListener("submit", async (e) => {
 projectForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   projectMessage.textContent = "Gemmer projekt...";
+
   const newProject = {
     title: document.getElementById("projectTitle").value,
     link: document.getElementById("projectLink").value,
     image_url: document.getElementById("projectImage").value,
     created_at: new Date()
   };
+
   const { error } = await supabase.from("projects").insert([newProject]);
-  if (error) projectMessage.textContent = "Fejl ved tilføjelse: " + error.message;
-  else {
+  if (error) {
+    projectMessage.textContent = "Fejl ved tilføjelse: " + error.message;
+  } else {
     projectMessage.textContent = "✔ Projekt tilføjet!";
     projectForm.reset();
     setTimeout(()=> projectMessage.textContent="", 3000);
