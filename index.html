@@ -29,25 +29,25 @@
 
 <footer>
   <div class="footer-social">
-    <!-- Fast sat mail -->
+    <!-- Mail -->
     <a id="footer-mail" href="mailto:phillipgeo7@gmail.com">
       <img src="icons/mail.png" class="social-icon" alt="Mail">
       <span>phillipgeo7@gmail.com</span>
     </a>
 
-    <!-- Fast sat telefon -->
+    <!-- Telefon -->
     <a id="footer-phone" href="tel:+4593956339">
       <img src="icons/phone.png" class="social-icon" alt="Phone">
       <span>+45 93 95 63 39</span>
     </a>
 
-    <!-- Dynamisk LinkedIn fra Supabase -->
+    <!-- LinkedIn -->
     <a id="footer-linkedin" href="#" target="_blank">
       <img src="icons/linkedin.png" class="social-icon" alt="LinkedIn">
       <span>LinkedIn</span>
     </a>
 
-    <!-- Dynamisk Instagram fra Supabase -->
+    <!-- Instagram -->
     <a id="footer-instagram" href="#" target="_blank">
       <img src="icons/instagram.png" class="social-icon" alt="Instagram">
       <span>Instagram</span>
@@ -55,7 +55,7 @@
   </div>
 </footer>
 
-<!-- Copyright adskilt -->
+<!-- Copyright -->
 <div id="copyright">
   <p>&copy; <span id="copyright-text"></span></p>
 </div>
@@ -79,18 +79,28 @@ async function loadSiteData() {
     if (error) throw error;
 
     if (siteData) {
-      // Opdater titel
+      // Titel
       document.getElementById('site-title').textContent = siteData.siteTitle;
 
-      // Opdater LinkedIn og Instagram links
-      document.getElementById('footer-linkedin').href = siteData.contactLinkedin || '#';
-      document.getElementById('footer-instagram').href = siteData.contactInstagram || '#';
+      // Mail
+      document.getElementById('footer-mail').href = siteData.contactMail ? `mailto:${siteData.contactMail}` : '#';
+      document.querySelector('#footer-mail span').textContent = siteData.contactMail || 'Mail';
+      document.querySelector('#footer-mail img').src = siteData.footerMailIcon || 'icons/mail.png';
 
-      // Opdater logoer fra DB (hvis de findes)
+      // Telefon
+      document.getElementById('footer-phone').href = siteData.contactPhone ? `tel:${siteData.contactPhone}` : '#';
+      document.querySelector('#footer-phone span').textContent = siteData.contactPhone || 'Telefon';
+      document.querySelector('#footer-phone img').src = siteData.footerPhoneIcon || 'icons/phone.png';
+
+      // LinkedIn
+      document.getElementById('footer-linkedin').href = siteData.contactLinkedin || '#';
       document.querySelector('#footer-linkedin img').src = siteData.footerLinkedinIcon || 'icons/linkedin.png';
+
+      // Instagram
+      document.getElementById('footer-instagram').href = siteData.contactInstagram || '#';
       document.querySelector('#footer-instagram img').src = siteData.footerInstagramIcon || 'icons/instagram.png';
 
-      // Copyright tekst
+      // Copyright
       document.getElementById('copyright-text').textContent = siteData.copyright || "Phillip Geo / BareetDesign";
     }
   } catch (e) {
@@ -98,7 +108,7 @@ async function loadSiteData() {
   }
 }
 
-// Hent projekter
+// Projekter
 async function loadProjects() {
   try {
     const { data: projects, error } = await supabase
