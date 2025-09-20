@@ -12,7 +12,7 @@
       padding: 2rem;
     }
 
-    /* Større boks med billede til venstre og tekst til højre */
+    /* Om-boks container med billede til venstre, tekst og sektioner til højre */
     .about-container {
       display: flex;
       width: 80%;
@@ -20,7 +20,7 @@
       padding: 1.5rem;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      gap: 1.5rem;
+      gap: 2rem;
       flex-wrap: wrap;
     }
 
@@ -30,6 +30,7 @@
       object-fit: cover;
       border-radius: 8px;
       margin: 0;
+      flex-shrink: 0;
     }
 
     .about-text {
@@ -52,6 +53,7 @@
       margin: 0 0 0.3rem 0;
     }
 
+    /* Footer ikoner */
     footer .footer-social {
       display: flex;
       justify-content: center;
@@ -72,6 +74,29 @@
       width: 24px;
       height: 24px;
     }
+
+    /* Responsive for mobil */
+    @media (max-width: 768px) {
+      .about-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .about-image img {
+        width: 200px;
+        height: 200px;
+      }
+
+      .about-text {
+        width: 100%;
+        align-items: center;
+        text-align: center;
+      }
+
+      .section-block {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -88,7 +113,6 @@
 </header>
 
 <main>
-  <!-- Om mig samlet boks -->
   <section class="about-container">
     <div class="about-image">
       <img id="about-image" src="images/placeholder.png" alt="Om mig">
