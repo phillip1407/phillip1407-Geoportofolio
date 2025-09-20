@@ -259,23 +259,32 @@ async function loadFooterData() {
       .eq('id', 1)
       .single();
     if (error) throw error;
-    if (siteData) {
-      document.getElementById('footer-mail').href = siteData.contactMail ? `mailto:${siteData.contactMail}` : '#';
-      document.querySelector('#footer-mail span').textContent = siteData.contactMail || 'Mail';
-      document.querySelector('#footer-mail img').src = siteData.footerMailIcon || 'icons/mail.png';
 
-      document.getElementById('footer-phone').href = siteData.contactPhone ? `tel:${siteData.contactPhone}` : '#';
-      document.querySelector('#footer-phone span').textContent = siteData.contactPhone || 'Telefon';
-      document.querySelector('#footer-phone img').src = siteData.footerPhoneIcon || 'icons/phone.png';
+    // Mail
+    const mailLink = document.getElementById('footer-mail');
+    mailLink.href = siteData?.contactMail ? `mailto:${siteData.contactMail}` : 'mailto:phillipgeo7@gmail.com';
+    mailLink.querySelector('span').textContent = siteData?.contactMail || 'phillipgeo7@gmail.com';
+    mailLink.querySelector('img').src = siteData?.footerMailIcon || 'icons/mail.png';
 
-      document.getElementById('footer-linkedin').href = siteData.contactLinkedin || '#';
-      document.getElementById('footer-linkedin img').src = siteData.footerLinkedinIcon || 'icons/linkedin.png';
+    // Phone
+    const phoneLink = document.getElementById('footer-phone');
+    phoneLink.href = siteData?.contactPhone ? `tel:${siteData.contactPhone}` : 'tel:+4593956339';
+    phoneLink.querySelector('span').textContent = siteData?.contactPhone || '+45 93 95 63 39';
+    phoneLink.querySelector('img').src = siteData?.footerPhoneIcon || 'icons/phone.png';
 
-      document.getElementById('footer-instagram').href = siteData.contactInstagram || '#';
-      document.querySelector('#footer-instagram img').src = siteData.footerInstagramIcon || 'icons/instagram.png';
+    // LinkedIn
+    const linkedinLink = document.getElementById('footer-linkedin');
+    linkedinLink.href = siteData?.contactLinkedin || '#';
+    linkedinLink.querySelector('img').src = siteData?.footerLinkedinIcon || 'icons/linkedin.png';
 
-      document.getElementById('copyright-text').textContent = siteData.copyright || "Phillip Geo / BareetDesign";
-    }
+    // Instagram
+    const instaLink = document.getElementById('footer-instagram');
+    instaLink.href = siteData?.contactInstagram || '#';
+    instaLink.querySelector('img').src = siteData?.footerInstagramIcon || 'icons/instagram.png';
+
+    // Copyright
+    document.getElementById('copyright-text').textContent = siteData?.copyright || "Phillip Geo / BareetDesign";
+
   } catch(e) {
     console.error('Error loading footer content:', e);
   }
