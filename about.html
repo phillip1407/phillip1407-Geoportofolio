@@ -8,16 +8,13 @@
   <style>
     main {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2rem;
+      justify-content: center;
       padding: 2rem;
     }
 
-    /* Ens boks-styling */
-    .content-box {
+    /* Større boks med billede til venstre og tekst til højre */
+    .about-container {
       display: flex;
-      flex-direction: row;
       width: 80%;
       background-color: #f7f7f7;
       padding: 1.5rem;
@@ -27,9 +24,9 @@
       flex-wrap: wrap;
     }
 
-    .about-box .about-image img {
-      width: 200px;
-      height: 200px;
+    .about-image img {
+      width: 250px;
+      height: 250px;
       object-fit: cover;
       border-radius: 8px;
       margin: 0;
@@ -39,27 +36,20 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
-    }
-
-    .about-text h2 {
-      margin: 0 0 1rem 0;
-      font-size: 1.8rem;
-    }
-
-    .about-extra {
-      flex-direction: column;
-      padding: 1.5rem;
       gap: 1rem;
     }
 
-    .about-extra h3 {
-      margin-top: 0;
-      margin-bottom: 0.5rem;
+    .about-text h2 {
+      margin: 0;
+      font-size: 2rem;
     }
 
-    .about-extra p {
-      margin: 0 0 1rem 0;
+    .section-block {
+      margin-bottom: 1rem;
+    }
+
+    .section-block h3 {
+      margin: 0 0 0.3rem 0;
     }
 
     footer .footer-social {
@@ -98,27 +88,29 @@
 </header>
 
 <main>
-  <!-- Øverste boks -->
-  <section class="content-box about-box">
+  <!-- Om mig samlet boks -->
+  <section class="about-container">
     <div class="about-image">
       <img id="about-image" src="images/placeholder.png" alt="Om mig">
     </div>
-    <div class="about-text" id="about-text">
+    <div class="about-text">
       <h2>Phillip Geo</h2>
-      <p>Loading...</p>
+      <div class="section-block">
+        <p id="about-text">Loading...</p>
+      </div>
+      <div class="section-block">
+        <h3>Udvalgte kunder</h3>
+        <p id="clients">Indhold kommer her...</p>
+      </div>
+      <div class="section-block">
+        <h3>Erfaring</h3>
+        <p id="experience">Indhold kommer her...</p>
+      </div>
+      <div class="section-block">
+        <h3>Uddannelse</h3>
+        <p id="education">Indhold kommer her...</p>
+      </div>
     </div>
-  </section>
-
-  <!-- Nederste boks -->
-  <section class="content-box about-extra">
-    <h3>Udvalgte kunder</h3>
-    <p id="clients">Indhold kommer her...</p>
-
-    <h3>Erfaring</h3>
-    <p id="experience">Indhold kommer her...</p>
-
-    <h3>Uddannelse</h3>
-    <p id="education">Indhold kommer her...</p>
   </section>
 </main>
 
@@ -173,7 +165,7 @@ async function loadAboutContent() {
     }
 
     document.getElementById('site-title').textContent = data.siteTitle || "Phillip Geo / BareetDesign"
-    document.getElementById('about-text').querySelector('p').innerHTML = (data.aboutText || "Om mig-indhold ikke fundet.").replace(/\n/g, '<br>')
+    document.getElementById('about-text').textContent = data.aboutText || "Om mig-indhold ikke fundet."
     document.getElementById('about-image').src = data.aboutImage || 'images/placeholder.png'
     document.getElementById('clients').innerHTML = (data.clients || "Indhold ikke fundet.").replace(/\n/g,'<br>')
     document.getElementById('experience').innerHTML = (data.experience || "Indhold ikke fundet.").replace(/\n/g,'<br>')
@@ -188,7 +180,7 @@ async function loadAboutContent() {
     document.getElementById('copyright-text').textContent = data.copyright || "Phillip Geo / BareetDesign"
   } catch(err) {
     console.error('Fejl ved indlæsning af Om mig:', err)
-    document.getElementById('about-text').querySelector('p').textContent = "Fejl ved indlæsning."
+    document.getElementById('about-text').textContent = "Fejl ved indlæsning."
     document.getElementById('clients').textContent = "Fejl ved indlæsning."
     document.getElementById('experience').textContent = "Fejl ved indlæsning."
     document.getElementById('education').textContent = "Fejl ved indlæsning."
