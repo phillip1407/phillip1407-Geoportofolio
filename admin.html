@@ -82,6 +82,16 @@
       <label>Billede URL:</label>
       <input type="text" id="aboutImage">
 
+      <hr style="margin:16px 0; border-color:var(--border);">
+
+      <h3>Nye sektioner</h3>
+      <label>Udvalgte kunder:</label>
+      <textarea id="clients" rows="4"></textarea>
+      <label>Erfaring:</label>
+      <textarea id="experience" rows="4"></textarea>
+      <label>Uddannelse:</label>
+      <textarea id="education" rows="4"></textarea>
+
       <button type="submit">Gem</button>
       <p id="site-message" class="hint"></p>
     </form>
@@ -153,7 +163,6 @@ const projectMessage = document.getElementById("project-message");
 loginBtn.addEventListener("click", async () => {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
-
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) {
     loginMessage.textContent = "Login fejlede: " + error.message;
@@ -169,7 +178,6 @@ loginBtn.addEventListener("click", async () => {
 signupBtn.addEventListener("click", async () => {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
-
   const { error } = await supabase.auth.signUp({ email, password });
   if (error) {
     loginMessage.textContent = "Oprettelse fejlede: " + error.message;
@@ -202,11 +210,16 @@ async function loadSiteContent() {
     document.getElementById("footerLinkedinIcon").value = data.footerLinkedinIcon || "";
     document.getElementById("footerInstagramIcon").value = data.footerInstagramIcon || "";
 
-    // nye felter
+    // eksisterende felter
     document.getElementById("introTitle").value = data.introTitle || "";
     document.getElementById("introText").value = data.introText || "";
     document.getElementById("aboutText").value = data.aboutText || "";
     document.getElementById("aboutImage").value = data.aboutImage || "";
+
+    // nye felter
+    document.getElementById("clients").value = data.clients || "";
+    document.getElementById("experience").value = data.experience || "";
+    document.getElementById("education").value = data.education || "";
 
     updateFooterDOM(data);
   }
@@ -247,7 +260,10 @@ siteForm.addEventListener("submit", async (e) => {
     introTitle: document.getElementById("introTitle").value,
     introText: document.getElementById("introText").value,
     aboutText: document.getElementById("aboutText").value,
-    aboutImage: document.getElementById("aboutImage").value
+    aboutImage: document.getElementById("aboutImage").value,
+    clients: document.getElementById("clients").value,
+    experience: document.getElementById("experience").value,
+    education: document.getElementById("education").value
   };
 
   const { error } = await supabase.from("site_content").update(updates).eq("id",1);
