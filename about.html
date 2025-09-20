@@ -2,6 +2,7 @@
 <html lang="da">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Om - Phillip Geo</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="geoportofolio.png" type="image/png">
@@ -10,6 +11,7 @@
       display: flex;
       justify-content: center;
       padding: 2rem;
+      margin-bottom: 2rem;
     }
 
     .about-container {
@@ -257,40 +259,23 @@ async function loadFooterData() {
       .eq('id', 1)
       .single();
     if (error) throw error;
-    if (!siteData) return;
+    if (siteData) {
+      document.getElementById('footer-mail').href = siteData.contactMail ? `mailto:${siteData.contactMail}` : '#';
+      document.querySelector('#footer-mail span').textContent = siteData.contactMail || 'Mail';
+      document.querySelector('#footer-mail img').src = siteData.footerMailIcon || 'icons/mail.png';
 
-    const mailEl = document.getElementById('footer-mail');
-    const phoneEl = document.getElementById('footer-phone');
-    const linkedinEl = document.getElementById('footer-linkedin');
-    const instaEl = document.getElementById('footer-instagram');
+      document.getElementById('footer-phone').href = siteData.contactPhone ? `tel:${siteData.contactPhone}` : '#';
+      document.querySelector('#footer-phone span').textContent = siteData.contactPhone || 'Telefon';
+      document.querySelector('#footer-phone img').src = siteData.footerPhoneIcon || 'icons/phone.png';
 
-    if (mailEl) {
-      mailEl.href = siteData.contactMail ? `mailto:${siteData.contactMail}` : '#';
-      mailEl.querySelector('span').textContent = siteData.contactMail || 'Mail';
-      mailEl.querySelector('img').src = siteData.footerMailIcon || 'icons/mail.png';
+      document.getElementById('footer-linkedin').href = siteData.contactLinkedin || '#';
+      document.getElementById('footer-linkedin img').src = siteData.footerLinkedinIcon || 'icons/linkedin.png';
+
+      document.getElementById('footer-instagram').href = siteData.contactInstagram || '#';
+      document.querySelector('#footer-instagram img').src = siteData.footerInstagramIcon || 'icons/instagram.png';
+
+      document.getElementById('copyright-text').textContent = siteData.copyright || "Phillip Geo / BareetDesign";
     }
-
-    if (phoneEl) {
-      phoneEl.href = siteData.contactPhone ? `tel:${siteData.contactPhone}` : '#';
-      phoneEl.querySelector('span').textContent = siteData.contactPhone || 'Telefon';
-      phoneEl.querySelector('img').src = siteData.footerPhoneIcon || 'icons/phone.png';
-    }
-
-    if (linkedinEl) {
-      linkedinEl.href = siteData.contactLinkedin || '#';
-      linkedinEl.querySelector('img').src = siteData.footerLinkedinIcon || 'icons/linkedin.png';
-    }
-
-    if (instaEl) {
-      instaEl.href = siteData.contactInstagram || '#';
-      instaEl.querySelector('img').src = siteData.footerInstagramIcon || 'icons/instagram.png';
-    }
-
-    const copyrightEl = document.getElementById('copyright-text');
-    if (copyrightEl) {
-      copyrightEl.textContent = siteData.copyright || "Phillip Geo / BareetDesign";
-    }
-
   } catch(e) {
     console.error('Error loading footer content:', e);
   }
