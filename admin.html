@@ -8,7 +8,7 @@
 </head>
 <body>
 <header>
-  <div class="logo"><a href="index.html" style="text-decoration:none;color:inherit;">Phillip Geo / BareetDesign</a></div>
+  <div class="logo"><a href="index.html" id="site-title" style="text-decoration:none;color:inherit;">Phillip Geo / BareetDesign</a></div>
   <nav>
     <a href="index.html">Projekter</a>
     <a href="about.html">Om</a>
@@ -21,7 +21,7 @@
   <h1>Admin Panel</h1>
 
   <div class="alert-box">
-    ⚠️ Advarsel: Hvis du ikke er admin, skal du ikke ændre noget her! [klik her](https://phillipgeo.website/index.html) for at komme tilbage!
+    ⚠️ Advarsel: Hvis du ikke er admin, skal du ikke ændre noget her! <a href="https://phillipgeo.website/index.html">Klik her</a> for at komme tilbage!
   </div>
 
   <!-- LOGIN -->
@@ -87,33 +87,34 @@
   </section>
 </main>
 
-<footer>
-  <div class="footer-social">
-    <!-- Fast sat mail -->
+<!-- ✅ Ny footer identisk med index.html -->
+<footer id="site-footer">
+  <div id="footer-left"></div>
+  <div id="footer-middle">
     <a id="footer-mail" href="mailto:phillipgeo7@gmail.com">
       <img src="icons/mail.png" class="social-icon" alt="Mail">
       <span>phillipgeo7@gmail.com</span>
     </a>
-
-    <!-- Fast sat telefon -->
     <a id="footer-phone" href="tel:+4593956339">
       <img src="icons/phone.png" class="social-icon" alt="Phone">
       <span>+45 93 95 63 39</span>
     </a>
-
-    <!-- Dynamisk LinkedIn fra Supabase -->
+  </div>
+  <div id="footer-right">
     <a id="footer-linkedin" href="#" target="_blank">
       <img src="icons/linkedin.png" class="social-icon" alt="LinkedIn">
       <span>LinkedIn</span>
     </a>
-
-    <!-- Dynamisk Instagram fra Supabase -->
     <a id="footer-instagram" href="#" target="_blank">
       <img src="icons/instagram.png" class="social-icon" alt="Instagram">
       <span>Instagram</span>
     </a>
   </div>
 </footer>
+
+<div id="copyright">
+  <p>&copy; <span id="copyright-text"></span></p>
+</div>
 
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
@@ -138,7 +139,7 @@ loginBtn.addEventListener("click", async () => {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) {
     loginMessage.textContent = "Login fejlede: " + error.message;
   } else {
@@ -154,7 +155,7 @@ signupBtn.addEventListener("click", async () => {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
-  const { data, error } = await supabase.auth.signUp({ email, password });
+  const { error } = await supabase.auth.signUp({ email, password });
   if (error) {
     loginMessage.textContent = "Oprettelse fejlede: " + error.message;
   } else {
@@ -186,24 +187,24 @@ async function loadSiteContent() {
     document.getElementById("footerLinkedinIcon").value = data.footerLinkedinIcon || "";
     document.getElementById("footerInstagramIcon").value = data.footerInstagramIcon || "";
 
-    // opdater footer-logoer
     updateFooterDOM(data);
   }
 }
 
 // OPDATER FOOTER-DOM
 function updateFooterDOM(data) {
-  document.getElementById("footer-mail").querySelector("img").src = data.footerMailIcon || "icons/mail.png";
-  document.getElementById("footer-phone").querySelector("img").src = data.footerPhoneIcon || "icons/phone.png";
-  document.getElementById("footer-linkedin").querySelector("img").src = data.footerLinkedinIcon || "icons/linkedin.png";
-  document.getElementById("footer-instagram").querySelector("img").src = data.footerInstagramIcon || "icons/instagram.png";
+  document.querySelector("#footer-mail img").src = data.footerMailIcon || "icons/mail.png";
+  document.querySelector("#footer-phone img").src = data.footerPhoneIcon || "icons/phone.png";
+  document.querySelector("#footer-linkedin img").src = data.footerLinkedinIcon || "icons/linkedin.png";
+  document.querySelector("#footer-instagram img").src = data.footerInstagramIcon || "icons/instagram.png";
 
-  document.getElementById("footer-mail").href = "mailto:" + data.contactMail;
-  document.getElementById("footer-phone").href = "tel:" + data.contactPhone;
-  document.getElementById("footer-linkedin").href = data.contactLinkedin;
-  document.getElementById("footer-instagram").href = data.contactInstagram;
+  document.getElementById("footer-mail").href = "mailto:" + (data.contactMail || "phillipgeo7@gmail.com");
+  document.getElementById("footer-phone").href = "tel:" + (data.contactPhone || "+4593956339");
+  document.getElementById("footer-linkedin").href = data.contactLinkedin || "#";
+  document.getElementById("footer-instagram").href = data.contactInstagram || "#";
 
   document.getElementById("site-title").textContent = data.siteTitle;
+  document.getElementById("copyright-text").textContent = data.copyright || "Phillip Geo / BareetDesign";
 }
 
 // GEM SITE DATA
@@ -224,7 +225,7 @@ siteForm.addEventListener("submit", async (e) => {
     footerInstagramIcon: document.getElementById("footerInstagramIcon").value,
   };
 
-  const { data, error } = await supabase.from("site_content").update(updates).eq("id",1);
+  const { error } = await supabase.from("site_content").update(updates).eq("id",1);
   if (error) {
     siteMessage.textContent = "Fejl ved gem: " + error.message;
   } else {
@@ -246,7 +247,7 @@ projectForm.addEventListener("submit", async (e) => {
     created_at: new Date()
   };
 
-  const { data, error } = await supabase.from("projects").insert([newProject]);
+  const { error } = await supabase.from("projects").insert([newProject]);
   if (error) {
     projectMessage.textContent = "Fejl ved tilføjelse: " + error.message;
   } else {
