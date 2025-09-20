@@ -13,7 +13,9 @@
       gap: 2rem;
       padding: 2rem;
     }
-    .about-box {
+
+    /* Ens boks-styling */
+    .content-box {
       display: flex;
       flex-direction: row;
       width: 80%;
@@ -22,48 +24,70 @@
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       gap: 1.5rem;
+      flex-wrap: wrap;
     }
-    .about-content {
-      display: flex;
-      flex-direction: row;
-      width: 100%;
-      gap: 1.5rem;
-    }
-    .about-image img {
+
+    .about-box .about-image img {
       width: 200px;
       height: 200px;
       object-fit: cover;
       border-radius: 8px;
-      margin: 0; /* helt oppe */
+      margin: 0;
     }
+
     .about-text {
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
     }
+
     .about-text h2 {
       margin: 0 0 1rem 0;
       font-size: 1.8rem;
     }
+
     .about-extra {
-      width: 80%;
-      background-color: #f7f7f7;
+      flex-direction: column;
       padding: 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      gap: 1rem;
     }
+
     .about-extra h3 {
       margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+
+    .about-extra p {
+      margin: 0 0 1rem 0;
+    }
+
+    footer .footer-social {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+
+    footer .footer-social a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    footer .footer-social img {
+      width: 24px;
+      height: 24px;
     }
   </style>
 </head>
 <body>
 <header>
   <div class="logo">
-    <a href="index.html" id="site-title" style="text-decoration:none;color:inherit;">
-      Phillip Geo / BareetDesign
-    </a>
+    <a href="index.html" id="site-title" style="text-decoration:none;color:inherit;">Phillip Geo / BareetDesign</a>
   </div>
   <nav>
     <a href="index.html">Projekter</a>
@@ -75,20 +99,18 @@
 
 <main>
   <!-- Øverste boks -->
-  <section class="about-box">
-    <div class="about-content">
-      <div class="about-image">
-        <img id="about-image" src="images/placeholder.png" alt="Om mig">
-      </div>
-      <div class="about-text" id="about-text">
-        <h2>Phillip Geo</h2>
-        <p>Loading...</p>
-      </div>
+  <section class="content-box about-box">
+    <div class="about-image">
+      <img id="about-image" src="images/placeholder.png" alt="Om mig">
+    </div>
+    <div class="about-text" id="about-text">
+      <h2>Phillip Geo</h2>
+      <p>Loading...</p>
     </div>
   </section>
 
   <!-- Nederste boks -->
-  <section class="about-extra">
+  <section class="content-box about-extra">
     <h3>Udvalgte kunder</h3>
     <p id="clients">Indhold kommer her...</p>
 
@@ -103,22 +125,22 @@
 <footer>
   <div class="footer-social">
     <a id="footer-mail" href="mailto:phillipgeo7@gmail.com">
-      <img src="icons/mail.png" class="social-icon" alt="Mail">
+      <img id="footer-mail-icon" src="icons/mail.png" class="social-icon" alt="Mail">
       <span>phillipgeo7@gmail.com</span>
     </a>
 
     <a id="footer-phone" href="tel:+4593956339">
-      <img src="icons/phone.png" class="social-icon" alt="Phone">
+      <img id="footer-phone-icon" src="icons/phone.png" class="social-icon" alt="Phone">
       <span>+45 93 95 63 39</span>
     </a>
 
     <a id="footer-linkedin" href="#" target="_blank">
-      <img src="icons/linkedin.png" class="social-icon" alt="LinkedIn">
+      <img id="footer-linkedin-icon" src="icons/linkedin.png" class="social-icon" alt="LinkedIn">
       <span>LinkedIn</span>
     </a>
 
     <a id="footer-instagram" href="#" target="_blank">
-      <img src="icons/instagram.png" class="social-icon" alt="Instagram">
+      <img id="footer-instagram-icon" src="icons/instagram.png" class="social-icon" alt="Instagram">
       <span>Instagram</span>
     </a>
   </div>
@@ -150,18 +172,19 @@ async function loadAboutContent() {
       return
     }
 
-    console.log('Supabase data:', data)
-
     document.getElementById('site-title').textContent = data.siteTitle || "Phillip Geo / BareetDesign"
     document.getElementById('about-text').querySelector('p').innerHTML = (data.aboutText || "Om mig-indhold ikke fundet.").replace(/\n/g, '<br>')
     document.getElementById('about-image').src = data.aboutImage || 'images/placeholder.png'
     document.getElementById('clients').innerHTML = (data.clients || "Indhold ikke fundet.").replace(/\n/g,'<br>')
     document.getElementById('experience').innerHTML = (data.experience || "Indhold ikke fundet.").replace(/\n/g,'<br>')
     document.getElementById('education').innerHTML = (data.education || "Indhold ikke fundet.").replace(/\n/g,'<br>')
+
+    // Footer links og ikoner
     document.getElementById('footer-linkedin').href = data.contactLinkedin || '#'
     document.getElementById('footer-instagram').href = data.contactInstagram || '#'
-    document.querySelector('#footer-linkedin img').src = data.footerLinkedinIcon || 'icons/linkedin.png'
-    document.querySelector('#footer-instagram img').src = data.footerInstagramIcon || 'icons/instagram.png'
+    document.getElementById('footer-linkedin-icon').src = data.footerLinkedinIcon || 'icons/linkedin.png'
+    document.getElementById('footer-instagram-icon').src = data.footerInstagramIcon || 'icons/instagram.png'
+
     document.getElementById('copyright-text').textContent = data.copyright || "Phillip Geo / BareetDesign"
   } catch(err) {
     console.error('Fejl ved indlæsning af Om mig:', err)
