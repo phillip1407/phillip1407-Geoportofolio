@@ -22,34 +22,36 @@
 </header>
 
 <main>
-  <section class="grid">
-    <div id="about-text" style="padding:24px; font-size:16px;">
-      <p>Loading...</p>
+  <!-- Om mig boks -->
+  <section class="about-box">
+    <div class="about-content">
+      <div class="about-image">
+        <img id="about-image" src="images/placeholder.png" alt="Om mig">
+      </div>
+      <div class="about-text" id="about-text">
+        <p>Loading...</p>
+      </div>
     </div>
   </section>
 </main>
 
 <footer>
   <div class="footer-social">
-    <!-- Fast sat mail -->
     <a id="footer-mail" href="mailto:phillipgeo7@gmail.com">
       <img src="icons/mail.png" class="social-icon" alt="Mail">
       <span>phillipgeo7@gmail.com</span>
     </a>
 
-    <!-- Fast sat telefon -->
     <a id="footer-phone" href="tel:+4593956339">
       <img src="icons/phone.png" class="social-icon" alt="Phone">
       <span>+45 93 95 63 39</span>
     </a>
 
-    <!-- Dynamisk LinkedIn fra Supabase -->
     <a id="footer-linkedin" href="#" target="_blank">
       <img src="icons/linkedin.png" class="social-icon" alt="LinkedIn">
       <span>LinkedIn</span>
     </a>
 
-    <!-- Dynamisk Instagram fra Supabase -->
     <a id="footer-instagram" href="#" target="_blank">
       <img src="icons/instagram.png" class="social-icon" alt="Instagram">
       <span>Instagram</span>
@@ -57,7 +59,6 @@
   </div>
 </footer>
 
-<!-- Copyright adskilt -->
 <div id="copyright">
   <p>&copy; <span id="copyright-text"></span></p>
 </div>
@@ -83,14 +84,17 @@ async function loadSiteData(){
       // Titel
       document.getElementById('site-title').textContent = siteData.siteTitle
 
-      // Tekst til "Om"
+      // Om mig tekst
       document.getElementById('about-text').innerHTML = `<p>${siteData.about}</p>`
 
-      // LinkedIn & Instagram links fra DB
+      // Om mig billede
+      document.getElementById('about-image').src = siteData.aboutImage || 'images/placeholder.png'
+
+      // LinkedIn & Instagram links
       document.getElementById('footer-linkedin').href = siteData.contactLinkedin || '#'
       document.getElementById('footer-instagram').href = siteData.contactInstagram || '#'
 
-      // Opdater logoer fra DB hvis de findes
+      // Footer ikoner
       document.querySelector('#footer-linkedin img').src = siteData.footerLinkedinIcon || 'icons/linkedin.png'
       document.querySelector('#footer-instagram img').src = siteData.footerInstagramIcon || 'icons/instagram.png'
 
