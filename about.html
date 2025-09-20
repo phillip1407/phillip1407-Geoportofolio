@@ -12,14 +12,14 @@
       padding: 2rem;
     }
 
-    /* Container med billede + kategorier + outline */
+    /* Container med billedet + kategorier til venstre, tekst til højre */
     .about-container {
       display: flex;
       width: 80%;
-      background-color: #fafafa; /* match intro-box */
+      background-color: #fafafa;
       padding: 1.5rem;
-      border-radius: 8px;
-      border: 1px solid #ddd; /* outline */
+      border-radius: 12px;
+      border: 1px solid var(--border); /* outline som intro-boks */
       box-shadow: 0 8px 16px rgba(0,0,0,0.08); /* let skygge */
       gap: 2rem;
       flex-wrap: wrap;
@@ -39,6 +39,8 @@
       height: 300px;
       object-fit: cover;
       border-radius: 8px;
+      border: 2px solid var(--border); /* outline om billedet */
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .section-block {
@@ -50,7 +52,7 @@
       margin: 0 0 0.3rem 0;
     }
 
-    /* Divider linje mellem venstre og højre */
+    /* Vertikal linje mellem venstre og højre */
     .divider {
       width: 1px;
       background-color: #ddd;
