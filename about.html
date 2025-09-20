@@ -36,15 +36,15 @@
   </section>
 
   <!-- Nye sektioner -->
-  <section class="about-extra about-box">
+  <section class="about-box about-extra">
     <h3>Udvalgte kunder</h3>
-    <p id="clients">Indhold kommer her...</p>
+    <p id="clients">Loading...</p>
 
     <h3>Erfaring</h3>
-    <p id="experience">Indhold kommer her...</p>
+    <p id="experience">Loading...</p>
 
     <h3>Uddannelse</h3>
-    <p id="education">Indhold kommer her...</p>
+    <p id="education">Loading...</p>
   </section>
 </main>
 
@@ -81,6 +81,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
 const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co"
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU"
+
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
 async function loadAboutContent() {
@@ -93,39 +94,42 @@ async function loadAboutContent() {
 
     if (error) throw error
 
-    if (data) {
-      // Side titel
-      document.getElementById('site-title').textContent = data.siteTitle || "Phillip Geo / BareetDesign"
+    if (!data) throw new Error("Ingen data fundet i 'site_content' med id=1.")
 
-      // Om mig tekst med afsnit
-      document.getElementById('about-text').innerHTML = (data.aboutText || "Om mig-indhold ikke fundet.").replace(/\n/g, '<br>')
+    // Side titel
+    document.getElementById('site-title').textContent = data.siteTitle || "Phillip Geo / BareetDesign"
 
-      // Om mig billede
-      document.getElementById('about-image').src = data.aboutImage || 'images/placeholder.png'
+    // Om mig tekst med afsnit
+    document.getElementById('about-text').innerHTML = (data.aboutText || "Om mig-indhold ikke fundet.").replace(/\n/g, '<br>')
 
-      // Nye sektioner med afsnit
-      document.getElementById('clients').innerHTML = (data.clients || "Indhold ikke fundet.").replace(/\n/g,'<br>')
-      document.getElementById('experience').innerHTML = (data.experience || "Indhold ikke fundet.").replace(/\n/g,'<br>')
-      document.getElementById('education').innerHTML = (data.education || "Indhold ikke fundet.").replace(/\n/g,'<br>')
+    // Om mig billede
+    document.getElementById('about-image').src = data.aboutImage || 'images/placeholder.png'
 
-      // LinkedIn & Instagram links
-      document.getElementById('footer-linkedin').href = data.contactLinkedin || '#'
-      document.getElementById('footer-instagram').href = data.contactInstagram || '#'
+    // Nye sektioner med afsnit
+    document.getElementById('clients').innerHTML = (data.clients || "Indhold ikke fundet.").replace(/\n/g,'<br>')
+    document.getElementById('experience').innerHTML = (data.experience || "Indhold ikke fundet.").replace(/\n/g,'<br>')
+    document.getElementById('education').innerHTML = (data.education || "Indhold ikke fundet.").replace(/\n/g,'<br>')
 
-      // Footer ikoner
-      document.querySelector('#footer-linkedin img').src = data.footerLinkedinIcon || 'icons/linkedin.png'
-      document.querySelector('#footer-instagram img').src = data.footerInstagramIcon || 'icons/instagram.png'
+    // LinkedIn & Instagram links
+    document.getElementById('footer-linkedin').href = data.contactLinkedin || '#'
+    document.getElementById('footer-instagram').href = data.contactInstagram || '#'
 
-      // Copyright
-      document.getElementById('copyright-text').textContent = data.copyright || "Phillip Geo / BareetDesign"
-    }
+    // Footer ikoner
+    document.querySelector('#footer-linkedin img').src = data.footerLinkedinIcon || 'icons/linkedin.png'
+    document.querySelector('#footer-instagram img').src = data.footerInstagramIcon || 'icons/instagram.png'
+
+    // Copyright
+    document.getElementById('copyright-text').textContent = data.copyright || "Phillip Geo / BareetDesign"
+
   } catch(err) {
     console.error('Fejl ved indlæsning af Om mig:', err)
-    document.getElementById('about-text').innerHTML = `<p>Fejl ved indlæsning.</p>`
+    document.getElementById('about-text').innerHTML = `<p>Fejl ved indlæsning: ${err.message}</p>`
+    document.getElementById('clients').textContent = "Fejl ved indlæsning."
+    document.getElementById('experience').textContent = "Fejl ved indlæsning."
+    document.getElementById('education').textContent = "Fejl ved indlæsning."
   }
 }
 
-// Kør funktionen
 loadAboutContent()
 </script>
 </body>
