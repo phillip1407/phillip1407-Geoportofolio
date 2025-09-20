@@ -12,7 +12,7 @@
       padding: 2rem;
     }
 
-    /* Om-boks container med billede til venstre, tekst og sektioner til højre */
+    /* Container med billedet + kategorier til venstre, tekst til højre */
     .about-container {
       display: flex;
       width: 80%;
@@ -24,33 +24,49 @@
       flex-wrap: wrap;
     }
 
+    /* Venstre side: billede + kategorier */
+    .about-left {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      flex: 0 0 250px;
+      align-items: center;
+    }
+
     .about-image img {
       width: 250px;
       height: 250px;
       object-fit: cover;
       border-radius: 8px;
-      margin: 0;
-      flex-shrink: 0;
     }
 
-    .about-text {
+    .section-block {
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    .section-block h3 {
+      margin: 0 0 0.3rem 0;
+    }
+
+    /* Vertikal linje mellem venstre og højre */
+    .divider {
+      width: 1px;
+      background-color: #ddd;
+      margin: 0 1.5rem;
+    }
+
+    /* Højre side: tekst */
+    .about-right {
       flex: 1;
       display: flex;
       flex-direction: column;
       gap: 1rem;
     }
 
-    .about-text h2 {
+    .about-right h2 {
       margin: 0;
       font-size: 2rem;
-    }
-
-    .section-block {
-      margin-bottom: 1rem;
-    }
-
-    .section-block h3 {
-      margin: 0 0 0.3rem 0;
     }
 
     /* Footer ikoner */
@@ -75,26 +91,26 @@
       height: 24px;
     }
 
-    /* Responsive for mobil */
+    /* Responsive mobil */
     @media (max-width: 768px) {
       .about-container {
         flex-direction: column;
         align-items: center;
       }
 
-      .about-image img {
-        width: 200px;
-        height: 200px;
-      }
-
-      .about-text {
+      .about-left, .about-right {
         width: 100%;
         align-items: center;
         text-align: center;
       }
 
-      .section-block {
-        width: 100%;
+      .divider {
+        display: none;
+      }
+
+      .about-image img {
+        width: 200px;
+        height: 200px;
       }
     }
   </style>
@@ -114,13 +130,10 @@
 
 <main>
   <section class="about-container">
-    <div class="about-image">
-      <img id="about-image" src="images/placeholder.png" alt="Om mig">
-    </div>
-    <div class="about-text">
-      <h2>Phillip Geo</h2>
-      <div class="section-block">
-        <p id="about-text">Loading...</p>
+    <!-- Venstre: billede + kategorier -->
+    <div class="about-left">
+      <div class="about-image">
+        <img id="about-image" src="images/placeholder.png" alt="Om mig">
       </div>
       <div class="section-block">
         <h3>Udvalgte kunder</h3>
@@ -134,6 +147,15 @@
         <h3>Uddannelse</h3>
         <p id="education">Indhold kommer her...</p>
       </div>
+    </div>
+
+    <!-- Divider linje -->
+    <div class="divider"></div>
+
+    <!-- Højre: tekst -->
+    <div class="about-right">
+      <h2>Phillip Geo</h2>
+      <p id="about-text">Loading...</p>
     </div>
   </section>
 </main>
@@ -183,10 +205,7 @@ async function loadAboutContent() {
       .single()
 
     if (error) throw error
-    if (!data) {
-      console.error('Ingen data fundet! Tjek at id = 1 eksisterer.')
-      return
-    }
+    if (!data) return
 
     document.getElementById('site-title').textContent = data.siteTitle || "Phillip Geo / BareetDesign"
     document.getElementById('about-text').textContent = data.aboutText || "Om mig-indhold ikke fundet."
@@ -194,13 +213,10 @@ async function loadAboutContent() {
     document.getElementById('clients').innerHTML = (data.clients || "Indhold ikke fundet.").replace(/\n/g,'<br>')
     document.getElementById('experience').innerHTML = (data.experience || "Indhold ikke fundet.").replace(/\n/g,'<br>')
     document.getElementById('education').innerHTML = (data.education || "Indhold ikke fundet.").replace(/\n/g,'<br>')
-
-    // Footer links og ikoner
     document.getElementById('footer-linkedin').href = data.contactLinkedin || '#'
     document.getElementById('footer-instagram').href = data.contactInstagram || '#'
     document.getElementById('footer-linkedin-icon').src = data.footerLinkedinIcon || 'icons/linkedin.png'
     document.getElementById('footer-instagram-icon').src = data.footerInstagramIcon || 'icons/instagram.png'
-
     document.getElementById('copyright-text').textContent = data.copyright || "Phillip Geo / BareetDesign"
   } catch(err) {
     console.error('Fejl ved indlæsning af Om mig:', err)
