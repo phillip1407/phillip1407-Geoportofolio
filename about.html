@@ -6,40 +6,39 @@
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="geoportofolio.png" type="image/png">
   <style>
+    /* Kun unik CSS til Om-siden */
     main {
       display: flex;
       justify-content: center;
       padding: 2rem;
     }
 
-    /* Container med billedet + kategorier til venstre, tekst til højre */
     .about-container {
       display: flex;
       width: 80%;
       background-color: #fafafa;
       padding: 1.5rem;
       border-radius: 12px;
-      border: 1px solid var(--border); /* outline som intro-boks */
-      box-shadow: 0 8px 16px rgba(0,0,0,0.08); /* let skygge */
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.08);
       gap: 2rem;
       flex-wrap: wrap;
     }
 
-    /* Venstre side: billede + kategorier */
     .about-left {
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      flex: 0 0 300px; /* bredere venstre side */
+      flex: 0 0 300px;
       align-items: center;
     }
 
     .about-left .about-image img {
-      width: 300px; /* større billede */
+      width: 300px;
       height: 300px;
       object-fit: cover;
       border-radius: 8px;
-      border: 2px solid var(--border); /* outline om billedet */
+      border: 2px solid var(--border);
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       transition: transform 0.3s ease;
     }
@@ -57,14 +56,12 @@
       margin: 0 0 0.3rem 0;
     }
 
-    /* Vertikal linje mellem venstre og højre */
     .divider {
       width: 1px;
       background-color: #ddd;
       margin: 0 1.5rem;
     }
 
-    /* Højre side: tekst */
     .about-right {
       flex: 1;
       display: flex;
@@ -77,62 +74,25 @@
       font-size: 2rem;
     }
 
-    /* Behold linjeskift og afsnit i teksten */
     .about-right p,
     .section-block p {
       white-space: pre-line;
     }
 
-    /* Footer ikoner */
-    footer {
-      border-top:1px solid var(--border);
-      padding:22px 28px;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      font-size:14px;
-      color:var(--muted);
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    footer .footer-social {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-
-    footer .footer-social a {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    footer .footer-social img {
-      width: 24px;
-      height: 24px;
-    }
-
-    /* Responsive mobil */
+    /* Mobilresponsivt layout */
     @media (max-width: 768px) {
       .about-container {
         flex-direction: column;
         align-items: center;
       }
-
       .about-left, .about-right {
         width: 100%;
         align-items: center;
         text-align: center;
       }
-
       .divider {
         display: none;
       }
-
       .about-left .about-image img {
         width: 250px;
         height: 350px;
@@ -155,7 +115,6 @@
 
 <main>
   <section class="about-container">
-    <!-- Venstre: billede + kategorier -->
     <div class="about-left">
       <div class="about-image">
         <img id="about-image" src="images/placeholder.png" alt="Om mig">
@@ -174,10 +133,8 @@
       </div>
     </div>
 
-    <!-- Divider linje -->
     <div class="divider"></div>
 
-    <!-- Højre: tekst -->
     <div class="about-right">
       <h2>Phillip Geo</h2>
       <p id="about-text">Loading...</p>
@@ -185,28 +142,20 @@
   </section>
 </main>
 
-<!-- Footer -->
 <footer>
   <div class="footer-social">
-    <!-- Mail -->
     <a id="footer-mail" href="mailto:phillipgeo7@gmail.com">
       <img src="icons/mail.png" class="social-icon" alt="Mail">
       <span>phillipgeo7@gmail.com</span>
     </a>
-
-    <!-- Telefon -->
     <a id="footer-phone" href="tel:+4593956339">
       <img src="icons/phone.png" class="social-icon" alt="Phone">
       <span>+45 93 95 63 39</span>
     </a>
-
-    <!-- LinkedIn -->
     <a id="footer-linkedin" href="#" target="_blank">
       <img src="icons/linkedin.png" class="social-icon" alt="LinkedIn">
       <span>LinkedIn</span>
     </a>
-
-    <!-- Instagram -->
     <a id="footer-instagram" href="#" target="_blank">
       <img src="icons/instagram.png" class="social-icon" alt="Instagram">
       <span>Instagram</span>
@@ -214,7 +163,6 @@
   </div>
 </footer>
 
-<!-- Copyright -->
 <div id="copyright">
   <p>&copy; <span id="copyright-text"></span></p>
 </div>
@@ -222,61 +170,11 @@
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
-const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU";
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// Hent footer-data
-async function loadFooterData() {
-  try {
-    const { data: siteData, error } = await supabase
-      .from('site_content')
-      .select('*')
-      .eq('id', 1)
-      .single();
-
-    if (error) throw error;
-
-    if (siteData) {
-      // Mail
-      document.getElementById('footer-mail').href = siteData.contactMail ? `mailto:${siteData.contactMail}` : '#';
-      document.querySelector('#footer-mail span').textContent = siteData.contactMail || 'Mail';
-      document.querySelector('#footer-mail img').src = siteData.footerMailIcon || 'icons/mail.png';
-
-      // Telefon
-      document.getElementById('footer-phone').href = siteData.contactPhone ? `tel:${siteData.contactPhone}` : '#';
-      document.querySelector('#footer-phone span').textContent = siteData.contactPhone || 'Telefon';
-      document.querySelector('#footer-phone img').src = siteData.footerPhoneIcon || 'icons/phone.png';
-
-      // LinkedIn
-      document.getElementById('footer-linkedin').href = siteData.contactLinkedin || '#';
-      document.querySelector('#footer-linkedin img').src = siteData.footerLinkedinIcon || 'icons/linkedin.png';
-
-      // Instagram
-      document.getElementById('footer-instagram').href = siteData.contactInstagram || '#';
-      document.querySelector('#footer-instagram img').src = siteData.footerInstagramIcon || 'icons/instagram.png';
-
-      // Copyright
-      document.getElementById('copyright-text').textContent = siteData.copyright || "Phillip Geo / BareetDesign";
-    }
-  } catch (e) {
-    console.error('Error loading footer content:', e);
-  }
-}
-
-loadFooterData();
-</script>
-
-  
-<script type="module">
-import { createClient } from 'https://esm.sh/@supabase/supabase-js'
-
 const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co"
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU"
+const SUPABASE_KEY = "YOUR_SUPABASE_KEY_HERE"
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
-// Load "Om mig" indhold
 async function loadAboutContent() {
   try {
     const { data, error } = await supabase
@@ -284,7 +182,6 @@ async function loadAboutContent() {
       .select('*')
       .eq('id', 1)
       .single()
-
     if (error) throw error
     if (!data) return
 
@@ -296,45 +193,11 @@ async function loadAboutContent() {
     document.getElementById('education').innerHTML = (data.education || "Indhold ikke fundet.").replace(/\n/g,'<br>')
     document.getElementById('footer-linkedin').href = data.contactLinkedin || '#'
     document.getElementById('footer-instagram').href = data.contactInstagram || '#'
-    document.getElementById('footer-linkedin-icon').src = data.footerLinkedinIcon || 'icons/linkedin.png'
-    document.getElementById('footer-instagram-icon').src = data.footerInstagramIcon || 'icons/instagram.png'
     document.getElementById('copyright-text').textContent = data.copyright || "Phillip Geo / BareetDesign"
   } catch(err) {
     console.error('Fejl ved indlæsning af Om mig:', err)
   }
 }
 
-// Hent footer-intro og site title
-async function loadSiteData() {
-  try {
-    const { data: siteData, error } = await supabase
-      .from('site_content')
-      .select('*')
-      .eq('id', 1)
-      .single();
-
-    if (error) throw error;
-
-    if (siteData) {
-      // Titel
-      document.getElementById('site-title').textContent = siteData.siteTitle;
-
-      // Intro tekst i footer
-      const footerIntro = document.getElementById('footer-intro');
-      if (footerIntro) {
-        footerIntro.innerHTML = `
-          <h2>${siteData.introTitle}</h2>
-          <p>${siteData.introText}</p>
-        `;
-      }
-    }
-  } catch(err) {
-    console.error('Fejl ved indlæsning af footer-intro:', err);
-  }
-}
-
-loadAboutContent();
-loadSiteData();
+loadAboutContent()
 </script>
-</body>
-</html>
