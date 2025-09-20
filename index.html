@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Phillip Geo / BareetDesign</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="geoportofolio.png" type="image/png">
@@ -9,9 +10,7 @@
 <body>
 <header>
   <div class="logo">
-    <a href="index.html" id="site-title" style="text-decoration:none;color:inherit;">
-      Phillip Geo / BareetDesign
-    </a>
+    <a href="index.html" id="site-title">Phillip Geo / BareetDesign</a>
   </div>
   <nav>
     <a href="index.html" class="active">Projekter</a>
@@ -36,25 +35,18 @@
 
 <footer>
   <div class="footer-social">
-    <!-- Mail -->
     <a id="footer-mail" href="mailto:phillipgeo7@gmail.com">
       <img src="icons/mail.png" class="social-icon" alt="Mail">
       <span>phillipgeo7@gmail.com</span>
     </a>
-
-    <!-- Telefon -->
     <a id="footer-phone" href="tel:+4593956339">
       <img src="icons/phone.png" class="social-icon" alt="Phone">
       <span>+45 93 95 63 39</span>
     </a>
-
-    <!-- LinkedIn -->
     <a id="footer-linkedin" href="#" target="_blank">
       <img src="icons/linkedin.png" class="social-icon" alt="LinkedIn">
       <span>LinkedIn</span>
     </a>
-
-    <!-- Instagram -->
     <a id="footer-instagram" href="#" target="_blank">
       <img src="icons/instagram.png" class="social-icon" alt="Instagram">
       <span>Instagram</span>
@@ -62,7 +54,6 @@
   </div>
 </footer>
 
-<!-- Copyright -->
 <div id="copyright">
   <p>&copy; <span id="copyright-text"></span></p>
 </div>
@@ -86,10 +77,8 @@ async function loadSiteData() {
     if (error) throw error;
 
     if (siteData) {
-      // Titel
       document.getElementById('site-title').textContent = siteData.siteTitle;
 
-      // Intro tekst over projekter
       const introSection = document.getElementById('intro-text');
       if (introSection) {
         introSection.innerHTML = `
@@ -98,25 +87,20 @@ async function loadSiteData() {
         `;
       }
 
-      // Mail
       document.getElementById('footer-mail').href = siteData.contactMail ? `mailto:${siteData.contactMail}` : '#';
       document.querySelector('#footer-mail span').textContent = siteData.contactMail || 'Mail';
       document.querySelector('#footer-mail img').src = siteData.footerMailIcon || 'icons/mail.png';
 
-      // Telefon
       document.getElementById('footer-phone').href = siteData.contactPhone ? `tel:${siteData.contactPhone}` : '#';
       document.querySelector('#footer-phone span').textContent = siteData.contactPhone || 'Telefon';
       document.querySelector('#footer-phone img').src = siteData.footerPhoneIcon || 'icons/phone.png';
 
-      // LinkedIn
       document.getElementById('footer-linkedin').href = siteData.contactLinkedin || '#';
       document.querySelector('#footer-linkedin img').src = siteData.footerLinkedinIcon || 'icons/linkedin.png';
 
-      // Instagram
       document.getElementById('footer-instagram').href = siteData.contactInstagram || '#';
       document.querySelector('#footer-instagram img').src = siteData.footerInstagramIcon || 'icons/instagram.png';
 
-      // Copyright
       document.getElementById('copyright-text').textContent = siteData.copyright || "Phillip Geo / BareetDesign";
     }
   } catch (e) {
