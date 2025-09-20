@@ -66,6 +66,22 @@
       <label>Instagram Icon URL:</label>
       <input type="text" id="footerInstagramIcon">
 
+      <hr style="margin:16px 0; border-color:var(--border);">
+
+      <h3>Intro tekst over projekter</h3>
+      <label>Intro Titel:</label>
+      <input type="text" id="introTitle">
+      <label>Intro Tekst:</label>
+      <textarea id="introText" rows="4"></textarea>
+
+      <hr style="margin:16px 0; border-color:var(--border);">
+
+      <h3>Om mig boks</h3>
+      <label>Om mig tekst:</label>
+      <textarea id="aboutText" rows="5"></textarea>
+      <label>Billede URL:</label>
+      <input type="text" id="aboutImage">
+
       <button type="submit">Gem</button>
       <p id="site-message" class="hint"></p>
     </form>
@@ -87,7 +103,6 @@
   </section>
 </main>
 
-<!-- ✅ Ny footer identisk med index.html -->
 <footer id="site-footer">
   <div id="footer-left"></div>
   <div id="footer-middle">
@@ -175,17 +190,23 @@ async function loadSiteContent() {
   const { data, error } = await supabase.from("site_content").select("*").eq("id",1).single();
   if(error) return console.error(error);
   if(data){
+    // eksisterende felter
     document.getElementById("siteTitle").value = data.siteTitle || "";
     document.getElementById("footerLeft").value = data.footerLeft || "";
     document.getElementById("contactMail").value = data.contactMail || "";
     document.getElementById("contactPhone").value = data.contactPhone || "";
     document.getElementById("contactLinkedin").value = data.contactLinkedin || "";
     document.getElementById("contactInstagram").value = data.contactInstagram || "";
-
     document.getElementById("footerMailIcon").value = data.footerMailIcon || "";
     document.getElementById("footerPhoneIcon").value = data.footerPhoneIcon || "";
     document.getElementById("footerLinkedinIcon").value = data.footerLinkedinIcon || "";
     document.getElementById("footerInstagramIcon").value = data.footerInstagramIcon || "";
+
+    // nye felter
+    document.getElementById("introTitle").value = data.introTitle || "";
+    document.getElementById("introText").value = data.introText || "";
+    document.getElementById("aboutText").value = data.aboutText || "";
+    document.getElementById("aboutImage").value = data.aboutImage || "";
 
     updateFooterDOM(data);
   }
@@ -223,6 +244,10 @@ siteForm.addEventListener("submit", async (e) => {
     footerPhoneIcon: document.getElementById("footerPhoneIcon").value,
     footerLinkedinIcon: document.getElementById("footerLinkedinIcon").value,
     footerInstagramIcon: document.getElementById("footerInstagramIcon").value,
+    introTitle: document.getElementById("introTitle").value,
+    introText: document.getElementById("introText").value,
+    aboutText: document.getElementById("aboutText").value,
+    aboutImage: document.getElementById("aboutImage").value
   };
 
   const { error } = await supabase.from("site_content").update(updates).eq("id",1);
