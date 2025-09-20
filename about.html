@@ -85,7 +85,7 @@ async function loadSiteData(){
       document.getElementById('site-title').textContent = siteData.siteTitle
 
       // Om mig tekst
-      document.getElementById('about-text').innerHTML = `<p>${siteData.about}</p>`
+      document.getElementById('about-text').innerHTML = `<p>${siteData.aboutText}</p>`
 
       // Om mig billede
       document.getElementById('about-image').src = siteData.aboutImage || 'images/placeholder.png'
