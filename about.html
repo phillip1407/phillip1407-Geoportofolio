@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
   <meta charset="UTF-8">
   <title>Om - Phillip Geo</title>
@@ -32,6 +32,18 @@
         <p>Loading...</p>
       </div>
     </div>
+  </section>
+
+  <!-- Nye sektioner -->
+  <section class="about-extra">
+    <h3>Udvalgte kunder</h3>
+    <p id="clients">Indhold kommer her...</p>
+
+    <h3>Erfaring</h3>
+    <p id="experience">Indhold kommer her...</p>
+
+    <h3>Uddannelse</h3>
+    <p id="education">Indhold kommer her...</p>
   </section>
 </main>
 
@@ -68,45 +80,44 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
 const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co"
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU"
+
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
-async function loadSiteData(){
+async function loadAboutContent() {
   try {
-    const { data: siteData, error } = await supabase
+    const { data, error } = await supabase
       .from('site_content')
-      .select('*')
-      .eq('id',1)
+      .select('*') // Hent alle kolonner
+      .eq('id', 1)
       .single()
 
-    if(error) throw error
+    if (error) throw error
 
-    if(siteData){
-      // Titel
-      document.getElementById('site-title').textContent = siteData.siteTitle
-
-      // Om mig tekst
-      document.getElementById('about-text').innerHTML = `<p>${siteData.about}</p>`
-
-      // Om mig billede
-      document.getElementById('about-image').src = siteData.aboutImage || 'images/placeholder.png'
-
-      // LinkedIn & Instagram links
-      document.getElementById('footer-linkedin').href = siteData.contactLinkedin || '#'
-      document.getElementById('footer-instagram').href = siteData.contactInstagram || '#'
-
-      // Footer ikoner
-      document.querySelector('#footer-linkedin img').src = siteData.footerLinkedinIcon || 'icons/linkedin.png'
-      document.querySelector('#footer-instagram img').src = siteData.footerInstagramIcon || 'icons/instagram.png'
-
-      // Copyright
-      document.getElementById('copyright-text').textContent = siteData.copyright || "Phillip Geo / BareetDesign"
+    if (!data) {
+      console.error('Ingen data fundet! Tjek at id = 1 eksisterer.')
+      return
     }
-  } catch(e){
-    console.error('Error loading site content:', e)
+
+    console.log('Supabase data:', data) // DEBUG: tjek i konsol
+
+    document.getElementById('site-title').textContent = data.siteTitle || "Phillip Geo / BareetDesign"
+    document.getElementById('about-text').innerHTML = (data.aboutText || "Om mig-indhold ikke fundet.").replace(/\n/g, '<br>')
+    document.getElementById('about-image').src = data.aboutImage || 'images/placeholder.png'
+    document.getElementById('clients').innerHTML = (data.clients || "Indhold ikke fundet.").replace(/\n/g,'<br>')
+    document.getElementById('experience').innerHTML = (data.experience || "Indhold ikke fundet.").replace(/\n/g,'<br>')
+    document.getElementById('education').innerHTML = (data.education || "Indhold ikke fundet.").replace(/\n/g,'<br>')
+    document.getElementById('footer-linkedin').href = data.contactLinkedin || '#'
+    document.getElementById('footer-instagram').href = data.contactInstagram || '#'
+    document.querySelector('#footer-linkedin img').src = data.footerLinkedinIcon || 'icons/linkedin.png'
+    document.querySelector('#footer-instagram img').src = data.footerInstagramIcon || 'icons/instagram.png'
+    document.getElementById('copyright-text').textContent = data.copyright || "Phillip Geo / BareetDesign"
+  } catch(err) {
+    console.error('Fejl ved indlæsning af Om mig:', err)
+    document.getElementById('about-text').innerHTML = `<p>Fejl ved indlæsning. Se konsol for detaljer.</p>`
   }
 }
 
-loadSiteData()
+loadAboutContent()
 </script>
 </body>
 </html>
