@@ -84,6 +84,11 @@
       background-color: #1a2236;
     }
 
+    #form-status {
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
     @media (max-width: 768px) {
       .contact-container {
         flex-direction: column;
@@ -127,7 +132,7 @@
     <!-- Højre side -->
     <div class="contact-form">
       <h2>Skriv en besked</h2>
-      <form>
+      <form id="contact-form">
         <div>
           <label for="name">Navn</label>
           <input type="text" id="name" name="name" required>
@@ -146,6 +151,7 @@
         </div>
         <button type="submit">Send besked</button>
       </form>
+      <p id="form-status"></p>
     </div>
   </section>
 </main>
@@ -182,6 +188,7 @@ const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// ----- Footer -----
 async function loadFooterData() {
   try {
     const { data: siteData, error } = await supabase
@@ -220,8 +227,36 @@ async function loadFooterData() {
     console.error('Error loading footer content:', e);
   }
 }
-
 loadFooterData();
+
+// ----- Kontaktformular -----
+const contactForm = document.getElementById("contact-form");
+const formStatus = document.getElementById("form-status");
+
+if (contactForm) {
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const subject = document.getElementById("subject").value;
+    const message = document.getElementById("message").value;
+
+    const { error } = await supabase.from("messages").insert([
+      { name, email, subject, message }
+    ]);
+
+    if (error) {
+      console.error(error);
+      formStatus.textContent = "❌ Der skete en fejl. Prøv igen.";
+      formStatus.style.color = "red";
+    } else {
+      formStatus.textContent = "😁 Tak for din besked! Jeg vender tilbage snarest.";
+      formStatus.style.color = "green";
+      contactForm.reset();
+    }
+  });
+}
 </script>
 </body>
 </html>
