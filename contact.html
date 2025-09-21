@@ -13,83 +13,77 @@
       padding: 2rem;
     }
 
-    .contact-container {
-      display: flex;
-      gap: 3rem;
+    .contact-box {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      padding: 2rem;
       max-width: 1000px;
       width: 100%;
-      flex-wrap: wrap;
     }
 
-    .contact-info, .contact-form {
-      flex: 1;
-      min-width: 300px;
+    .contact-section {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid #eee;
     }
 
-    .contact-info h2,
-    .contact-form h2 {
+    .contact-section:last-of-type {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .contact-section h2 {
       margin-bottom: 1rem;
+      font-size: 1.2rem;
+      color: #222;
     }
 
+    /* Kontakt info */
     .contact-info p {
       margin: 0.5rem 0;
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      font-size: 0.95rem;
     }
 
     .contact-info ul {
       list-style: disc;
       margin-left: 1.5rem;
+      font-size: 0.95rem;
     }
 
-    /* ==== FORM BOKS & LINJER ==== */
-    .contact-form form {
-      background: #fff;              /* Baggrund på boksen */
-      border: 1px solid #ddd;        /* Yderkant */
-      border-radius: 8px;            /* Runde hjørner */
-      padding: 1.5rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Let skygge */
+    /* Formular */
+    form {
       display: flex;
       flex-direction: column;
+      gap: 1rem;
     }
 
-    .contact-form form div {
-      border-bottom: 1px solid #eee; /* Tynd linje mellem felter */
-      padding-bottom: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .contact-form form div:last-of-type {
-      border-bottom: none; /* Fjern linjen efter sidste felt */
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
-
-    .contact-form form label {
-      display: block;
-      margin-bottom: 0.3rem;
+    form label {
       font-weight: 600;
       font-size: 0.9rem;
-      color: #333;
+      margin-bottom: 0.3rem;
     }
 
-    .contact-form form input,
-    .contact-form form textarea {
-      border: none;                  /* Fjern standard kant */
-      outline: none;
+    form input,
+    form textarea {
       width: 100%;
+      padding: 0.6rem;
+      border: 1px solid var(--border, #ddd);
+      border-radius: 6px;
       font-size: 1rem;
-      padding: 0.5rem 0;
-      background: transparent;       /* Matcher baggrunden */
     }
 
-    .contact-form form textarea {
+    form textarea {
       min-height: 120px;
       resize: vertical;
     }
 
-    .contact-form form button {
+    form button {
       background-color: #0a0f1c;
       color: #fff;
       border: none;
@@ -99,11 +93,9 @@
       font-size: 1rem;
       font-weight: 600;
       transition: background 0.2s ease;
-      margin-top: 1rem;
-      width: 100%;
     }
 
-    .contact-form form button:hover {
+    form button:hover {
       background-color: #1a2236;
     }
 
@@ -111,18 +103,9 @@
       font-size: 0.9rem;
       margin-top: 0.5rem;
     }
-
-    @media (max-width: 768px) {
-      .contact-container {
-        flex-direction: column;
-        gap: 2rem;
-      }
-    }
   </style>
 </head>
 <body>
-  <!-- resten af din HTML er uændret -->
-
 <header>
   <div class="logo">
     <a href="index.html" id="site-title" style="text-decoration:none;color:inherit;">Phillip Geo / BareetDesign</a>
@@ -136,23 +119,26 @@
 </header>
 
 <main>
-  <section class="contact-container">
-    <!-- Venstre side -->
-    <div class="contact-info">
+  <div class="contact-box">
+    <!-- Kontaktinformation -->
+    <section class="contact-section contact-info">
       <h2>Kontaktinformation</h2>
       <p>📧 phillipgeo@gmail.com / phillip@bareetdesign.com (Kommer snart)</p>
       <p>📞 +45 93 95 63 39</p>
       <p>🌍 København, Danmark</p>
+    </section>
 
+    <!-- Services -->
+    <section class="contact-section">
       <h2>Services</h2>
       <ul>
         <li>Brand Identity Design</li>
         <li>Grafisk Design</li>
       </ul>
-    </div>
+    </section>
 
-    <!-- Højre side -->
-    <div class="contact-form">
+    <!-- Formular -->
+    <section class="contact-section">
       <h2>Skriv en besked</h2>
       <form id="contact-form">
         <div>
@@ -174,8 +160,8 @@
         <button type="submit">Send besked</button>
       </form>
       <p id="form-status"></p>
-    </div>
-  </section>
+    </section>
+  </div>
 </main>
 
 <footer>
@@ -220,29 +206,15 @@ async function loadFooterData() {
       .single();
     if (error) throw error;
 
-    // Mail
-    const mailLink = document.getElementById('footer-mail');
-    mailLink.href = siteData?.contactMail ? `mailto:${siteData.contactMail}` : 'mailto:phillipgeo7@gmail.com';
-    mailLink.querySelector('span').textContent = siteData?.contactMail || 'phillipgeo7@gmail.com';
-    mailLink.querySelector('img').src = siteData?.footerMailIcon || 'icons/mail.png';
+    document.getElementById('footer-mail').href = siteData?.contactMail ? `mailto:${siteData.contactMail}` : 'mailto:phillipgeo7@gmail.com';
+    document.getElementById('footer-mail').querySelector('span').textContent = siteData?.contactMail || 'phillipgeo7@gmail.com';
 
-    // Phone
-    const phoneLink = document.getElementById('footer-phone');
-    phoneLink.href = siteData?.contactPhone ? `tel:${siteData.contactPhone}` : 'tel:+4593956339';
-    phoneLink.querySelector('span').textContent = siteData?.contactPhone || '+45 93 95 63 39';
-    phoneLink.querySelector('img').src = siteData?.footerPhoneIcon || 'icons/phone.png';
+    document.getElementById('footer-phone').href = siteData?.contactPhone ? `tel:${siteData.contactPhone}` : 'tel:+4593956339';
+    document.getElementById('footer-phone').querySelector('span').textContent = siteData?.contactPhone || '+45 93 95 63 39';
 
-    // LinkedIn
-    const linkedinLink = document.getElementById('footer-linkedin');
-    linkedinLink.href = siteData?.contactLinkedin || '#';
-    linkedinLink.querySelector('img').src = siteData?.footerLinkedinIcon || 'icons/linkedin.png';
+    document.getElementById('footer-linkedin').href = siteData?.contactLinkedin || '#';
+    document.getElementById('footer-instagram').href = siteData?.contactInstagram || '#';
 
-    // Instagram
-    const instaLink = document.getElementById('footer-instagram');
-    instaLink.href = siteData?.contactInstagram || '#';
-    instaLink.querySelector('img').src = siteData?.footerInstagramIcon || 'icons/instagram.png';
-
-    // Copyright
     document.getElementById('copyright-text').textContent = siteData?.copyright || "Phillip Geo / BareetDesign";
 
   } catch(e) {
@@ -269,7 +241,6 @@ if (contactForm) {
     ]);
 
     if (error) {
-      console.error(error);
       formStatus.textContent = "❌ Der skete en fejl. Prøv igen.";
       formStatus.style.color = "red";
     } else {
