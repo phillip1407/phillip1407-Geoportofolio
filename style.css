@@ -317,3 +317,13 @@ button:hover { background: var(--primary-hover); }
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
+.footer-section a {
+  text-decoration: none; /* fjern understregning */
+  color: var(--text);     /* gør teksten samme farve som resten */
+  transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+  color: var(--primary);  /* valgfri hover-effekt */
+}
