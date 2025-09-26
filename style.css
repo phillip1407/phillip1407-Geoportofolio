@@ -11,7 +11,6 @@
   --alert-border: #ff0000;
 }
 
-/* ---------------- Global ---------------- */
 * { box-sizing: border-box; }
 
 body {
@@ -38,7 +37,7 @@ nav a:hover { text-decoration:underline; }
 
 main { padding:28px; min-height:60vh; }
 
-/* ---------------- Grid projekter ---------------- */
+/* grid for projects */
 .grid {
   display:grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -98,9 +97,89 @@ main { padding:28px; min-height:60vh; }
   color: #111;
 }
 
-/* ---------------- Intro box ---------------- */
+/* footer */
+footer {
+  border-top:1px solid var(--border);
+  padding:22px 28px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:14px;
+  color:var(--muted);
+}
+
+/* social media samlet */
+.footer-social {
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+.footer-social a {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  text-decoration:none;
+  color:var(--text);
+  transition: color 0.3s ease;
+}
+
+.footer-social a:hover {
+  color: var(--primary);
+}
+
+/* social media icons + animation */
+.social-icon {
+  width: 22px;
+  height: 22px;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.footer-social a:hover .social-icon {
+  transform: scale(1.2) rotate(5deg);
+  filter: drop-shadow(0 0 6px var(--primary));
+}
+
+/* admin styles */
+.admin-area { max-width:920px; margin:auto; display:grid; gap:18px; }
+.card { background:#fafafa; padding:16px; border:1px solid var(--border); border-radius:8px; }
+label { display:block; margin:8px 0; font-size:14px; }
+input[type="text"], input[type="password"], input[type="email"], textarea {
+  width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:14px;
+}
+button { padding:8px 12px; border-radius:6px; border:none; background: var(--primary); color:#fff; cursor:pointer; margin-top:6px; transition: background 0.3s; }
+button:hover { background: var(--primary-hover); }
+#logout-btn { background: var(--danger); }
+#logout-btn:hover { background: var(--danger-hover); }
+.project-edit { margin-bottom:8px; }
+.project-edit .row { display:flex; gap:8px; margin-top:6px; }
+.hint { font-size:13px; color:var(--muted); margin-top:8px; }
+.editor-actions { display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+
+/* alert box */
+.alert-box {
+  background-color: var(--alert-bg);
+  color: var(--danger);
+  padding: 12px 20px;
+  border-left: 6px solid var(--alert-border);
+  margin-bottom: 24px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* responsive */
+@media (max-width:600px){
+  header { padding:12px; }
+  main { padding:12px; }
+  footer { flex-direction:column; padding:12px; }
+  .footer-social { gap:12px; }
+}
+
+/* intro-box styling */
 .intro-box {
-  background: #fafafa;
+  background: #fafafa; /* match projektkort */
   padding: 1.5rem;
   margin: 2rem auto;
   border: 1px solid var(--border);
@@ -131,96 +210,77 @@ main { padding:28px; min-height:60vh; }
   font-size: 1rem;
 }
 
-/* ---------------- Footer ---------------- */
-/* Moderniseret Supabase-kompatibel footer */
-footer {
-  background-color: var(--bg);
-  color: var(--text);
-  padding: 40px 20px 20px 20px;
-  border-top: 1px solid var(--border);
+/* about-box styling */
+.about-box {
+  background: #fafafa;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem auto;
+  max-width: 900px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeSlideIn 0.6s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.about-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+}
+
+.about-content {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
+  align-items: flex-start;
+  gap: 1.5rem;
 }
 
-.footer-social {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 25px;
-  justify-content: center;
-  align-items: center;
+/* større billede */
+.about-image img {
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
-.footer-social a {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  text-decoration: none;
-  color: var(--text);
-  transition: color 0.3s ease;
+.about-text {
+  flex: 1;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
-.footer-social a:hover {
-  color: var(--primary);
+/* nye sektioner under Om mig */
+.about-extra {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #fafafa;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeSlideIn 0.6s ease-out forwards;
 }
 
-.footer-social .social-icon {
-  width: 24px;
-  height: 24px;
-  transition: transform 0.3s ease, filter 0.3s ease;
+.about-extra:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
 }
 
-.footer-social a:hover .social-icon {
-  transform: scale(1.2) rotate(5deg);
-  filter: drop-shadow(0 0 6px var(--primary));
+.about-extra h3 {
+  margin-top: 1.5rem;
+  color: #222;
+  font-size: 1.4rem;
 }
 
-#copyright {
-  text-align: center;
-  margin-top: 12px;
-  font-size: 13px;
-  color: var(--muted);
+.about-extra p {
+  color: #444;
+  line-height: 1.6;
+  margin-top: 0.5rem;
 }
 
-/* ---------------- Admin ---------------- */
-.admin-area { max-width:920px; margin:auto; display:grid; gap:18px; }
-.card { background:#fafafa; padding:16px; border:1px solid var(--border); border-radius:8px; }
-label { display:block; margin:8px 0; font-size:14px; }
-input[type="text"], input[type="password"], input[type="email"], textarea {
-  width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:14px;
-}
-button { padding:8px 12px; border-radius:6px; border:none; background: var(--primary); color:#fff; cursor:pointer; margin-top:6px; transition: background 0.3s; }
-button:hover { background: var(--primary-hover); }
-#logout-btn { background: var(--danger); }
-#logout-btn:hover { background: var(--danger-hover); }
-.project-edit { margin-bottom:8px; }
-.project-edit .row { display:flex; gap:8px; margin-top:6px; }
-.hint { font-size:13px; color:var(--muted); margin-top:8px; }
-.editor-actions { display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
-
-/* ---------------- Alert ---------------- */
-.alert-box {
-  background-color: var(--alert-bg);
-  color: var(--danger);
-  padding: 12px 20px;
-  border-left: 6px solid var(--alert-border);
-  margin-bottom: 24px;
-  border-radius: 6px;
-  font-weight: bold;
-  text-align: center;
-}
-
-/* ---------------- Responsive ---------------- */
-@media (max-width:768px){
-  header { padding:12px; }
-  main { padding:12px; }
-  .footer-container { flex-direction: column; align-items: center; text-align:center; }
-  .footer-about p { max-width:100%; }
-  .footer-contact, .footer-social { justify-content:center; }
-}
-
-/* ---------------- Animation ---------------- */
+/* animation */
 @keyframes fadeSlideIn {
   to {
     opacity: 1;
@@ -228,9 +288,9 @@ button:hover { background: var(--primary-hover); }
   }
 }
 
-/* ---------------- Logo fix ---------------- */
+/* Fix logo/titel: ingen linje, ingen anden farve */
 #site-title {
-  text-decoration: none;
-  border-bottom: none;
-  color: inherit;
+  text-decoration: none; /* fjern understregning */
+  border-bottom: none;   /* fjern eventuel border */
+  color: inherit;        /* behold samme farve som headeren */
 }
