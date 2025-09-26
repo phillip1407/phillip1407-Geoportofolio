@@ -3,111 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kontakt - Phillip Geo</title>
+  <title>Kontakt - Phillip Geo / BareetDesign</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="plogo.png" type="image/png">
-  <style>
-main {
-  display: flex;
-  justify-content: center;
-  padding: 2rem;
-}
-
-.contact-box {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  padding: 2rem;
-  max-width: 1000px;
-  width: 100%;
-}
-
-.contact-section {
-  margin-bottom: 2rem;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid #eee;
-}
-
-.contact-section:last-of-type {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
-
-.contact-section h2 {
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
-  color: #222;
-}
-
-.contact-info p {
-  margin: 0.5rem 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.95rem;
-}
-
-.contact-info ul {
-  list-style: disc;
-  margin-left: 1.5rem;
-  font-size: 0.95rem;
-}
-
-/* Formular felter */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-form label {
-  font-weight: 600;
-  font-size: 0.9rem;
-  margin-bottom: 0.3rem;
-}
-
-form input,
-form textarea {
-  width: 100%;
-  padding: 0.6rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
-form textarea {
-  min-height: 120px;
-  resize: vertical;
-}
-
-form button {
-  background-color: #0a0f1c;
-  color: #fff;
-  border: none;
-  padding: 0.8rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-  transition: background 0.2s ease;
-}
-
-form button:hover {
-  background-color: #1a2236;
-}
-
-#form-status {
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
-}
-  </style>
 </head>
 <body>
 <header>
   <div class="logo">
-    <a href="index.html" id="site-title" style="text-decoration:none;color:inherit;">Phillip Geo / BareetDesign</a>
+    <a href="index.html" id="site-title">Phillip Geo / BareetDesign</a>
   </div>
   <nav>
     <a href="about.html">Om</a>
@@ -117,49 +20,35 @@ form button:hover {
 </header>
 
 <main>
-  <div class="contact-box">
-    <!-- Kontaktinformation -->
-    <section class="contact-section contact-info">
-      <h2>Kontaktinformation</h2>
-      <p>📧 phillipgeo@gmail.com / phillip@bareetdesign.com (Kommer snart)</p>
-      <p>📞 +45 93 95 63 39</p>
-      <p>🌍 København, Danmark</p>
-    </section>
+  <section id="contact-box" class="intro-box">
+    <h2>Kontakt mig</h2>
+    <form id="contact-form">
+      <label for="name">Navn</label>
+      <input type="text" id="name" name="name" required>
 
-    <!-- Services -->
-    <section class="contact-section">
-      <h2>Services</h2>
-      <ul>
-        <li>Brand Identity Design</li>
-        <li>Grafisk Design</li>
-      </ul>
-    </section>
+      <hr>
 
-    <!-- Formular -->
-    <section class="contact-section">
-      <h2>Skriv en besked</h2>
-      <form id="contact-form">
-        <div>
-          <label for="name">Navn</label>
-          <input type="text" id="name" name="name" required>
-        </div>
-        <div>
-          <label for="email">E-mail</label>
-          <input type="email" id="email" name="email" required>
-        </div>
-        <div>
-          <label for="subject">Emne</label>
-          <input type="text" id="subject" name="subject" required>
-        </div>
-        <div>
-          <label for="message">Besked</label>
-          <textarea id="message" name="message" required></textarea>
-        </div>
-        <button type="submit">Send besked</button>
-      </form>
-      <p id="form-status"></p>
-    </section>
-  </div>
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" required>
+
+      <hr>
+
+      <label for="service">Service</label>
+      <select id="service" name="service" required>
+        <option value="">Vælg en service</option>
+        <option value="design">Design</option>
+        <option value="web">Webudvikling</option>
+        <option value="anden">Andet</option>
+      </select>
+
+      <hr>
+
+      <label for="message">Besked</label>
+      <textarea id="message" name="message" rows="4" required></textarea>
+
+      <button type="submit">Send besked</button>
+    </form>
+  </section>
 </main>
 
 <footer>
@@ -188,81 +77,44 @@ form button:hover {
 </div>
 
 <script type="module">
-import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+import { createClient } from 'https://esm.sh/@supabase/supabase-js';
 
 const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ----- Footer -----
-async function loadFooterData() {
+// Load site data ligesom på forsiden
+async function loadSiteData() {
   try {
-    const { data: siteData, error } = await supabase
-      .from('site_content')
-      .select('*')
-      .eq('id', 1)
-      .single();
-
+    const { data: siteData, error } = await supabase.from('site_content').select('*').eq('id', 1).single();
     if (error) throw error;
-
-    // Mail
-    const mailLink = document.getElementById('footer-mail');
-    mailLink.href = siteData?.contactMail ? `mailto:${siteData.contactMail}` : 'mailto:phillipgeo7@gmail.com';
-    mailLink.querySelector('span').textContent = siteData?.contactMail || 'phillipgeo7@gmail.com';
-    mailLink.querySelector('img').src = siteData?.footerMailIcon || 'icons/mail.png';
-
-    // Phone
-    const phoneLink = document.getElementById('footer-phone');
-    phoneLink.href = siteData?.contactPhone ? `tel:${siteData.contactPhone}` : 'tel:+4593956339';
-    phoneLink.querySelector('span').textContent = siteData?.contactPhone || '+45 93 95 63 39';
-    phoneLink.querySelector('img').src = siteData?.footerPhoneIcon || 'icons/phone.png';
-
-    // LinkedIn
-    const linkedinLink = document.getElementById('footer-linkedin');
-    linkedinLink.href = siteData?.contactLinkedin || '#';
-    linkedinLink.querySelector('img').src = siteData?.footerLinkedinIcon || 'icons/linkedin.png';
-
-    // Instagram
-    const instaLink = document.getElementById('footer-instagram');
-    instaLink.href = siteData?.contactInstagram || '#';
-    instaLink.querySelector('img').src = siteData?.footerInstagramIcon || 'icons/instagram.png';
-
-    // Copyright
-    document.getElementById('copyright-text').textContent = siteData?.copyright || "Phillip Geo / BareetDesign";
-
-  } catch(e) {
-    console.error('Error loading footer content:', e);
+    if (siteData) {
+      document.getElementById('site-title').textContent = siteData.siteTitle;
+      document.getElementById('footer-mail').href = siteData.contactMail ? `mailto:${siteData.contactMail}` : '#';
+      document.querySelector('#footer-mail span').textContent = siteData.contactMail || 'Mail';
+      document.querySelector('#footer-mail img').src = siteData.footerMailIcon || 'icons/mail.png';
+      document.getElementById('footer-phone').href = siteData.contactPhone ? `tel:${siteData.contactPhone}` : '#';
+      document.querySelector('#footer-phone span').textContent = siteData.contactPhone || 'Telefon';
+      document.querySelector('#footer-phone img').src = siteData.footerPhoneIcon || 'icons/phone.png';
+      document.getElementById('footer-linkedin').href = siteData.contactLinkedin || '#';
+      document.querySelector('#footer-linkedin img').src = siteData.footerLinkedinIcon || 'icons/linkedin.png';
+      document.getElementById('footer-instagram').href = siteData.contactInstagram || '#';
+      document.querySelector('#footer-instagram img').src = siteData.footerInstagramIcon || 'icons/instagram.png';
+      document.getElementById('copyright-text').textContent = siteData.copyright || "Phillip Geo / BareetDesign";
+    }
+  } catch (e) {
+    console.error('Error loading site content:', e);
   }
 }
-loadFooterData();
 
-// ----- Kontaktformular -----
-const contactForm = document.getElementById("contact-form");
-const formStatus = document.getElementById("form-status");
+loadSiteData();
 
-if (contactForm) {
-  contactForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const subject = document.getElementById("subject").value;
-    const message = document.getElementById("message").value;
-
-    const { error } = await supabase.from("messages").insert([
-      { name, email, subject, message }
-    ]);
-
-    if (error) {
-      formStatus.textContent = "❌ Der skete en fejl. Prøv igen.";
-      formStatus.style.color = "red";
-    } else {
-      formStatus.textContent = "😁 Tak for din besked! Jeg vender tilbage snarest.";
-      formStatus.style.color = "green";
-      contactForm.reset();
-    }
-  });
-}
+// Simpel besked-submit
+document.getElementById('contact-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  alert("Tak for din besked! Jeg vender tilbage hurtigst muligt.");
+  e.target.reset();
+});
 </script>
 </body>
 </html>
