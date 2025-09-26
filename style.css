@@ -297,16 +297,23 @@ button:hover { background: var(--primary-hover); }
 
 .footer-container {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 40px;
   padding: 22px 28px;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--muted);
 }
 
-.footer-section {
+.footer-left, .footer-center, .footer-right {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 8px;
+}
+
+.footer-center, .footer-right {
   text-align: center;
 }
 
@@ -317,6 +324,31 @@ button:hover { background: var(--primary-hover); }
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
+.footer-container a {
+  text-decoration: none; /* fjern understregning */
+  color: var(--text);    /* match almindelig tekst */
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.3s ease;
+}
+
+.footer-container a:hover {
+  color: var(--primary);
+}
+
+@media (max-width: 700px) {
+  .footer-container {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+  .footer-left, .footer-center, .footer-right {
+    align-items: center;
+  }
+}
+
 
 .footer-section a {
   text-decoration: none; /* fjern understregning */
