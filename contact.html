@@ -194,39 +194,48 @@ form button:hover {
 </div>
 
 <script type="module">
-import { createClient } from 'https://esm.sh/@supabase/supabase-js';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
 const SUPABASE_URL = "https://tuogdyemsfdmhxrvmrlq.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1b2dkeWVtc2ZkbWh4cnZtcmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwMjQ5OTAsImV4cCI6MjA3MzYwMDk5MH0.yHeM8tkZuzA8PuooVIOrDtdgCTS3jfuXLzQ55-235NU";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Load site data
-async function loadSiteData() {
+// ----- Footer -----
+async function loadFooterData() {
   try {
-    const { data: siteData, error } = await supabase.from('site_content').select('*').eq('id', 1).single();
+    const { data: siteData, error } = await supabase
+      .from('site_content')
+      .select('*')
+      .eq('id', 1)
+      .single();
     if (error) throw error;
-    if (siteData) {
-      document.getElementById('site-title').textContent = siteData.siteTitle;
-      const introSection = document.getElementById('intro-text');
-      if (introSection) {
-        introSection.innerHTML = `<h2>${siteData.introTitle}</h2><p>${siteData.introText}</p>`;
-      }
-      document.getElementById('footer-mail').href = siteData.contactMail ? `mailto:${siteData.contactMail}` : '#';
-      document.querySelector('#footer-mail span').textContent = siteData.contactMail || 'Mail';
-      document.querySelector('#footer-mail img').src = siteData.footerMailIcon || 'icons/mail.png';
-      document.getElementById('footer-phone').href = siteData.contactPhone ? `tel:${siteData.contactPhone}` : '#';
-      document.querySelector('#footer-phone span').textContent = siteData.contactPhone || 'Telefon';
-      document.querySelector('#footer-phone img').src = siteData.footerPhoneIcon || 'icons/phone.png';
-      document.getElementById('footer-linkedin').href = siteData.contactLinkedin || '#';
-      document.querySelector('#footer-linkedin img').src = siteData.footerLinkedinIcon || 'icons/linkedin.png';
-      document.getElementById('footer-instagram').href = siteData.contactInstagram || '#';
-      document.querySelector('#footer-instagram img').src = siteData.footerInstagramIcon || 'icons/instagram.png';
-      document.getElementById('copyright-text').textContent = siteData.copyright || "Phillip Geo / BareetDesign";
-    }
-  } catch (e) {
-    console.error('Error loading site content:', e);
+
+    // Mail
+    document.getElementById('footer-mail').href = siteData?.contactMail ? `mailto:${siteData.contactMail}` : 'mailto:phillipgeo7@gmail.com';
+    document.getElementById('footer-mail').querySelector('span').textContent = siteData?.contactMail || 'phillipgeo7@gmail.com';
+    document.getElementById('footer-mail').querySelector('img').src = siteData?.footerMailIcon || 'icons/mail.png';
+
+    // Telefon
+    document.getElementById('footer-phone').href = siteData?.contactPhone ? `tel:${siteData.contactPhone}` : 'tel:+4593956339';
+    document.getElementById('footer-phone').querySelector('span').textContent = siteData?.contactPhone || '+45 93 95 63 39';
+    document.getElementById('footer-phone').querySelector('img').src = siteData?.footerPhoneIcon || 'icons/phone.png';
+
+    // LinkedIn
+    document.getElementById('footer-linkedin').href = siteData?.contactLinkedin || '#';
+    document.getElementById('footer-linkedin').querySelector('img').src = siteData?.footerLinkedInIcon || 'icons/linkedin.png';
+
+    // Instagram
+    document.getElementById('footer-instagram').href = siteData?.contactInstagram || '#';
+    document.getElementById('footer-instagram').querySelector('img').src = siteData?.footerInstagramIcon || 'icons/instagram.png';
+
+    // Copyright
+    document.getElementById('copyright-text').textContent = siteData?.copyright || "Phillip Geo / BareetDesign";
+
+  } catch(e) {
+    console.error('Error loading footer content:', e);
   }
 }
+loadFooterData();
 
 // ----- Kontaktformular -----
 const contactForm = document.getElementById("contact-form");
