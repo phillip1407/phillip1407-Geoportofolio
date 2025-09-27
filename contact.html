@@ -103,6 +103,10 @@ form button:hover {
   margin-top: 0.5rem;
 }
 
+.social-icon {
+  width: 20px;
+  height: 20px;
+}
   </style>
 </head>
 <body>
@@ -206,15 +210,25 @@ async function loadFooterData() {
       .single();
     if (error) throw error;
 
+    // Mail
     document.getElementById('footer-mail').href = siteData?.contactMail ? `mailto:${siteData.contactMail}` : 'mailto:phillipgeo7@gmail.com';
     document.getElementById('footer-mail').querySelector('span').textContent = siteData?.contactMail || 'phillipgeo7@gmail.com';
+    document.getElementById('footer-mail').querySelector('img').src = siteData?.footerMailIcon || 'icons/mail.png';
 
+    // Telefon
     document.getElementById('footer-phone').href = siteData?.contactPhone ? `tel:${siteData.contactPhone}` : 'tel:+4593956339';
     document.getElementById('footer-phone').querySelector('span').textContent = siteData?.contactPhone || '+45 93 95 63 39';
+    document.getElementById('footer-phone').querySelector('img').src = siteData?.footerPhoneIcon || 'icons/phone.png';
 
+    // LinkedIn
     document.getElementById('footer-linkedin').href = siteData?.contactLinkedin || '#';
-    document.getElementById('footer-instagram').href = siteData?.contactInstagram || '#';
+    document.getElementById('footer-linkedin').querySelector('img').src = siteData?.footerLinkedInIcon || 'icons/linkedin.png';
 
+    // Instagram
+    document.getElementById('footer-instagram').href = siteData?.contactInstagram || '#';
+    document.getElementById('footer-instagram').querySelector('img').src = siteData?.footerInstagramIcon || 'icons/instagram.png';
+
+    // Copyright
     document.getElementById('copyright-text').textContent = siteData?.copyright || "Phillip Geo / BareetDesign";
 
   } catch(e) {
